@@ -15,6 +15,12 @@ class Config:
     )
     WTF_CSRF_ENABLED = True
 
+    # OpenRouter / DeepSeek AI
+    OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+    OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL", "deepseek/deepseek-chat")
+    OPENROUTER_SITE_URL = os.environ.get("OPENROUTER_SITE_URL", "http://localhost:5000")
+    OPENROUTER_APP_NAME = os.environ.get("OPENROUTER_APP_NAME", "ContextCraft")
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
