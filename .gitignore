@@ -1,0 +1,47 @@
+# Ortam değişkenleri — gizli anahtarlar asla repoya eklenmemeli
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Sanal ortam
+venv/
+.venv/
+env/
+
+# Flask
+instance/
+.webassets-cache
+
+# Veritabanı
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# LlamaIndex / yüklenen proje dosyaları (ileride)
+uploads/
+storage/
