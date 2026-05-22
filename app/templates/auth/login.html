@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Giriş Yap — ContextCraft{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Giriş Yap</h1>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email() }}
+            {% for error in form.email.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password() }}
+            {% for error in form.password.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label>
+                {{ form.remember_me() }} {{ form.remember_me.label.text }}
+            </label>
+        </div>
+
+        {{ form.submit(class="btn") }}
+    </form>
+
+    <p class="link">Hesabınız yok mu? <a href="{{ url_for('auth.register') }}">Kayıt olun</a></p>
+</div>
+{% endblock %}

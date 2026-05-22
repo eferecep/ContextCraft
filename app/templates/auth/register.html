@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Kayıt Ol — ContextCraft{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Kayıt Ol</h1>
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="") }}
+            {% for error in form.username.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email() }}
+            {% for error in form.email.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password() }}
+            {% for error in form.password.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.password2.label }}
+            {{ form.password2() }}
+            {% for error in form.password2.errors %}<div class="error">{{ error }}</div>{% endfor %}
+        </div>
+
+        {{ form.submit(class="btn") }}
+    </form>
+
+    <p class="link">Zaten hesabınız var mı? <a href="{{ url_for('auth.login') }}">Giriş yapın</a></p>
+</div>
+{% endblock %}

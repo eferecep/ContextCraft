@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Anasayfa — ContextCraft{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>ContextCraft'a Hoş Geldiniz</h1>
+    <p style="margin-bottom:1rem;line-height:1.6;">
+        Yazılım projelerinizi yükleyin, LlamaIndex ile bağlamı optimize edin ve token israfını önleyin.
+    </p>
+    {% if current_user.is_authenticated %}
+        <p>Merhaba, <strong>{{ current_user.username }}</strong>! Oturumunuz açık.</p>
+    {% else %}
+        <p>
+            <a href="{{ url_for('auth.login') }}" class="btn">Giriş Yap</a>
+            &nbsp;
+            <a href="{{ url_for('auth.register') }}" class="btn" style="background:#555;">Kayıt Ol</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}
