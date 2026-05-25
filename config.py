@@ -15,6 +15,14 @@ class Config:
     )
     WTF_CSRF_ENABLED = True
 
+    # Dosya yükleme (Faz 4)
+    UPLOAD_FOLDER = str(BASE_DIR / "uploads")
+    ALLOWED_EXTENSIONS = {
+        "py", "html", "htm", "css", "js", "json", "txt", "md",
+        "yaml", "yml", "toml", "ini", "cfg", "xml", "zip",
+    }
+    ALLOWED_EXTENSIONLESS = {"dockerfile", "makefile", "readme", "license"}
+
     # OpenRouter / DeepSeek AI
     OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
     OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL", "deepseek/deepseek-chat")
@@ -24,10 +32,16 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    # Büyük projeler için varsayılan boyut limiti yok.
+    # İstenirse .env ile MAX_CONTENT_LENGTH=524288000 (500 MB) gibi ayarlanabilir.
+    _max_upload = os.environ.get("MAX_CONTENT_LENGTH")
+    MAX_CONTENT_LENGTH = int(_max_upload) if _max_upload else None
 
 
 class ProductionConfig(Config):
     DEBUG = False
+    _max_upload = os.environ.get("MAX_CONTENT_LENGTH")
+    MAX_CONTENT_LENGTH = int(_max_upload) if _max_upload else None
 
 
 class TestingConfig(Config):
