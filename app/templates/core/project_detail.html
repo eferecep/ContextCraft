@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} — ContextCraft{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ project.name }}</h1>
+
+    <dl class="detail-list">
+        <dt>Durum</dt>
+        <dd><span class="badge">{{ project.status }}</span></dd>
+
+        <dt>Açıklama</dt>
+        <dd>{{ project.description or "—" }}</dd>
+
+        <dt>Oluşturulma</dt>
+        <dd>{{ project.created_at.strftime("%d.%m.%Y %H:%M") }}</dd>
+
+        <dt>Dosya sayısı</dt>
+        <dd>{{ files|length }}</dd>
+    </dl>
+
+    {% if files %}
+        <h2 class="section-title">Yüklenen Dosyalar</h2>
+        <ul class="file-list">
+            {% for file in files %}
+                <li>{{ file }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="hint">Bu projede henüz dosya bulunmuyor.</p>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{{ url_for('core.project_list') }}" class="btn btn-secondary">← Proje listesi</a>
+
+        <form method="POST"
+              action="{{ url_for('core.project_delete', project_id=project.id) }}"
+              onsubmit="return confirm('Bu projeyi silmek istediğinize emin misiniz?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-danger">Projeyi Sil</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -108,3 +108,19 @@ def delete_project_files(source_path: str) -> None:
     path = Path(source_path)
     if path.exists() and path.is_dir():
         shutil.rmtree(path)
+
+
+def list_project_files(source_path: str) -> list:
+    """Proje klasöründeki dosyaların göreli yollarını listeler."""
+    if not source_path:
+        return []
+
+    root = Path(source_path)
+    if not root.is_dir():
+        return []
+
+    files = []
+    for path in sorted(root.rglob("*")):
+        if path.is_file():
+            files.append(str(path.relative_to(root)))
+    return files

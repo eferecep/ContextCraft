@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Projelerim — ContextCraft{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Projelerim</h1>
+
+    {% if projects %}
+        <ul class="project-list">
+            {% for project in projects %}
+                <li>
+                    <a href="{{ url_for('core.project_detail', project_id=project.id) }}">
+                        <strong>{{ project.name }}</strong>
+                    </a>
+                    <span class="badge">{{ project.status }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Henüz projeniz yok.</p>
+    {% endif %}
+
+    <p style="margin-top:1.5rem;">
+        <a href="{{ url_for('core.project_new') }}" class="btn">+ Yeni Proje</a>
+    </p>
+</div>
+{% endblock %}

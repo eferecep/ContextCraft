@@ -3,6 +3,7 @@ from app.utils.file_helpers import (
     delete_project_files,
     ensure_upload_dir,
     get_project_upload_dir,
+    list_project_files,
     safe_relative_path,
     save_uploaded_file,
 )
@@ -12,6 +13,7 @@ __all__ = [
     "delete_project_files",
     "ensure_upload_dir",
     "get_project_upload_dir",
+    "list_project_files",
     "safe_relative_path",
     "save_uploaded_file",
 ]
