@@ -23,7 +23,17 @@ class Config:
     }
     ALLOWED_EXTENSIONLESS = {"dockerfile", "makefile", "readme", "license"}
 
-    # OpenRouter / DeepSeek AI
+    # LlamaIndex indeksleme (Faz 5) — anahtarı .env dosyasına siz yazacaksınız
+    LLAMAINDEX_API_KEY = os.environ.get("LLAMAINDEX_API_KEY", "")
+    LLAMAINDEX_API_BASE = os.environ.get(
+        "LLAMAINDEX_API_BASE", "https://openrouter.ai/api/v1"
+    )
+    LLAMAINDEX_EMBEDDING_MODEL = os.environ.get(
+        "LLAMAINDEX_EMBEDDING_MODEL", "openai/text-embedding-3-small"
+    )
+    STORAGE_FOLDER = str(BASE_DIR / "storage")
+
+    # OpenRouter / DeepSeek AI (Faz 6 — prompt optimizasyonu)
     OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
     OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL", "deepseek/deepseek-chat")
     OPENROUTER_SITE_URL = os.environ.get("OPENROUTER_SITE_URL", "http://localhost:5000")
