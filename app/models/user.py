@@ -27,7 +27,8 @@ class User(UserMixin, db.Model):
     )
 
     def set_password(self, password: str) -> None:
-        self.password_hash = generate_password_hash(password)
+        # macOS Python 3.9 (LibreSSL) hashlib.scrypt desteklemez; pbkdf2 güvenli alternatif
+        self.password_hash = generate_password_hash(password, method="pbkdf2:sha256")
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)

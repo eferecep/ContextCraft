@@ -25,7 +25,7 @@ class DeepSeekClient:
     ):
         self.api_key = api_key or os.environ.get("OPENROUTER_API_KEY", "")
         self.model = model or os.environ.get(
-            "OPENROUTER_MODEL", "deepseek/deepseek-chat"
+            "OPENROUTER_MODEL", "deepseek/deepseek-chat-v3.1"
         )
         self.site_url = site_url or os.environ.get(
             "OPENROUTER_SITE_URL", "http://localhost:5000"

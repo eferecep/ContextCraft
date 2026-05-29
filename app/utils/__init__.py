@@ -7,12 +7,20 @@ from app.utils.file_helpers import (
     safe_relative_path,
     save_uploaded_file,
 )
+from app.utils.index_helpers import (
+    collect_indexable_files,
+    delete_storage_dir,
+    get_storage_dir,
+)
 
 __all__ = [
     "allowed_file",
+    "collect_indexable_files",
     "delete_project_files",
+    "delete_storage_dir",
     "ensure_upload_dir",
     "get_project_upload_dir",
+    "get_storage_dir",
     "list_project_files",
     "safe_relative_path",
     "save_uploaded_file",

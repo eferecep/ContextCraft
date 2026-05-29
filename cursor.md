@@ -2,18 +2,20 @@
 
 ## Proje Özeti
 
-**ContextCraft**, yazılımcıların projelerini yükleyip **LlamaIndex** ile indeksleyen; ardından **DeepSeek** (OpenRouter) ile kullanıcının kısa isteğini **detaylandırılmış, dış AI araçlarına (Claude, ChatGPT) uyumlu bir prompt** haline getiren ve **yalnızca gerekli dosyaları** seçen bir token optimizasyon platformudur.
+**ContextCraft**, yazılımcıların projelerini yükleyip **LlamaIndex** ile indeksleyen; ardından **DeepSeek V3.1** (OpenRouter) ile kullanıcının kısa isteğini **detaylandırılmış, dış AI araçlarına (Claude, ChatGPT) uyumlu bir prompt** haline getiren ve **yalnızca gerekli dosyaları** seçen bir token optimizasyon platformudur.
 
 > **Önemli:** ContextCraft bir sohbet uygulaması **değildir**. Kullanıcı burada AI ile konuşmaz; sistem prompt üretir ve hangi dosyaların yeterli olduğunu söyler. Asıl kodlama Claude / ChatGPT gibi araçlarda yapılır.
 
-### Örnek Akış
+> **Önemli:** Hiçbir AI modeli **yerel indirilmez**. Embedding ve LLM istekleri yalnızca **OpenRouter API** üzerinden gider.
+
+### Örnek Akış (hedef — Faz 6+8 tamamlanınca)
 
 ```
 Kullanıcı yazar:  "Login ekranı kodla"
          ↓
-LlamaIndex:       Hibrit arama ile ilgili dosya/parçaları bulur (Faz 5 indeks + Faz 6 retrieve)
+LlamaIndex:       Hibrit arama ile ilgili dosya/parçaları bulur (Faz 5 ✅)
          ↓
-DeepSeek:         Bulunan parçaları değerlendirir (Faz 6)
+DeepSeek V3.1:    Bulunan parçaları değerlendirir (Faz 6 ⏳)
          ↓
 Sistem çıktısı:
   1) Detaylandırılmış prompt  →  Claude'a yapıştırılacak metin
@@ -24,130 +26,176 @@ Sistem çıktısı:
 - **Framework:** Flask 3.x
 - **Python:** 3.9 (sistem Python — Mac uyumluluğu için)
 - **Veritabanı:** SQLite (geliştirme)
-- **Bağlam Motoru:** LlamaIndex (indeksleme + hibrit retrieval)
-- **Prompt Değerlendirici:** OpenRouter → DeepSeek (model — **henüz seçilmedi**, Faz 6)
+- **Bağlam Motoru:** LlamaIndex 0.11.x (indeksleme + hibrit retrieval)
+- **Prompt Değerlendirici:** OpenRouter → DeepSeek V3.1 (`deepseek/deepseek-chat-v3.1`)
+- **Embedding:** OpenRouter → `text-embedding-3-small` (API üzerinden)
 - **Hedef dış AI araçları:** Claude, ChatGPT
 
 ---
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 5 planlandı — kodlamaya hazır, henüz başlanmadı**
+**Faz 5 tamamlandı ve test edildi — sırada Faz 6 + Faz 8**
 
 | Bölüm | Durum |
 |---|---|
 | Faz 1–3: İskelet, DB, Auth | ✅ Tamamlandı |
 | Faz 4: Proje yönetimi | ✅ Tamamlandı |
-| Faz 5 prep: API key altyapısı (`LLAMAINDEX_*`, `STORAGE_FOLDER`) | ✅ Tamamlandı |
-| Faz 5: LlamaIndex indeksleme | ⏳ Planlandı, kod bekliyor |
-| Faz 6: Prompt optimizasyon (DeepSeek) | ⏳ Ertelendi — model seçimi yeni sohbette |
+| Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
+| Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ⏳ Sırada |
 | Faz 7: `openrouter.py` altyapısı | ✅ Hazır (entegrasyon Faz 6'da) |
-| Faz 8: Prompt arayüzü | ⏳ Bekliyor |
+| Faz 8: Prompt arayüzü | ⏳ Faz 6 ile birlikte yapılacak |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
----
-
-## Bekleyen Kararlar (yeni sohbette)
-
-> Bu maddeler bilinçli olarak ertelendi. **Onay alınmadan AI/model eklenmeyecek.**
-
-| Konu | Durum | Not |
-|---|---|---|
-| **Embedding modeli** (Faz 5) | ⏸ Ertelendi | `LLAMAINDEX_EMBEDDING_MODEL` — yeni sohbette karar verilecek |
-| **DeepSeek modeli** (Faz 6) | ⏸ Ertelendi | V3.1 veya başka sürüm — Faz 6'ya gelince seçilecek |
-| **Reranking** (Faz 6) | ⏸ Tartışıldı | Opsiyonel; Faz 6'da `RERANK_ENABLED=false` ile eklenebilir |
-| **Faz 5.1 kodlama** | ⏳ Bekliyor | Onay sonrası başlanacak |
+**Kullanıcı şu an ne yapabilir?**
+- Kayıt / giriş ✅
+- Proje oluşturma, dosya yükleme ✅
+- Proje indeksleme ✅ (`status = indexed`)
+- Prompt yazma ve sonuç alma ❌ (Faz 6+8 henüz yok)
 
 ---
 
-## Proje Adımları (Yol Haritası)
+## Bu Oturumda Yapılanlar (Mayıs 2026)
 
-### Faz 1 — Temel Altyapı ✅
+### 1. Model kararları kilitlendi ✅
 
-| # | Adım | Durum |
+| Konu | Karar | Değer |
 |---|---|---|
-| 1.1 | Application Factory + Blueprint mimarisi | ✅ |
-| 1.2 | `extensions.py` (db, migrate, login, csrf) | ✅ |
-| 1.3 | `.env`, `.gitignore`, `requirements.txt` | ✅ |
-| 1.4 | `config.py` (Development / Production / Testing) | ✅ |
+| **Embedding** (Faz 5) | OpenRouter API — yerel model yok | `text-embedding-3-small` |
+| **DeepSeek LLM** (Faz 6) | DeepSeek V3.1 | `deepseek/deepseek-chat-v3.1` |
+| **Reranking** (Faz 6) | Opsiyonel, varsayılan kapalı | `RERANK_ENABLED=false` |
+| **Retrieve aday sayısı** | Hibrit retrieve → top 10 | rerank açıksa → top 5 |
 
-### Faz 2 — Veritabanı ✅
+### 2. Faz 5 kodlandı ✅
 
-| # | Adım | Durum |
+Yeni dosyalar:
+- `app/utils/index_helpers.py` — gürültü filtresi, ZIP açma, `storage/` yardımcıları
+- `app/services/llamaindex_service.py` — indeksleme, hibrit retrieve
+
+Güncellenen dosyalar:
+- `app/core/routes.py` — `POST /projects/<id>/index`, silmede storage temizliği
+- `app/templates/core/project_detail.html` — İndeksle / Yeniden İndeksle butonu
+- `app/templates/base.html` — status badge renkleri
+- `config.py`, `.env.example`, `requirements.txt`
+
+### 3. Bilinen hatalar ve düzeltmeler ✅
+
+| Hata | Sebep | Çözüm |
 |---|---|---|
-| 2.1 | `User` modeli (SQLAlchemy 2.x, werkzeug hash) | ✅ |
-| 2.2 | `Project` modeli (owner ilişkisi, status, source_path) | ✅ |
-| 2.3 | Python 3.9 uyumu (`Optional[str]`) | ✅ |
-| 2.4 | `flask db init` + migrate + upgrade | ✅ |
+| `hashlib.scrypt` yok (kayıt) | Werkzeug 3 varsayılanı scrypt; macOS Python 3.9 LibreSSL desteklemiyor | `user.py`: `method="pbkdf2:sha256"` (hâlâ werkzeug hash) |
+| İndeksleme patlıyor | `.env`'de `openai/text-embedding-3-small` — LlamaIndex enum tanımıyor | `_normalize_embedding_model()` ile `text-embedding-3-small`'a çevir |
+| LlamaIndex import hatası | llama-index 0.14 Python 3.10+ gerektirir | `requirements.txt`: `llama-index>=0.11.23,<0.12.0` |
 
-### Faz 3 — Kimlik Doğrulama ✅
+### 4. Test sonuçları ✅
 
-| # | Adım | Durum |
-|---|---|---|
-| 3.1 | `RegisterForm` / `LoginForm` (Flask-WTF + CSRF) | ✅ |
-| 3.2 | `/auth/register`, `/auth/login`, `/auth/logout` | ✅ |
-| 3.3 | E-posta ile giriş, "Beni hatırla" | ✅ |
-| 3.4 | `user_loader` + Türkçe flash mesajları | ✅ |
-| 3.5 | `base.html` + minimal anasayfa | ✅ |
+- Kayıt/giriş: pbkdf2 düzeltmesi sonrası çalışıyor
+- İndeksleme: 8 dosyalı test projesi → 28 node, `status = indexed`
+- Embedding: OpenRouter API üzerinden 1536 boyutlu vektör döndü
 
-### Faz 4 — Proje Yönetimi ✅
+---
 
-| # | Adım | Durum |
-|---|---|---|
-| 4.1 | Upload altyapısı (`file_helpers.py`, `config.py`) | ✅ |
-| 4.2 | `ProjectForm` (MultipleFileField, çoklu dosya) | ✅ |
-| 4.3 | `/core/projects/new` — proje oluşturma | ✅ |
-| 4.4 | `/core/projects` — proje listesi | ✅ |
-| 4.5 | Proje detay + silme (disk temizliği) | ✅ |
+## Faz 5 — LlamaIndex İndeksleme ✅
 
-**Faz 4 notları:**
-- ZIP zorunluluğu yok; `.py`, `.html`, `.js`, `.zip` vb. tek tek yüklenebilir
-- Varsayılan dosya boyutu limiti yok (`.env` ile opsiyonel `MAX_CONTENT_LENGTH`)
-- Dosya yolu: `uploads/{user_id}/{project_id}/`
+### Akış
 
-### Faz 5 — LlamaIndex İndeksleme ⏳ (planlandı)
+```
+uploads/{user_id}/{project_id}/
+    ↓
+1. Gürültü filtresi (venv, __pycache__, node_modules atla)
+2. ZIP aç → _extracted/{zip_adı}/ (orijinal zip kalır)
+3. Parent-child chunking
+   Parent  → dosya tamamı (max 12000 karakter)
+   Child   → Python: ast ile fonksiyon/sınıf; diğer: 80 satırlık bloklar
+4. Metadata: file_path, symbol_name, start_line, end_line, file_type, chunk_type
+5. VectorStoreIndex  ─┐
+   BM25Retriever     ─┤→ QueryFusionRetriever (reciprocal_rerank)
+6. storage/{user_id}/{project_id}/ persist + contextcraft_meta.json
+7. status = indexed
+```
 
-| # | Adım | Durum |
-|---|---|---|
-| 5.1 | Config + `storage/` + gürültü filtresi + ZIP açma | ⏳ |
-| 5.2 | `llamaindex_service.py` — `build_index()` | ⏳ |
-| 5.3 | Parent-child chunking + metadata zenginleştirme | ⏳ |
-| 5.4 | Hibrit indeks (VectorStore + BM25) | ⏳ |
-| 5.5 | `retrieve(project, prompt)` fonksiyonu | ⏳ |
-| 5.6 | UI: "İndeksle" butonu + status güncelleme | ⏳ |
-| 5.7 | Silme / yeniden indeksleme temizliği | ⏳ |
+### Adım tablosu
 
-**Onaylanan Faz 5 mimari kararları:**
-- ✅ Hibrit retrieval (vektör + BM25)
-- ✅ Parent-child chunking (parent = dosya bağlamı, child = fonksiyon/blok)
-- ✅ Gürültü filtresi (`venv/`, `__pycache__/`, `node_modules/` atlanır)
-- ✅ Metadata: `file_path`, `symbol_name`, satır no, dosya tipi
-- ❌ Onaysız AI/embedding modeli eklenmez
+| # | Adım | Dosya | Durum |
+|---|---|---|---|
+| 5.1 | Gürültü filtresi + ZIP açma + storage yardımcıları | `index_helpers.py` | ✅ |
+| 5.2 | OpenRouter embedding (OpenAIEmbedding + api_base) | `llamaindex_service.py` | ✅ |
+| 5.3 | Parent-child chunking + metadata | `llamaindex_service.py` | ✅ |
+| 5.4 | Hibrit indeks build | `build_project_index()` | ✅ |
+| 5.5 | `retrieve(project, prompt, top_k=10)` | `llamaindex_service.py` | ✅ |
+| 5.6 | UI: İndeksle butonu + status | `routes.py`, `project_detail.html` | ✅ |
+| 5.7 | Silme / yeniden indeksleme storage temizliği | `routes.py`, `index_helpers.py` | ✅ |
 
-**Status değerleri:** `pending` → `indexed` / `failed`
+### Status değerleri
 
-### Faz 6 — Prompt Optimizasyon Motoru ⏳ (ertelendi)
+`pending` → `indexing` → `indexed` / `failed`
+
+### Önemli fonksiyonlar
+
+```python
+# app/services/llamaindex_service.py
+build_project_index(project)  # indeksler, node sayısı döner
+retrieve(project, prompt)     # top 10 aday listesi — Faz 6'da kullanılacak
+IndexBuildError                 # bilinen hatalar (API key yok, dosya yok vb.)
+```
+
+### retrieve() çıktı formatı
+
+```python
+[
+  {
+    "score": 0.85,
+    "text": "...",
+    "file_path": "app/auth/routes.py",
+    "symbol_name": "login",
+    "start_line": 12,
+    "end_line": 28,
+    "file_type": "py",
+    "chunk_type": "child"
+  },
+  ...
+]
+```
+
+---
+
+## Faz 6 — Prompt Optimizasyon Motoru ⏳ (SIRADA)
+
+```
+"Login ekranı kodla"
+    ↓
+retrieve(project, prompt) → top 10 aday  ← backend hazır ✅
+    ↓
+(opsiyonel reranking → top 5)   ← RERANK_ENABLED=false
+    ↓
+DeepSeek V3.1 → detaylı prompt + dosya listesi
+    ↓
+{ optimized_prompt, required_files, explanation }
+```
 
 | # | Adım | Durum |
 |---|---|---|
 | 6.1 | `prompt_optimizer.py` — orkestrasyon | ⏳ |
-| 6.2 | LlamaIndex retrieval → DeepSeek | ⏳ |
+| 6.2 | retrieve → DeepSeek V3.1 | ⏳ |
 | 6.3 | Detaylandırılmış prompt üretme | ⏳ |
 | 6.4 | Gerekli dosya listesi üretme | ⏳ |
 | 6.5 | Çıktı: `{ optimized_prompt, required_files, explanation }` | ⏳ |
-| 6.6 | Opsiyonel reranking (`RERANK_ENABLED=false`) | ⏸ Karar bekliyor |
-| 6.7 | DeepSeek model seçimi | ⏸ **Yeni sohbette karar verilecek** |
+| 6.6 | Opsiyonel reranking | ✅ Karar kilitlendi |
+| 6.7 | DeepSeek V3.1 | ✅ Karar kilitlendi |
 
-### Faz 7 — DeepSeek Altyapısı 🔶
+---
+
+## Faz 7 — DeepSeek Altyapısı ✅
 
 | # | Adım | Durum |
 |---|---|---|
 | 7.1 | `app/services/openrouter.py` — `DeepSeekClient` | ✅ |
 | 7.2 | `config.py` + `.env` OpenRouter ayarları | ✅ |
-| 7.3 | `get_deepseek_client()` factory fonksiyonu | ✅ |
+| 7.3 | `get_deepseek_client()` factory | ✅ |
 | 7.4 | Prompt optimizer'a entegrasyon | ⏳ Faz 6 |
 
-### Faz 8 — Prompt Arayüzü ⏳
+---
+
+## Faz 8 — Prompt Arayüzü ⏳
 
 | # | Adım | Durum |
 |---|---|---|
@@ -158,7 +206,9 @@ Sistem çıktısı:
 
 > Sohbet arayüzü **yapılmayacak**.
 
-### Faz 9 — Arayüz & Teslim ⏳
+---
+
+## Faz 9 — Arayüz & Teslim ⏳
 
 | # | Adım | Durum |
 |---|---|---|
@@ -169,7 +219,7 @@ Sistem çıktısı:
 
 ---
 
-## Sistem Mimarisi (LlamaIndex nerede?)
+## Sistem Mimarisi
 
 ```mermaid
 flowchart TD
@@ -178,7 +228,7 @@ flowchart TD
         A2 --> A3["status = pending"]
     end
 
-    subgraph faz5 ["Faz 5 ⏳ — LlamaIndex İNDEKSLEME"]
+    subgraph faz5 ["Faz 5 ✅ — LlamaIndex İNDEKSLEME"]
         B1[İndeksle butonu] --> B2[Gürültü filtresi + ZIP aç]
         B2 --> B3[Parent-child chunking]
         B3 --> B4[VectorStore + BM25 hibrit indeks]
@@ -187,9 +237,9 @@ flowchart TD
     end
 
     subgraph faz6 ["Faz 6 ⏳ — RETRIEVE + DeepSeek"]
-        C1["Prompt: Login ekranı kodla"] --> C2["LlamaIndex hibrit retrieve"]
+        C1["Prompt: Login ekranı kodla"] --> C2["retrieve() top 10"]
         C2 --> C3["Opsiyonel reranking"]
-        C3 --> C4["DeepSeek: prompt + dosya listesi"]
+        C3 --> C4["DeepSeek V3.1: prompt + dosya listesi"]
         C4 --> C5[Kullanıcı Claude'a gider]
     end
 
@@ -202,9 +252,9 @@ flowchart TD
 | Bileşen | Ne zaman | Ne yapar |
 |---|---|---|
 | **Flask (core)** | Faz 4 | Dosyaları diske kaydeder |
-| **LlamaIndex** | Faz 5 | İndeksler (bir kez) |
-| **LlamaIndex** | Faz 6 | Retrieve — ilgili parçaları getirir (her prompt) |
-| **DeepSeek** | Faz 6 | Parçaları okuyup detaylı prompt + dosya seçimi yazar |
+| **LlamaIndex** | Faz 5 ✅ | İndeksler (bir kez, OpenRouter embedding) |
+| **LlamaIndex** | Faz 6 | `retrieve()` — ilgili parçaları getirir |
+| **DeepSeek V3.1** | Faz 6 | Parçaları okuyup detaylı prompt + dosya seçimi yazar |
 | **Claude/ChatGPT** | Dışarıda | Asıl kodlama |
 
 ---
@@ -214,28 +264,32 @@ flowchart TD
 ```
 ContextCraft/
 ├── app/
-│   ├── auth/                   ✅
+│   ├── auth/                      ✅
 │   ├── core/
-│   │   ├── forms.py            ✅ ProjectForm
-│   │   └── routes.py           ✅ proje CRUD
-│   ├── main/                   ✅
-│   ├── models/                 ✅
+│   │   ├── forms.py               ✅ ProjectForm
+│   │   └── routes.py              ✅ proje CRUD + index route
+│   ├── main/                      ✅
+│   ├── models/
+│   │   ├── user.py                ✅ pbkdf2:sha256 hash
+│   │   └── project.py             ✅
 │   ├── services/
-│   │   ├── openrouter.py       ✅ (Faz 6'da kullanılacak)
-│   │   ├── llamaindex_service.py  ⏳ Faz 5
+│   │   ├── openrouter.py          ✅ DeepSeekClient
+│   │   ├── llamaindex_service.py  ✅ Faz 5
 │   │   └── prompt_optimizer.py    ⏳ Faz 6
 │   ├── templates/core/
-│   │   ├── project_form.html   ✅
-│   │   ├── project_list.html   ✅
-│   │   └── project_detail.html ✅
+│   │   ├── project_form.html      ✅
+│   │   ├── project_list.html      ✅
+│   │   └── project_detail.html    ✅ İndeksle butonu
 │   └── utils/
-│       └── file_helpers.py     ✅
-├── uploads/                    gitignore
-├── storage/                    gitignore — Faz 5 indeks dosyaları
+│       ├── file_helpers.py        ✅
+│       └── index_helpers.py       ✅ Faz 5
+├── uploads/                       gitignore
+├── storage/                       gitignore — indeks dosyaları
 ├── config.py
 ├── cursor.md
-├── .env                        gitignore — API anahtarları burada
-└── .env.example                şablon — repoda kalır
+├── run.py
+├── .env                           gitignore — API anahtarları
+└── .env.example
 ```
 
 ---
@@ -243,21 +297,56 @@ ContextCraft/
 ## Ortam Değişkenleri
 
 ```env
-# Faz 5 — LlamaIndex embedding (SİZ dolduracaksınız)
+# Faz 5 — LlamaIndex embedding (OpenRouter API key)
 LLAMAINDEX_API_KEY=
 LLAMAINDEX_API_BASE=https://openrouter.ai/api/v1
-LLAMAINDEX_EMBEDDING_MODEL=          # ← YENİ SOHBETTE KARAR VERİLECEK
+LLAMAINDEX_EMBEDDING_MODEL=text-embedding-3-small
 
-# Faz 6 — DeepSeek (SİZ dolduracaksınız)
+# Faz 6 — DeepSeek V3.1
 OPENROUTER_API_KEY=
-OPENROUTER_MODEL=                    # ← FAZ 6'DA SEÇİLECEK (örn. deepseek-v3.1)
+OPENROUTER_MODEL=deepseek/deepseek-chat-v3.1
+OPENROUTER_SITE_URL=http://localhost:5000
+OPENROUTER_APP_NAME=ContextCraft
 
 # Opsiyonel
+RERANK_ENABLED=false
 # MAX_CONTENT_LENGTH=
-# RERANK_ENABLED=false               # Faz 6 — henüz eklenmedi
 ```
 
 > `.env` dosyası `.gitignore`'da — **GitHub'a asla gitmez.**
+>
+> **Not:** `.env`'de `openai/text-embedding-3-small` yazılı olsa bile kod otomatik olarak `text-embedding-3-small`'a çevirir (LlamaIndex uyumu).
+
+---
+
+## Uygulamayı Çalıştırma
+
+```bash
+cd ContextCraft
+source venv/bin/activate
+pip install -r requirements.txt        # ilk kurulum
+cp .env.example .env                 # API key'leri doldur
+flask db upgrade                     # ilk kurulum
+python run.py
+```
+
+Tarayıcı: http://127.0.0.1:5000
+
+---
+
+## Mevcut Rotalar
+
+| URL | Method | Açıklama |
+|---|---|---|
+| `/` | GET | Anasayfa |
+| `/auth/register` | GET/POST | Kayıt ol |
+| `/auth/login` | GET/POST | Giriş yap |
+| `/auth/logout` | GET | Çıkış yap |
+| `/core/projects` | GET | Proje listesi |
+| `/core/projects/new` | GET/POST | Yeni proje |
+| `/core/projects/<id>` | GET | Proje detay |
+| `/core/projects/<id>/index` | POST | İndeksle / yeniden indeksle |
+| `/core/projects/<id>/delete` | POST | Proje sil |
 
 ---
 
@@ -265,16 +354,20 @@ OPENROUTER_MODEL=                    # ← FAZ 6'DA SEÇİLECEK (örn. deepseek-
 
 ### Python sürümü
 - Hedef: **Python 3.9** — `str | None` kullanma, `Optional[str]` kullan
+- LlamaIndex: **0.11.x** kullan (0.14 Python 3.9'da çalışmaz)
 
 ### Mimari
 - LlamaIndex → `llamaindex_service.py`
 - DeepSeek → `openrouter.py`
-- Orkestrasyon → `prompt_optimizer.py`
+- Orkestrasyon → `prompt_optimizer.py` (Faz 6)
+- İndeks yardımcıları → `index_helpers.py`
 - **Onaysız AI/model/embedding ekleme**
+- **Yerel model indirme yok** — tüm AI OpenRouter API
 
 ### Güvenlik
 - API anahtarları yalnızca `.env`'de
 - `secure_filename`, path traversal koruması, CSRF aktif
+- Şifre hash: `werkzeug.security.generate_password_hash(method="pbkdf2:sha256")`
 
 ### İş akışı
 - Büyük değişikliklerde önce **plan göster**, onay al, sonra kod yaz
@@ -282,26 +375,37 @@ OPENROUTER_MODEL=                    # ← FAZ 6'DA SEÇİLECEK (örn. deepseek-
 
 ---
 
-## Mevcut Rotalar
+## Bağımlılıklar (requirements.txt özeti)
 
-| URL | Blueprint | Açıklama |
-|---|---|---|
-| `/` | main | Anasayfa |
-| `/auth/register` | auth | Kayıt ol |
-| `/auth/login` | auth | Giriş yap |
-| `/auth/logout` | auth | Çıkış yap |
-| `/core/projects` | core | Proje listesi |
-| `/core/projects/new` | core | Yeni proje |
-| `/core/projects/<id>` | core | Proje detay |
-| `/core/projects/<id>/delete` | core | Proje sil (POST) |
+```
+flask>=3.0,<4.0
+llama-index>=0.11.23,<0.12.0          # Python 3.9 uyumu
+llama-index-embeddings-openai>=0.2,<0.3
+llama-index-retrievers-bm25>=0.4,<0.5
+rank-bm25>=0.2.2,<0.3
+openai>=1.0,<2.0
+werkzeug>=3.0,<4.0
+```
 
 ---
 
 ## Yeni Sohbet İçin Başlangıç Promptu
 
 ```
-ContextCraft projesinde Faz 5'e devam ediyorum.
+ContextCraft projesinde Faz 6 + Faz 8'e devam ediyorum.
 cursor.md dosyasını oku.
-Embedding modeli ve DeepSeek modeli henüz seçilmedi — onaysız ekleme.
-Faz 5.1'i planla ve onay bekle.
+
+Durum:
+- Faz 5 (LlamaIndex indeksleme) tamamlandı ve test edildi.
+- retrieve() backend'de hazır.
+- Prompt arayüzü ve prompt_optimizer.py henüz yok.
+
+Hedef:
+- Faz 6: prompt_optimizer.py — retrieve → DeepSeek V3.1 → { optimized_prompt, required_files, explanation }
+- Faz 8: proje detay sayfasına prompt formu + sonuç ekranı
+
+Kısıtlar:
+- Yerel AI modeli indirme yok, OpenRouter API kullan.
+- Python 3.9, onaysız model ekleme.
+- Önce plan göster, onay al, sonra kodla.
 ```

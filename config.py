@@ -29,15 +29,24 @@ class Config:
         "LLAMAINDEX_API_BASE", "https://openrouter.ai/api/v1"
     )
     LLAMAINDEX_EMBEDDING_MODEL = os.environ.get(
-        "LLAMAINDEX_EMBEDDING_MODEL", "openai/text-embedding-3-small"
+        "LLAMAINDEX_EMBEDDING_MODEL", "text-embedding-3-small"
     )
     STORAGE_FOLDER = str(BASE_DIR / "storage")
 
     # OpenRouter / DeepSeek AI (Faz 6 — prompt optimizasyonu)
     OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-    OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL", "deepseek/deepseek-chat")
+    OPENROUTER_MODEL = os.environ.get(
+        "OPENROUTER_MODEL", "deepseek/deepseek-chat-v3.1"
+    )
     OPENROUTER_SITE_URL = os.environ.get("OPENROUTER_SITE_URL", "http://localhost:5000")
     OPENROUTER_APP_NAME = os.environ.get("OPENROUTER_APP_NAME", "ContextCraft")
+
+    # Faz 6 — opsiyonel reranking (varsayılan kapalı)
+    RERANK_ENABLED = os.environ.get("RERANK_ENABLED", "false").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
 
 
 class DevelopmentConfig(Config):

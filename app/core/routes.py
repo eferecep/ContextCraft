@@ -3,7 +3,8 @@ from flask_login import current_user, login_required
 
 from app.extensions import db
 from app.models import Project
-from app.utils import delete_project_files, list_project_files, save_uploaded_file
+from app.services.llamaindex_service import IndexBuildError, build_project_index
+from app.utils import delete_project_files, delete_storage_dir, list_project_files, save_uploaded_file
 
 from . import core_bp
 from .forms import ProjectForm
@@ -82,6 +83,44 @@ def project_detail(project_id):
     )
 
 
+@core_bp.route("/projects/<int:project_id>/index", methods=["POST"])
+@login_required
+def project_index(project_id):
+    project = _get_user_project(project_id)
+
+    if not project.source_path:
+        flash("İndekslenecek dosya bulunamadı.", "danger")
+        return redirect(url_for("core.project_detail", project_id=project.id))
+
+    if project.status == "indexing":
+        flash("İndeksleme zaten devam ediyor.", "info")
+        return redirect(url_for("core.project_detail", project_id=project.id))
+
+    project.status = "indexing"
+    db.session.commit()
+
+    try:
+        node_count = build_project_index(project)
+        project.status = "indexed"
+        db.session.commit()
+        flash(
+            f"'{project.name}' indekslendi ({node_count} parça).",
+            "success",
+        )
+    except IndexBuildError as exc:
+        db.session.rollback()
+        project.status = "failed"
+        db.session.commit()
+        flash(str(exc), "danger")
+    except Exception as exc:
+        db.session.rollback()
+        project.status = "failed"
+        db.session.commit()
+        flash(f"İndeksleme hatası: {exc}", "danger")
+
+    return redirect(url_for("core.project_detail", project_id=project.id))
+
+
 @core_bp.route("/projects/<int:project_id>/delete", methods=["POST"])
 @login_required
 def project_delete(project_id):
@@ -90,6 +129,8 @@ def project_delete(project_id):
 
     if project.source_path:
         delete_project_files(project.source_path)
+
+    delete_storage_dir(project.owner_id, project.id)
 
     db.session.delete(project)
     db.session.commit()

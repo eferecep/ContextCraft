@@ -8,7 +8,9 @@
 
     <dl class="detail-list">
         <dt>Durum</dt>
-        <dd><span class="badge">{{ project.status }}</span></dd>
+        <dd>
+            <span class="badge badge-{{ project.status }}">{{ project.status }}</span>
+        </dd>
 
         <dt>Açıklama</dt>
         <dd>{{ project.description or "—" }}</dd>
@@ -33,6 +35,16 @@
 
     <div class="actions">
         <a href="{{ url_for('core.project_list') }}" class="btn btn-secondary">← Proje listesi</a>
+
+        {% if files and project.status != "indexing" %}
+            <form method="POST"
+                  action="{{ url_for('core.project_index', project_id=project.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn">
+                    {% if project.status == "indexed" %}Yeniden İndeksle{% else %}İndeksle{% endif %}
+                </button>
+            </form>
+        {% endif %}
 
         <form method="POST"
               action="{{ url_for('core.project_delete', project_id=project.id) }}"

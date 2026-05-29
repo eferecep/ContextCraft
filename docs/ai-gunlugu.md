@@ -54,7 +54,7 @@ Projenin "Faz 4" aşamasına geçerek, çoklu dosya yükleme altyapısını kurm
 ### Kullandığım Mod ve Model
 
 Mod: Plan (Cursor Composer)  
-Model: [Kullandığın Modeli Yaz, örn: Claude 3.5 Sonnet]  
+Model: Claude 3.5 Sonnet
 Görünüm: Manager / Composer Modu  
 
 ### Verdiğim Promptlar
@@ -99,9 +99,7 @@ Sistem akışında LlamaIndex'in tam olarak nerede ve nasıl çalışacağını 
 ### Kullandığım Mod ve Model
 
 Mod: Plan (Cursor Composer)
-
 Model: Claude 3.5 Sonnet
-
 Görünüm: Manager / Composer Modu
 
 ### Verdiğim Promptlar
@@ -135,3 +133,46 @@ Yapay zeka asistanlarının süreci hızlandırmak adına bazen "gereğinden faz
 ### Sonraki Oturum İçin Notlar
 
 API anahtarlarımı `.env` dosyasına yerleştireceğim. Hangi embedding modelini (OpenRouter vb.) kullanacağıma karar verip, Faz 5'in (LlamaIndex indeksleme ve storage altyapısı) ilk adımı olan Adım 5.1'e onay vereceğim.
+
+## Oturum 4 - 27 Mayıs 2026 17:00-17:45
+
+### Hedef
+
+LlamaIndex'in indeksleme kalitesini artırarak Faz 6'da çalışacak DeepSeek modelinin daha doğru dosyaları seçmesini ve token israfını önleyecek daha iyi promptlar üretmesini sağlamak. Gelişmiş indeksleme stratejilerini koda dökmeden önce mimari olarak planlamak.
+
+### Kullandığım Mod ve Model
+
+Mod: Plan (Cursor Composer)
+Model: Claude 3.5 Sonnet
+Görünüm: Manager / Composer Modu
+
+### Verdiğim Promptlar
+
+1. "llamindexin daha iyi indeksleyip ai'yında daha iyi karar verebilmesi için llamindexi nasıl daha iyi hale getirebiliriz? bunu konuşalım öncelikle daha sonra adımlara geçeriz. Ne kadar iyi detaylı indekslenirse o kadar iyi ai karar verir."
+
+### Ajanın Önerdiği Plan
+
+Ajan doğrudan kod yazmaya geçmek yerine, indeksleme performansını artıracak 6 ana eksen sundu: 1) Doğru dosyaları indeksleme (gürültü filtresi), 2) Akıllı parçalama (CodeSplitter vb.), 3) Zengin metadata ekleme, 4) Hibrit arama (Vektör + BM25), 5) Dosya bazlı özet indeksi, 6) Reranking. Bu stratejilerin etki ve zorluk derecelerini tablo halinde sunarak hangilerini Faz 5'e dahil etmek istediğimi sordu.
+
+*[Buraya Ajanın sunduğu 6 maddelik iyileştirme tablosunun ekran görüntüsünü ekle: docs/img/oturum-4-llamaindex-plan.png]*
+
+### Plan'da Sorguladıklarım
+
+[cite_start]Ajanın doğrudan kod yazmaya başlamak yerine benimle opsiyonları tartışması ve onay beklemesi, baştan kurduğum katı kuralların işe yaradığını gösterdi[cite: 22, 100]. LlamaIndex'in tüm dosyaları körü körüne indekslemesinin (özellikle `venv/`, `__pycache__/` gibi klasörlerin) token israfına yol açacağı tespitini kesinlikle onayladım. Kapsam ve API maliyeti dengesini kurmak adına; Gürültü filtresi, CodeSplitter, Zengin Metadata ve Hibrit arama (Vektör + BM25) özelliklerinin Faz 5'e dahil edilmesini mantıklı buldum. Ancak maliyetli ve zorlayıcı olabilecek "Reranking" ve "Dosya bazlı özet indeksi" adımlarını şimdilik dışarıda bırakmaya karar verdim.
+
+### Üretilen Kodda Düzelttiklerim
+
+- Henüz kod üretilmedi. Bu oturum tamamen [cite_start]"önce kavra, sonra üret"[cite: 82] prensibi doğrultusunda LlamaIndex mimarisinin kavramsal tasarımı ve sınırlarının belirlenmesi üzerineydi.
+
+### Karşılaştığım Hatalar ve Çözümler
+
+- **Hata:** Herhangi bir teknik hata ile karşılaşılmadı.
+- **Çözüm:** Uygulanamaz.
+
+### Bu Oturumdan Öğrendiğim
+
+[cite_start]"Vibe coding"in sadece bir yapay zekaya kod yazdırmak olmadığını; geliştiricinin, ajanın sunduğu mimari seçenekleri teknik ve maliyet açısından tartıp karar veren bir "mimar" rolünde olması gerektiğini tam olarak deneyimledim[cite: 13, 17]. LlamaIndex'in ham metinleri düz bir şekilde parçalamasının kod projelerinde yetersiz kalacağını, `CodeSplitter` gibi dosya tipine duyarlı parçalama (chunking) yöntemlerinin ve "symbol_name" gibi zengin metadataların AI'ın isabet oranını doğrudan etkilediğini öğrendim. 
+
+### Sonraki Oturum İçin Notlar
+
+Ajana; Gürültü filtresi, dosya tipine özel chunking, zengin metadata ve Hibrit retrieval adımlarını Faz 5 planına sabitlediğimi belirteceğim. Bu onay doğrultusunda Adım 5.1'in kodlama sürecini başlatacağım.
