@@ -7,8 +7,14 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
 
+def _env(key: str, default: str = "") -> str:
+    """Ortam değişkenini okur; baştaki/sondaki boşluk ve tırnakları temizler."""
+    value = os.environ.get(key, default)
+    return value.strip().strip('"').strip("'")
+
+
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-fallback-secret-key")
+    SECRET_KEY = _env("SECRET_KEY", "dev-fallback-secret-key")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URL", f"sqlite:///{BASE_DIR / 'contextcraft.db'}"
@@ -23,23 +29,21 @@ class Config:
     }
     ALLOWED_EXTENSIONLESS = {"dockerfile", "makefile", "readme", "license"}
 
-    # LlamaIndex indeksleme (Faz 5) — anahtarı .env dosyasına siz yazacaksınız
-    LLAMAINDEX_API_KEY = os.environ.get("LLAMAINDEX_API_KEY", "")
-    LLAMAINDEX_API_BASE = os.environ.get(
+    # LlamaIndex indeksleme (Faz 5) — OpenRouter anahtarı ile aynı olabilir
+    OPENROUTER_API_KEY = _env("OPENROUTER_API_KEY")
+    LLAMAINDEX_API_KEY = _env("LLAMAINDEX_API_KEY") or OPENROUTER_API_KEY
+    LLAMAINDEX_API_BASE = _env(
         "LLAMAINDEX_API_BASE", "https://openrouter.ai/api/v1"
     )
-    LLAMAINDEX_EMBEDDING_MODEL = os.environ.get(
+    LLAMAINDEX_EMBEDDING_MODEL = _env(
         "LLAMAINDEX_EMBEDDING_MODEL", "text-embedding-3-small"
     )
     STORAGE_FOLDER = str(BASE_DIR / "storage")
 
     # OpenRouter / DeepSeek AI (Faz 6 — prompt optimizasyonu)
-    OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-    OPENROUTER_MODEL = os.environ.get(
-        "OPENROUTER_MODEL", "deepseek/deepseek-chat-v3.1"
-    )
-    OPENROUTER_SITE_URL = os.environ.get("OPENROUTER_SITE_URL", "http://localhost:5000")
-    OPENROUTER_APP_NAME = os.environ.get("OPENROUTER_APP_NAME", "ContextCraft")
+    OPENROUTER_MODEL = _env("OPENROUTER_MODEL", "deepseek/deepseek-chat-v3.1")
+    OPENROUTER_SITE_URL = _env("OPENROUTER_SITE_URL", "http://localhost:5000")
+    OPENROUTER_APP_NAME = _env("OPENROUTER_APP_NAME", "ContextCraft")
 
     # Faz 6 — opsiyonel reranking (varsayılan kapalı)
     RERANK_ENABLED = os.environ.get("RERANK_ENABLED", "false").lower() in (

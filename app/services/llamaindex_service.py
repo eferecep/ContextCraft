@@ -21,7 +21,10 @@ from app.utils.index_helpers import (
     read_project_file,
 )
 
-RETRIEVE_TOP_K = 10
+RETRIEVE_TOP_K = 8
+RETRIEVE_CANDIDATE_K = 24
+RETRIEVE_MAX_FILES = 4
+RETRIEVE_MAX_CHUNKS_PER_FILE = 2
 CHILD_CHUNK_LINES = 80
 MAX_PARENT_CHARS = 12000
 
@@ -38,6 +41,18 @@ def _normalize_embedding_model(model: str) -> str:
     if model.startswith("openai/"):
         return model.split("/", 1)[1]
     return model
+
+
+def _embedding_api_error(exc: Exception) -> IndexBuildError:
+    message = str(exc)
+    lowered = message.lower()
+    if "401" in message or "user not found" in lowered or "invalid api key" in lowered:
+        return IndexBuildError(
+            "Embedding API anahtarı geçersiz (LLAMAINDEX_API_KEY). "
+            "OpenRouter anahtarınızı https://openrouter.ai/keys adresinden kontrol edin. "
+            "İndeksleme ve prompt için aynı OpenRouter anahtarı kullanılabilir."
+        )
+    return IndexBuildError(f"Arama hatası: {message}")
 
 
 def _get_embed_model() -> OpenAIEmbedding:
@@ -266,33 +281,78 @@ def _load_project_index(project: Project) -> VectorStoreIndex:
     return load_index_from_storage(storage_context, embed_model=embed_model)
 
 
+def _limit_retrieve_diversity(
+    results: List[NodeWithScore],
+    max_files: int = RETRIEVE_MAX_FILES,
+    max_chunks_per_file: int = RETRIEVE_MAX_CHUNKS_PER_FILE,
+    top_k: int = RETRIEVE_TOP_K,
+) -> List[NodeWithScore]:
+    """
+    Aynı dosyadan gelen parçaları sınırlar; en alakalı birkaç dosyadan
+    çeşitli parçalar döndürür (tek dosyanın tüm projeyi doldurmasını önler).
+    """
+    by_file: Dict[str, List[NodeWithScore]] = {}
+    for item in results:
+        metadata = dict(item.node.metadata or {})
+        file_path = metadata.get("file_path", "")
+        if not file_path:
+            continue
+        by_file.setdefault(file_path, []).append(item)
+
+    if not by_file:
+        return results[:top_k]
+
+    def _best_score(file_items: List[NodeWithScore]) -> float:
+        return max(float(item.score or 0.0) for item in file_items)
+
+    def _sort_file_items(file_items: List[NodeWithScore]) -> List[NodeWithScore]:
+        child_items = [
+            item
+            for item in file_items
+            if dict(item.node.metadata or {}).get("chunk_type") == "child"
+        ]
+        candidates = child_items or file_items
+        return sorted(candidates, key=lambda item: float(item.score or 0.0), reverse=True)
+
+    ranked_files = sorted(by_file.items(), key=lambda pair: _best_score(pair[1]), reverse=True)
+    selected: List[NodeWithScore] = []
+    for _, file_items in ranked_files[:max_files]:
+        selected.extend(_sort_file_items(file_items)[:max_chunks_per_file])
+
+    selected.sort(key=lambda item: float(item.score or 0.0), reverse=True)
+    return selected[:top_k]
+
+
+def _node_result_to_dict(item: NodeWithScore) -> Dict[str, Any]:
+    metadata = dict(item.node.metadata or {})
+    return {
+        "score": float(item.score or 0.0),
+        "text": item.node.get_content(),
+        "file_path": metadata.get("file_path", ""),
+        "symbol_name": metadata.get("symbol_name", ""),
+        "start_line": metadata.get("start_line"),
+        "end_line": metadata.get("end_line"),
+        "file_type": metadata.get("file_type", ""),
+        "chunk_type": metadata.get("chunk_type", ""),
+    }
+
+
 def retrieve(project: Project, prompt: str, top_k: int = RETRIEVE_TOP_K) -> List[Dict[str, Any]]:
     """
-    Hibrit retrieve — vektör + BM25, top_k aday döndürür.
+    Hibrit retrieve — vektör + BM25, en alakalı birkaç dosyadan sınırlı parça döndürür.
     Faz 6'da DeepSeek'e gidecek aday parçalar.
     """
     if not prompt.strip():
         raise IndexBuildError("Sorgu metni boş olamaz.")
 
     index = _load_project_index(project)
-    retriever = _get_hybrid_retriever(index, top_k=top_k)
+    candidate_k = max(top_k, RETRIEVE_CANDIDATE_K)
+    retriever = _get_hybrid_retriever(index, top_k=candidate_k)
 
-    results: List[NodeWithScore] = retriever.retrieve(prompt)
-    output: List[Dict[str, Any]] = []
+    try:
+        results: List[NodeWithScore] = retriever.retrieve(prompt)
+    except Exception as exc:
+        raise _embedding_api_error(exc) from exc
 
-    for item in results[:top_k]:
-        metadata = dict(item.node.metadata or {})
-        output.append(
-            {
-                "score": float(item.score or 0.0),
-                "text": item.node.get_content(),
-                "file_path": metadata.get("file_path", ""),
-                "symbol_name": metadata.get("symbol_name", ""),
-                "start_line": metadata.get("start_line"),
-                "end_line": metadata.get("end_line"),
-                "file_type": metadata.get("file_type", ""),
-                "chunk_type": metadata.get("chunk_type", ""),
-            }
-        )
-
-    return output
+    diverse_results = _limit_retrieve_diversity(results, top_k=top_k)
+    return [_node_result_to_dict(item) for item in diverse_results]

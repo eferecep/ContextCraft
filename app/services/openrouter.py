@@ -74,6 +74,12 @@ class DeepSeekClient:
                 data = json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
             error_body = exc.read().decode("utf-8", errors="replace")
+            if exc.code == 401:
+                raise OpenRouterError(
+                    "OpenRouter API anahtarı geçersiz (401). "
+                    "OPENROUTER_API_KEY değerini https://openrouter.ai/keys "
+                    "adresinden kontrol edin."
+                ) from exc
             raise OpenRouterError(
                 f"OpenRouter HTTP {exc.code}: {error_body}"
             ) from exc
