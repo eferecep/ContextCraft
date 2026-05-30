@@ -55,6 +55,12 @@
 
         {% if result %}
             <div class="result-section">
+                <p class="result-stats">
+                    {{ result.retrieved_count }} kod parçası incelendi ·
+                    {{ result.total_files }} dosyadan
+                    {{ result.required_files|length }} tanesi yeterli
+                </p>
+
                 <h2 class="section-title">Detaylandırılmış Prompt</h2>
                 <p class="hint">Bu metni Claude veya ChatGPT'ye yapıştırın.</p>
                 <textarea id="optimized-prompt-output"

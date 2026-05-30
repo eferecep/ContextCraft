@@ -6,6 +6,7 @@ from flask import current_app
 from app.models import Project
 from app.services.llamaindex_service import IndexBuildError, retrieve
 from app.services.openrouter import OpenRouterError, get_deepseek_client
+from app.utils import list_project_files
 
 DEEPSEEK_TEMPERATURE = 0.3
 DEEPSEEK_MAX_TOKENS = 2048
@@ -247,7 +248,7 @@ def optimize_prompt(project: Project, user_prompt: str) -> Dict[str, Any]:
     Adım 6.1: ön kontroller.
     Adım 6.2: retrieve → bağlam metni.
     Adım 6.3: DeepSeek API çağrısı.
-    Adım 6.4: yanıt parse → { optimized_prompt, required_files, explanation }
+    Adım 6.4: yanıt parse → { optimized_prompt, required_files, explanation, ... }
     """
     prompt = _validate_prompt(user_prompt)
     _validate_project_indexed(project)
@@ -255,4 +256,7 @@ def optimize_prompt(project: Project, user_prompt: str) -> Dict[str, Any]:
 
     chunks, context_text = _retrieve_context(project, prompt)
     raw_response = _call_deepseek(prompt, context_text)
-    return _parse_deepseek_response(raw_response, chunks)
+    result = _parse_deepseek_response(raw_response, chunks)
+    result["retrieved_count"] = len(chunks)
+    result["total_files"] = len(list_project_files(project.source_path or ""))
+    return result

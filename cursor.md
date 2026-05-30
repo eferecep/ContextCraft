@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 6 backend tamamlandı — sırada Faz 8 (arayüz)**
+**Faz 8 tamamlandı — sırada Faz 9 (UI & teslim)**
 
 | Bölüm | Durum |
 |---|---|
@@ -44,7 +44,7 @@ Sistem çıktısı:
 | Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
-| Faz 8: Prompt arayüzü | ⏳ Adım 8.1–8.3 tamamlandı |
+| Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
 **Kullanıcı şu an ne yapabilir?**
@@ -55,7 +55,7 @@ Sistem çıktısı:
 - Prompt yazma (form) ✅
 - Detaylandırılmış prompt + kopyala ✅ (Adım 8.2)
 - Gerekli dosya listesi + açıklama ✅ (Adım 8.3)
-- Token tasarrufu bilgisi ❌ (Adım 8.4)
+- Token tasarrufu bilgisi ✅ (Adım 8.4)
 
 ---
 
@@ -143,6 +143,11 @@ Güncellenen dosyalar:
 - `result.required_files` — monospace dosya listesi
 - Boş liste → "Dosya önerisi üretilemedi"
 - `result.explanation` — Türkçe açıklama paragrafı
+
+### 12. Adım 8.4 — Token tasarrufu bilgisi ✅
+
+- `optimize_prompt()` çıktısına `retrieved_count` ve `total_files` eklendi
+- UI: *"10 kod parçası incelendi · 8 dosyadan 2 tanesi yeterli"*
 
 ---
 
@@ -247,14 +252,14 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 ---
 
-## Faz 8 — Prompt Arayüzü ⏳
+## Faz 8 — Prompt Arayüzü ✅
 
 | # | Adım | Durum |
 |---|---|---|
 | 8.1 | Proje detayında prompt giriş formu | ✅ |
 | 8.2 | Sonuç ekranı: detaylandırılmış prompt (kopyala) | ✅ |
 | 8.3 | Gerekli dosya listesi + açıklama | ✅ |
-| 8.4 | Token tasarrufu bilgisi | ⏳ |
+| 8.4 | Token tasarrufu bilgisi | ✅ |
 
 > Sohbet arayüzü **yapılmayacak**.
 
