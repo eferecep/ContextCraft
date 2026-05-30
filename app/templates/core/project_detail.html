@@ -5,121 +5,139 @@
 {% block title %}{{ project.name }} — ContextCraft{% endblock %}
 
 {% block content %}
-<div class="card">
-    <h1>{{ project.name }}</h1>
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-2 mb-3">
+            <h1 class="h4 mb-0">{{ project.name }}</h1>
+            <span class="badge badge-{{ project.status }} fs-6">{{ project.status }}</span>
+        </div>
 
-    <dl class="detail-list">
-        <dt>Durum</dt>
-        <dd>
-            <span class="badge badge-{{ project.status }}">{{ project.status }}</span>
-        </dd>
+        <dl class="row mb-0 small">
+            <dt class="col-sm-3 text-muted">Açıklama</dt>
+            <dd class="col-sm-9">{{ project.description or "—" }}</dd>
 
-        <dt>Açıklama</dt>
-        <dd>{{ project.description or "—" }}</dd>
+            <dt class="col-sm-3 text-muted">Oluşturulma</dt>
+            <dd class="col-sm-9">{{ project.created_at.strftime("%d.%m.%Y %H:%M") }}</dd>
 
-        <dt>Oluşturulma</dt>
-        <dd>{{ project.created_at.strftime("%d.%m.%Y %H:%M") }}</dd>
+            <dt class="col-sm-3 text-muted">Dosya sayısı</dt>
+            <dd class="col-sm-9">{{ files|length }}</dd>
+        </dl>
+    </div>
+</div>
 
-        <dt>Dosya sayısı</dt>
-        <dd>{{ files|length }}</dd>
-    </dl>
-
-    {% if files %}
-        <h2 class="section-title">Yüklenen Dosyalar</h2>
-        <ul class="file-list">
+{% if files %}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold">Yüklenen Dosyalar</div>
+        <ul class="list-group list-group-flush cc-file-list">
             {% for file in files %}
-                <li>{{ file }}</li>
+                <li class="list-group-item">{{ file }}</li>
             {% endfor %}
         </ul>
-    {% else %}
-        <p class="hint">Bu projede henüz dosya bulunmuyor.</p>
-    {% endif %}
+    </div>
+{% else %}
+    <div class="alert alert-secondary">Bu projede henüz dosya bulunmuyor.</div>
+{% endif %}
 
-    {% if project.status == "indexed" and prompt_form %}
-        <h2 class="section-title">Prompt Oluştur</h2>
-        <p class="hint">
-            Kısa bir istek yazın; sistem bunu detaylandırılmış prompt ve gerekli dosya listesine çevirir.
-        </p>
-        <form method="POST"
-              action="{{ url_for('core.project_optimize', project_id=project.id) }}">
-            {{ prompt_form.hidden_tag() }}
-            <div class="form-group">
-                {{ prompt_form.prompt.label }}
-                {{ prompt_form.prompt(rows=4, placeholder="Örn: Login ekranı kodla") }}
-                {% for error in prompt_form.prompt.errors %}
-                    <div class="error">{{ error }}</div>
-                {% endfor %}
-            </div>
-            {{ prompt_form.submit(class="btn") }}
-        </form>
+{% if project.status == "indexed" and prompt_form %}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h2 class="h5 mb-2">Prompt Oluştur</h2>
+            <p class="text-muted small mb-3">
+                Kısa bir istek yazın; sistem bunu detaylandırılmış prompt ve gerekli dosya listesine çevirir.
+            </p>
+            <form method="POST"
+                  action="{{ url_for('core.project_optimize', project_id=project.id) }}">
+                {{ prompt_form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ prompt_form.prompt.label(class="form-label") }}
+                    {{ prompt_form.prompt(
+                        class="form-control" + (" is-invalid" if prompt_form.prompt.errors else ""),
+                        rows=4,
+                        placeholder="Örn: Login ekranı kodla"
+                    ) }}
+                    {% for error in prompt_form.prompt.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {{ prompt_form.submit(class="btn btn-primary") }}
+            </form>
+        </div>
+    </div>
 
-        {% if result %}
-            <div class="result-section">
-                <p class="result-stats">
+    {% if result %}
+        <div class="card border-0 shadow-sm mb-4 border-start border-4 border-info">
+            <div class="card-body p-4">
+                <div class="alert alert-info cc-result-stats py-2 mb-4">
                     {{ result.retrieved_count }} kod parçası incelendi ·
                     {{ result.total_files }} dosyadan
                     {{ result.required_files|length }} tanesi yeterli
-                </p>
+                </div>
 
-                <h2 class="section-title">Detaylandırılmış Prompt</h2>
-                <p class="hint">Bu metni Claude veya ChatGPT'ye yapıştırın.</p>
+                <h2 class="h5">Detaylandırılmış Prompt</h2>
+                <p class="text-muted small">Bu metni Claude veya ChatGPT'ye yapıştırın.</p>
                 <textarea id="optimized-prompt-output"
-                          class="result-output"
+                          class="form-control cc-result-output mb-2"
                           readonly
                           rows="12">{{ result.optimized_prompt }}</textarea>
-                <div class="copy-row">
+                <div class="d-flex align-items-center gap-2 mb-4">
                     <button type="button"
-                            class="btn btn-copy"
+                            class="btn btn-success btn-sm"
                             id="copy-prompt-btn"
                             data-target="optimized-prompt-output">
                         Kopyala
                     </button>
-                    <span class="copy-feedback" id="copy-feedback" hidden>Kopyalandı!</span>
+                    <span class="text-success small fw-semibold" id="copy-feedback" hidden>Kopyalandı!</span>
                 </div>
 
-                <h3 class="subsection-title">Gerekli Dosyalar</h3>
+                <h3 class="h6">Gerekli Dosyalar</h3>
                 {% if result.required_files %}
-                    <ul class="file-list">
+                    <ul class="list-group list-group-flush cc-file-list mb-4">
                         {% for file_path in result.required_files %}
-                            <li>{{ file_path }}</li>
+                            <li class="list-group-item px-0">{{ file_path }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p class="hint">Dosya önerisi üretilemedi.</p>
+                    <p class="text-muted small mb-4">Dosya önerisi üretilemedi.</p>
                 {% endif %}
 
-                <h3 class="subsection-title">Açıklama</h3>
+                <h3 class="h6">Açıklama</h3>
                 {% if result.explanation %}
-                    <p class="result-explanation">{{ result.explanation }}</p>
+                    <p class="mb-0">{{ result.explanation }}</p>
                 {% else %}
-                    <p class="hint">Açıklama üretilemedi.</p>
+                    <p class="text-muted small mb-0">Açıklama üretilemedi.</p>
                 {% endif %}
             </div>
-        {% endif %}
-    {% elif project.status in ("pending", "failed") and files %}
-        <p class="hint">Prompt oluşturmak için önce projeyi indeksleyin.</p>
+        </div>
+    {% endif %}
+{% elif project.status in ("pending", "failed") and files %}
+    <div class="alert alert-warning">
+        Prompt oluşturmak için önce projeyi indeksleyin.
+    </div>
+{% endif %}
+
+<div class="d-flex flex-wrap gap-2 cc-actions">
+    <a href="{{ url_for('core.project_list') }}" class="btn btn-outline-secondary">
+        ← Proje listesi
+    </a>
+
+    {% if files and project.status != "indexing" %}
+        <form method="POST"
+              action="{{ url_for('core.project_index', project_id=project.id) }}"
+              class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-primary">
+                {% if project.status == "indexed" %}Yeniden İndeksle{% else %}İndeksle{% endif %}
+            </button>
+        </form>
     {% endif %}
 
-    <div class="actions">
-        <a href="{{ url_for('core.project_list') }}" class="btn btn-secondary">← Proje listesi</a>
-
-        {% if files and project.status != "indexing" %}
-            <form method="POST"
-                  action="{{ url_for('core.project_index', project_id=project.id) }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn">
-                    {% if project.status == "indexed" %}Yeniden İndeksle{% else %}İndeksle{% endif %}
-                </button>
-            </form>
-        {% endif %}
-
-        <form method="POST"
-              action="{{ url_for('core.project_delete', project_id=project.id) }}"
-              onsubmit="return confirm('Bu projeyi silmek istediğinize emin misiniz?');">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="btn btn-danger">Projeyi Sil</button>
-        </form>
-    </div>
+    <form method="POST"
+          action="{{ url_for('core.project_delete', project_id=project.id) }}"
+          class="d-inline"
+          onsubmit="return confirm('Bu projeyi silmek istediğinize emin misiniz?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-outline-danger">Projeyi Sil</button>
+    </form>
 </div>
 {% endblock %}
 
