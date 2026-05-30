@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.3 ✅, 9.4 ✅, sıradaki: **9.5** |
+| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.4 ✅, 9.5 ✅, sıradaki: **9.6** |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -324,7 +324,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 5 | Flask-Migrate migration | ✅ | 9.3 (PromptLog migration) |
 | 6 | Flask-Login, hash'li şifre | ✅ | — |
 | 7 | **404 / 500** özel sayfalar | ✅ | — |
-| 8 | Liste sayfalarında **pagination** | ❌ | **9.5** |
+| 8 | Liste sayfalarında **pagination** | ✅ | — |
 | 9 | **Bootstrap** + mobil uyum | ✅ 9.1 + 9.2 | — |
 | 10 | Deploy veya Docker | ❌ | **9.7** |
 
@@ -345,8 +345,8 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 9.2 | Responsive dashboard | Responsive UI | #9 tam + UI/UX 5p | ✅ | ✅ |
 | 9.3 | Üçüncü model (`PromptLog`) | 3. model | #4 | ✅ | ✅ |
 | 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ✅ | ✅ |
-| 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ⏳ **sıradaki** | onay sonrası |
-| 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ⏳ | onay sonrası |
+| 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ✅ | ✅ |
+| 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ⏳ **sıradaki** | onay sonrası |
 | 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ | onay sonrası |
 | 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ | onay sonrası |
 
@@ -422,21 +422,22 @@ User 1──N Project 1──N PromptLog
 
 ---
 
-### 9.5 — Pagination ⏳ **← SIRADAKİ ADIM**
+### 9.5 — Pagination ✅
 
-**Hoca:** #8 — liste sayfalarında pagination (PDF Prompt 6: sayfa başı 10)
+**Hoca:** PDF #8 — sayfa başı 10 kayıt (Prompt 6)
 
 **Dosyalar:** `core/routes.py`, `project_list.html`
 
-```python
-.paginate(page=page, per_page=10, error_out=False)
-```
+- `PROJECTS_PER_PAGE = 10`
+- `paginate(page=page, per_page=10, error_out=False)`
+- Bootstrap `pagination` — Önceki / numaralar / Sonraki
+- Toplam proje + sayfa bilgisi üst başlıkta
 
-Bootstrap pagination bileşeni.
+**Commit:** `feat(core): proje listesi pagination`
 
 ---
 
-### 9.6 — Birim testleri ⏳
+### 9.6 — Birim testleri ⏳ **← SIRADAKİ ADIM**
 
 **Bizim plan:** 9.3 (eski numara) | **Hoca:** her özellik için test, Prompt 9
 
@@ -691,8 +692,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1–9.4 tamamlandı (Bootstrap UI + PromptLog + hata sayfaları).
-- Sırada: 9.5 proje listesi pagination — onay bekliyor.
+- Faz 9.1–9.5 tamamlandı (UI + PromptLog + hata sayfaları + pagination).
+- Sırada: 9.6 birim testleri (pytest) — onay bekliyor.
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500

@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template, url_for
+from flask import abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
 from app.extensions import db
@@ -9,6 +9,8 @@ from app.utils import delete_project_files, delete_storage_dir, list_project_fil
 
 from . import core_bp
 from .forms import ProjectForm, PromptForm
+
+PROJECTS_PER_PAGE = 10
 
 
 def _get_user_project(project_id: int) -> Project:
@@ -96,12 +98,13 @@ def project_new():
 @core_bp.route("/projects")
 @login_required
 def project_list():
-    projects = (
+    page = request.args.get("page", 1, type=int)
+    pagination = (
         Project.query.filter_by(owner_id=current_user.id)
         .order_by(Project.created_at.desc())
-        .all()
+        .paginate(page=page, per_page=PROJECTS_PER_PAGE, error_out=False)
     )
-    return render_template("core/project_list.html", projects=projects)
+    return render_template("core/project_list.html", pagination=pagination)
 
 
 @core_bp.route("/projects/<int:project_id>")
