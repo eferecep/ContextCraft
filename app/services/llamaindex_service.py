@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from flask import current_app
 from llama_index.core import StorageContext, VectorStoreIndex, load_index_from_storage
+from llama_index.core.llms.mock import MockLLM
 from llama_index.core.retrievers import QueryFusionRetriever
 from llama_index.core.schema import NodeWithScore, TextNode
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -211,6 +212,7 @@ def _get_hybrid_retriever(
     )
     return QueryFusionRetriever(
         [vector_retriever, bm25_retriever],
+        llm=MockLLM(),
         similarity_top_k=top_k,
         num_queries=1,
         mode="reciprocal_rerank",

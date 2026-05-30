@@ -89,6 +89,7 @@ Güncellenen dosyalar:
 | `hashlib.scrypt` yok (kayıt) | Werkzeug 3 varsayılanı scrypt; macOS Python 3.9 LibreSSL desteklemiyor | `user.py`: `method="pbkdf2:sha256"` (hâlâ werkzeug hash) |
 | İndeksleme patlıyor | `.env`'de `openai/text-embedding-3-small` — LlamaIndex enum tanımıyor | `_normalize_embedding_model()` ile `text-embedding-3-small`'a çevir |
 | LlamaIndex import hatası | llama-index 0.14 Python 3.10+ gerektirir | `requirements.txt`: `llama-index>=0.11.23,<0.12.0` |
+| Prompt oluşturma patlıyor | `QueryFusionRetriever` varsayılan OpenAI LLM arıyor | `MockLLM()` — `num_queries=1`, LLM çağrısı yok |
 
 ### 4. Test sonuçları ✅
 

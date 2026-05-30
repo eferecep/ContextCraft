@@ -112,6 +112,9 @@ def project_optimize(project_id):
     except PromptOptimizeError as exc:
         flash(str(exc), "danger")
         return _render_project_detail(project, prompt_form=form)
+    except Exception as exc:
+        flash(f"Prompt oluşturma hatası: {exc}", "danger")
+        return _render_project_detail(project, prompt_form=form)
 
 
 @core_bp.route("/projects/<int:project_id>/index", methods=["POST"])
