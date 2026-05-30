@@ -35,23 +35,24 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 5 tamamlandı ve test edildi — sırada Faz 6 + Faz 8**
+**Faz 6 backend tamamlandı — sırada Faz 8 (arayüz)**
 
 | Bölüm | Durum |
 |---|---|
 | Faz 1–3: İskelet, DB, Auth | ✅ Tamamlandı |
 | Faz 4: Proje yönetimi | ✅ Tamamlandı |
 | Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
-| Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ⏳ Sırada |
-| Faz 7: `openrouter.py` altyapısı | ✅ Hazır (entegrasyon Faz 6'da) |
-| Faz 8: Prompt arayüzü | ⏳ Faz 6 ile birlikte yapılacak |
+| Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
+| Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
+| Faz 8: Prompt arayüzü | ⏳ Sırada |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
 **Kullanıcı şu an ne yapabilir?**
 - Kayıt / giriş ✅
 - Proje oluşturma, dosya yükleme ✅
 - Proje indeksleme ✅ (`status = indexed`)
-- Prompt yazma ve sonuç alma ❌ (Faz 6+8 henüz yok)
+- `optimize_prompt()` backend ✅ (Flask shell / route ile)
+- Prompt yazma ve sonuç alma (UI) ❌ (Faz 8 henüz yok)
 
 ---
 
@@ -112,6 +113,13 @@ Güncellenen dosyalar:
 - `_build_user_message()` — kullanıcı isteği + retrieve edilen parçalar
 - `_call_deepseek()` — `temperature=0.3`, `max_tokens=2048`
 - `OpenRouterError` → `PromptOptimizeError` dönüşümü
+
+### 8. Adım 6.4–6.5 — yanıt parse ve çıktı formatı ✅
+
+- `_parse_deepseek_response()` — JSON parse + markdown code fence temizliği
+- `_normalize_required_files()` — retrieve edilen dosya yollarıyla eşleştirme
+- JSON hatasında fallback: ham metin → `optimized_prompt`
+- Çıktı: `{ optimized_prompt, required_files, explanation }`
 
 ---
 
@@ -179,7 +187,7 @@ IndexBuildError                 # bilinen hatalar (API key yok, dosya yok vb.)
 
 ---
 
-## Faz 6 — Prompt Optimizasyon Motoru ⏳ (SIRADA)
+## Faz 6 — Prompt Optimizasyon Motoru ✅
 
 ```
 "Login ekranı kodla"
@@ -198,8 +206,8 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 6.1 | `prompt_optimizer.py` — orkestrasyon | ✅ |
 | 6.2 | retrieve → DeepSeek V3.1 | ✅ (retrieve kısmı) |
 | 6.3 | Detaylandırılmış prompt üretme | ✅ (DeepSeek çağrısı) |
-| 6.4 | Gerekli dosya listesi üretme | ⏳ |
-| 6.5 | Çıktı: `{ optimized_prompt, required_files, explanation }` | ⏳ |
+| 6.4 | Gerekli dosya listesi üretme | ✅ |
+| 6.5 | Çıktı: `{ optimized_prompt, required_files, explanation }` | ✅ |
 | 6.6 | Opsiyonel reranking | ✅ Karar kilitlendi |
 | 6.7 | DeepSeek V3.1 | ✅ Karar kilitlendi |
 
@@ -212,7 +220,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 7.1 | `app/services/openrouter.py` — `DeepSeekClient` | ✅ |
 | 7.2 | `config.py` + `.env` OpenRouter ayarları | ✅ |
 | 7.3 | `get_deepseek_client()` factory | ✅ |
-| 7.4 | Prompt optimizer'a entegrasyon | ⏳ Faz 6 |
+| 7.4 | Prompt optimizer'a entegrasyon | ✅ |
 
 ---
 
@@ -296,7 +304,7 @@ ContextCraft/
 │   ├── services/
 │   │   ├── openrouter.py          ✅ DeepSeekClient
 │   │   ├── llamaindex_service.py  ✅ Faz 5
-│   │   └── prompt_optimizer.py    ✅ Faz 6.1–6.3 (validasyon + retrieve + DeepSeek)
+│   │   └── prompt_optimizer.py    ✅ Faz 6 (tamamlandı)
 │   ├── templates/core/
 │   │   ├── project_form.html      ✅
 │   │   ├── project_list.html      ✅

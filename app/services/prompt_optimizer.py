@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Tuple
+import json
+from typing import Any, Dict, List, Optional, Tuple
 
 from flask import current_app
 
@@ -126,6 +127,119 @@ def _call_deepseek(user_prompt: str, context_text: str) -> str:
         raise PromptOptimizeError(str(exc)) from exc
 
 
+def _extract_json_text(raw_response: str) -> str:
+    text = raw_response.strip()
+    if not text.startswith("```"):
+        return text
+
+    lines = text.splitlines()
+    if lines and lines[0].startswith("```"):
+        lines = lines[1:]
+    if lines and lines[-1].strip() == "```":
+        lines = lines[:-1]
+    return "\n".join(lines).strip()
+
+
+def _known_file_paths(chunks: List[Dict[str, Any]]) -> List[str]:
+    paths: List[str] = []
+    seen = set()
+
+    for chunk in chunks:
+        path = _normalize_file_path(chunk.get("file_path") or "")
+        if path and path not in seen:
+            seen.add(path)
+            paths.append(path)
+
+    return paths
+
+
+def _normalize_file_path(path: str) -> str:
+    normalized = path.strip().replace("\\", "/")
+    if normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized
+
+
+def _match_known_path(candidate: str, known_paths: List[str]) -> Optional[str]:
+    candidate = _normalize_file_path(candidate)
+    if not candidate:
+        return None
+
+    if candidate in known_paths:
+        return candidate
+
+    for known in known_paths:
+        if known.endswith("/" + candidate):
+            return known
+        if known.split("/")[-1] == candidate.split("/")[-1]:
+            return known
+
+    return None
+
+
+def _normalize_required_files(
+    files: Any,
+    known_paths: List[str],
+) -> List[str]:
+    if not isinstance(files, list):
+        return []
+
+    result: List[str] = []
+    seen = set()
+
+    for item in files:
+        if not isinstance(item, str):
+            continue
+
+        matched = _match_known_path(item, known_paths)
+        if matched and matched not in seen:
+            seen.add(matched)
+            result.append(matched)
+
+    return result
+
+
+def _parse_deepseek_response(
+    raw_response: str,
+    chunks: List[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """DeepSeek yanıtını JSON'a çevirir; başarısız olursa ham metne düşer."""
+    known_paths = _known_file_paths(chunks)
+    fallback: Dict[str, Any] = {
+        "optimized_prompt": raw_response.strip(),
+        "required_files": [],
+        "explanation": "",
+    }
+
+    try:
+        data = json.loads(_extract_json_text(raw_response))
+    except (json.JSONDecodeError, TypeError):
+        return fallback
+
+    if not isinstance(data, dict):
+        return fallback
+
+    optimized_prompt = data.get("optimized_prompt", "")
+    if not isinstance(optimized_prompt, str):
+        optimized_prompt = str(optimized_prompt) if optimized_prompt is not None else ""
+
+    explanation = data.get("explanation", "")
+    if not isinstance(explanation, str):
+        explanation = str(explanation) if explanation is not None else ""
+
+    if not optimized_prompt.strip():
+        return fallback
+
+    return {
+        "optimized_prompt": optimized_prompt.strip(),
+        "required_files": _normalize_required_files(
+            data.get("required_files"),
+            known_paths,
+        ),
+        "explanation": explanation.strip(),
+    }
+
+
 def optimize_prompt(project: Project, user_prompt: str) -> Dict[str, Any]:
     """
     Kullanıcı promptunu proje bağlamına göre optimize eder.
@@ -141,12 +255,4 @@ def optimize_prompt(project: Project, user_prompt: str) -> Dict[str, Any]:
 
     chunks, context_text = _retrieve_context(project, prompt)
     raw_response = _call_deepseek(prompt, context_text)
-
-    # Adım 6.4'te raw_response JSON olarak parse edilecek.
-
-    result: Dict[str, Any] = {
-        "optimized_prompt": "",
-        "required_files": [],
-        "explanation": "",
-    }
-    return result
+    return _parse_deepseek_response(raw_response, chunks)
