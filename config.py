@@ -13,11 +13,18 @@ def _env(key: str, default: str = "") -> str:
     return value.strip().strip('"').strip("'")
 
 
+def _normalize_database_url(url: str) -> str:
+    """postgres:// → postgresql:// (SQLAlchemy uyumu)."""
+    if url.startswith("postgres://"):
+        return url.replace("postgres://", "postgresql://", 1)
+    return url
+
+
 class Config:
     SECRET_KEY = _env("SECRET_KEY", "dev-fallback-secret-key")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", f"sqlite:///{BASE_DIR / 'contextcraft.db'}"
+    SQLALCHEMY_DATABASE_URI = _normalize_database_url(
+        os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'contextcraft.db'}")
     )
     WTF_CSRF_ENABLED = True
 
@@ -63,6 +70,7 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    TESTING = False
     _max_upload = os.environ.get("MAX_CONTENT_LENGTH")
     MAX_CONTENT_LENGTH = int(_max_upload) if _max_upload else None
 

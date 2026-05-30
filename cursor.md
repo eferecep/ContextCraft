@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.5 ✅, 9.6 ✅, sıradaki: **9.7** |
+| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.6 ✅, 9.7 ✅, sıradaki: **9.8** |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -326,7 +326,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 7 | **404 / 500** özel sayfalar | ✅ | — |
 | 8 | Liste sayfalarında **pagination** | ✅ | — |
 | 9 | **Bootstrap** + mobil uyum | ✅ 9.1 + 9.2 | — |
-| 10 | Deploy veya Docker | ❌ | **9.7** |
+| 10 | Deploy veya Docker | ✅ Docker A | — |
 
 | Teslim (PDF §7) | Durum | Faz 9 adımı |
 |---|---|---|
@@ -335,7 +335,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | docs/ai-gunlugu.md (≥7 oturum) | 🟡 devam ediyor | süreç boyunca |
 | docs/rapor.md (800–1200 kelime) | ❌ | **9.8** |
 | Demo video (3–5 dk) | ❌ | sen kaydedeceksin |
-| Canlı URL / docker-compose | ❌ | **9.7** |
+| Canlı URL / docker-compose | ✅ `docker compose up` | — |
 
 ### Adım tablosu (hibrit)
 
@@ -347,14 +347,14 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ✅ | ✅ |
 | 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ✅ | ✅ |
 | 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ✅ | ✅ |
-| 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ **sıradaki** | onay sonrası |
-| 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ | onay sonrası |
+| 9.7 | Production + dağıtım | Docker A | #10, dağıtım 5p | ✅ | ✅ |
+| 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ **sıradaki** | onay sonrası |
 
 **Öncelik sırası:** 9.2 → 9.3 → 9.4 → 9.5 → 9.6 → 9.7 → 9.8
 
-**Onay bekleyen kararlar (9.2 öncesi):**
-- 3. model: **`PromptLog`** (önerilen) — `optimize_prompt()` sonucunu DB'ye kaydeder
-- Deploy (9.7): **Docker** veya **Render/Railway** — 9.7'de seçilecek
+**Onay bekleyen kararlar:**
+- Deploy: **Docker (A)** ✅ — `docker compose up --build`
+- 9.8: `docs/rapor.md` + demo video (sen kaydedeceksin)
 
 ---
 
@@ -459,24 +459,33 @@ tests/
 
 ---
 
-### 9.7 — Production + dağıtım ⏳ **← SIRADAKİ ADIM**
+### 9.7 — Production + dağıtım ✅ (Docker A)
 
-**Bizim plan:** 9.4 (kısmi) | **Hoca:** #10
+**Hoca:** PDF #10, Prompt 11
 
-**9.7a — Production config**
-- `ProductionConfig`: `DEBUG=False`, zayıf `SECRET_KEY` uyarısı
-- `.env.example` production notları
-
-**9.7b — Dağıtım (birini seç)**
-
-| Seçenek | Dosyalar |
+| Dosya | İçerik |
 |---|---|
-| **A — Docker** | `Dockerfile`, `docker-compose.yml`, `.dockerignore`, gunicorn |
-| **B — Render/Railway** | `Procfile`, `runtime.txt`, README deploy bölümü |
+| `Dockerfile` | `python:3.9-slim`, gunicorn, libpq |
+| `docker-compose.yml` | `web` + `postgres:16`, volume'lar |
+| `docker-entrypoint.sh` | `flask db upgrade` + gunicorn |
+| `.dockerignore` | venv, .env, .git, uploads, storage |
+| `config.py` | `postgres://` normalize, `ProductionConfig` |
+| `requirements.txt` | `gunicorn`, `psycopg2-binary` |
+| `README.md` | Docker kurulum adımları |
+
+**Not:** Hoca şablonu `python:3.12-slim` önerir; proje Python 3.9 + LlamaIndex 0.11 ile test edildiği için imaj 3.9-slim.
+
+**Çalıştırma:**
+```bash
+cp .env.example .env   # SECRET_KEY + OPENROUTER_API_KEY
+docker compose up --build
+```
+
+**Commit:** `chore(deploy): production config ve Docker/Render`
 
 ---
 
-### 9.8 — Teslim paketi ⏳
+### 9.8 — Teslim paketi ⏳ **← SIRADAKİ ADIM**
 
 **Bizim plan:** 9.4 (kısmi) | **Hoca:** §7 + Demo/Rapor rubrik (10p) + AI günlüğü (25p)
 
@@ -580,6 +589,10 @@ ContextCraft/
 ├── tests/                         ✅ 9.6 (22 test)
 ├── uploads/                       gitignore
 ├── storage/                       gitignore
+├── Dockerfile                     ✅ 9.7
+├── docker-compose.yml             ✅ 9.7
+├── docker-entrypoint.sh           ✅ 9.7
+├── .dockerignore                  ✅ 9.7
 ├── config.py
 ├── cursor.md
 ├── run.py
@@ -695,8 +708,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1–9.6 tamamlandı (UI + PromptLog + hata + pagination + pytest).
-- Sırada: 9.7 production + dağıtım — onay bekliyor.
+- Faz 9.1–9.7 tamamlandı (Docker dağıtım dahil).
+- Sırada: 9.8 teslim paketi (rapor + demo) — onay bekliyor.
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500
