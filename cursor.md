@@ -92,6 +92,14 @@ Güncellenen dosyalar:
 - İndeksleme: 8 dosyalı test projesi → 28 node, `status = indexed`
 - Embedding: OpenRouter API üzerinden 1536 boyutlu vektör döndü
 
+### 5. Adım 6.1 — prompt_optimizer iskeleti ✅
+
+- `app/services/prompt_optimizer.py` oluşturuldu
+- `PromptOptimizeError` exception sınıfı
+- `optimize_prompt(project, user_prompt)` imzası
+- Ön kontroller: boş prompt, `status != indexed`, `OPENROUTER_API_KEY` yok
+- DeepSeek çağrısı henüz yok — Adım 6.2'de eklenecek
+
 ---
 
 ## Faz 5 — LlamaIndex İndeksleme ✅
@@ -174,7 +182,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 | # | Adım | Durum |
 |---|---|---|
-| 6.1 | `prompt_optimizer.py` — orkestrasyon | ⏳ |
+| 6.1 | `prompt_optimizer.py` — orkestrasyon | ✅ |
 | 6.2 | retrieve → DeepSeek V3.1 | ⏳ |
 | 6.3 | Detaylandırılmış prompt üretme | ⏳ |
 | 6.4 | Gerekli dosya listesi üretme | ⏳ |
@@ -275,7 +283,7 @@ ContextCraft/
 │   ├── services/
 │   │   ├── openrouter.py          ✅ DeepSeekClient
 │   │   ├── llamaindex_service.py  ✅ Faz 5
-│   │   └── prompt_optimizer.py    ⏳ Faz 6
+│   │   └── prompt_optimizer.py    ✅ Faz 6.1 (iskelet + validasyon)
 │   ├── templates/core/
 │   │   ├── project_form.html      ✅
 │   │   ├── project_list.html      ✅
