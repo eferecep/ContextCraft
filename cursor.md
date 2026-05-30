@@ -44,7 +44,7 @@ Sistem çıktısı:
 | Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
-| Faz 8: Prompt arayüzü | ⏳ Sırada |
+| Faz 8: Prompt arayüzü | ⏳ Adım 8.1 tamamlandı |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
 **Kullanıcı şu an ne yapabilir?**
@@ -52,7 +52,8 @@ Sistem çıktısı:
 - Proje oluşturma, dosya yükleme ✅
 - Proje indeksleme ✅ (`status = indexed`)
 - `optimize_prompt()` backend ✅ (Flask shell / route ile)
-- Prompt yazma ve sonuç alma (UI) ❌ (Faz 8 henüz yok)
+- Prompt yazma (form) ✅ — sonuç ekranı Adım 8.2'de
+- Prompt sonucu görüntüleme ❌ (Adım 8.2)
 
 ---
 
@@ -120,6 +121,14 @@ Güncellenen dosyalar:
 - `_normalize_required_files()` — retrieve edilen dosya yollarıyla eşleştirme
 - JSON hatasında fallback: ham metin → `optimized_prompt`
 - Çıktı: `{ optimized_prompt, required_files, explanation }`
+
+### 9. Adım 8.1 — Prompt formu + route ✅
+
+- `PromptForm` — textarea, 3–2000 karakter, CSRF korumalı
+- `POST /projects/<id>/optimize` — `optimize_prompt()` çağrısı
+- `project_detail.html` — indekslenmiş projelerde prompt formu
+- `pending` / `failed` → "Önce indeksleyin" mesajı
+- Sonuç ekranı Adım 8.2'de eklenecek (`result` template'e aktarılıyor)
 
 ---
 
@@ -228,7 +237,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 | # | Adım | Durum |
 |---|---|---|
-| 8.1 | Proje detayında prompt giriş formu | ⏳ |
+| 8.1 | Proje detayında prompt giriş formu | ✅ |
 | 8.2 | Sonuç ekranı: detaylandırılmış prompt (kopyala) | ⏳ |
 | 8.3 | Gerekli dosya listesi + açıklama | ⏳ |
 | 8.4 | Token tasarrufu bilgisi | ⏳ |
@@ -374,6 +383,7 @@ Tarayıcı: http://127.0.0.1:5000
 | `/core/projects` | GET | Proje listesi |
 | `/core/projects/new` | GET/POST | Yeni proje |
 | `/core/projects/<id>` | GET | Proje detay |
+| `/core/projects/<id>/optimize` | POST | Prompt oluştur (Faz 8) |
 | `/core/projects/<id>/index` | POST | İndeksle / yeniden indeksle |
 | `/core/projects/<id>/delete` | POST | Proje sil |
 

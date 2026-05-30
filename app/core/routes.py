@@ -4,10 +4,11 @@ from flask_login import current_user, login_required
 from app.extensions import db
 from app.models import Project
 from app.services.llamaindex_service import IndexBuildError, build_project_index
+from app.services.prompt_optimizer import PromptOptimizeError, optimize_prompt
 from app.utils import delete_project_files, delete_storage_dir, list_project_files, save_uploaded_file
 
 from . import core_bp
-from .forms import ProjectForm
+from .forms import ProjectForm, PromptForm
 
 
 def _get_user_project(project_id: int) -> Project:
@@ -15,6 +16,19 @@ def _get_user_project(project_id: int) -> Project:
     if project is None or project.owner_id != current_user.id:
         abort(404)
     return project
+
+
+def _render_project_detail(project, prompt_form=None, result=None):
+    files = list_project_files(project.source_path or "")
+    if prompt_form is None and project.status == "indexed":
+        prompt_form = PromptForm()
+    return render_template(
+        "core/project_detail.html",
+        project=project,
+        files=files,
+        prompt_form=prompt_form,
+        result=result,
+    )
 
 
 @core_bp.route("/projects/new", methods=["GET", "POST"])
@@ -75,12 +89,29 @@ def project_list():
 @login_required
 def project_detail(project_id):
     project = _get_user_project(project_id)
-    files = list_project_files(project.source_path or "")
-    return render_template(
-        "core/project_detail.html",
-        project=project,
-        files=files,
-    )
+    return _render_project_detail(project)
+
+
+@core_bp.route("/projects/<int:project_id>/optimize", methods=["POST"])
+@login_required
+def project_optimize(project_id):
+    project = _get_user_project(project_id)
+
+    if project.status != "indexed":
+        flash("Prompt oluşturmak için önce projeyi indeksleyin.", "danger")
+        return redirect(url_for("core.project_detail", project_id=project.id))
+
+    form = PromptForm()
+    if not form.validate_on_submit():
+        return _render_project_detail(project, prompt_form=form)
+
+    try:
+        result = optimize_prompt(project, form.prompt.data)
+        flash("Prompt başarıyla oluşturuldu.", "success")
+        return _render_project_detail(project, prompt_form=form, result=result)
+    except PromptOptimizeError as exc:
+        flash(str(exc), "danger")
+        return _render_project_detail(project, prompt_form=form)
 
 
 @core_bp.route("/projects/<int:project_id>/index", methods=["POST"])

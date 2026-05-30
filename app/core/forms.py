@@ -36,3 +36,18 @@ class ProjectForm(FlaskForm):
                 raise ValidationError(
                     f"İzin verilmeyen dosya türü: {file_storage.filename}"
                 )
+
+
+class PromptForm(FlaskForm):
+    prompt = TextAreaField(
+        "Prompt",
+        validators=[
+            DataRequired(message="Prompt metni zorunludur."),
+            Length(
+                min=3,
+                max=2000,
+                message="Prompt 3 ile 2000 karakter arasında olmalıdır.",
+            ),
+        ],
+    )
+    submit = SubmitField("Prompt Oluştur")

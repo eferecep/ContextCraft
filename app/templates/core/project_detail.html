@@ -33,6 +33,27 @@
         <p class="hint">Bu projede henüz dosya bulunmuyor.</p>
     {% endif %}
 
+    {% if project.status == "indexed" and prompt_form %}
+        <h2 class="section-title">Prompt Oluştur</h2>
+        <p class="hint">
+            Kısa bir istek yazın; sistem bunu detaylandırılmış prompt ve gerekli dosya listesine çevirir.
+        </p>
+        <form method="POST"
+              action="{{ url_for('core.project_optimize', project_id=project.id) }}">
+            {{ prompt_form.hidden_tag() }}
+            <div class="form-group">
+                {{ prompt_form.prompt.label }}
+                {{ prompt_form.prompt(rows=4, placeholder="Örn: Login ekranı kodla") }}
+                {% for error in prompt_form.prompt.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {{ prompt_form.submit(class="btn") }}
+        </form>
+    {% elif project.status in ("pending", "failed") and files %}
+        <p class="hint">Prompt oluşturmak için önce projeyi indeksleyin.</p>
+    {% endif %}
+
     <div class="actions">
         <a href="{{ url_for('core.project_list') }}" class="btn btn-secondary">← Proje listesi</a>
 
