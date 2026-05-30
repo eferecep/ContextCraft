@@ -70,6 +70,24 @@
                     </button>
                     <span class="copy-feedback" id="copy-feedback" hidden>Kopyalandı!</span>
                 </div>
+
+                <h3 class="subsection-title">Gerekli Dosyalar</h3>
+                {% if result.required_files %}
+                    <ul class="file-list">
+                        {% for file_path in result.required_files %}
+                            <li>{{ file_path }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="hint">Dosya önerisi üretilemedi.</p>
+                {% endif %}
+
+                <h3 class="subsection-title">Açıklama</h3>
+                {% if result.explanation %}
+                    <p class="result-explanation">{{ result.explanation }}</p>
+                {% else %}
+                    <p class="hint">Açıklama üretilemedi.</p>
+                {% endif %}
             </div>
         {% endif %}
     {% elif project.status in ("pending", "failed") and files %}

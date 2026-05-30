@@ -44,7 +44,7 @@ Sistem çıktısı:
 | Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
-| Faz 8: Prompt arayüzü | ⏳ Adım 8.1–8.2 tamamlandı |
+| Faz 8: Prompt arayüzü | ⏳ Adım 8.1–8.3 tamamlandı |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
 **Kullanıcı şu an ne yapabilir?**
@@ -54,7 +54,8 @@ Sistem çıktısı:
 - `optimize_prompt()` backend ✅ (Flask shell / route ile)
 - Prompt yazma (form) ✅
 - Detaylandırılmış prompt + kopyala ✅ (Adım 8.2)
-- Gerekli dosya listesi + açıklama ❌ (Adım 8.3)
+- Gerekli dosya listesi + açıklama ✅ (Adım 8.3)
+- Token tasarrufu bilgisi ❌ (Adım 8.4)
 
 ---
 
@@ -136,6 +137,12 @@ Güncellenen dosyalar:
 - "Kopyala" butonu — `navigator.clipboard` + `execCommand` fallback
 - "Kopyalandı!" geri bildirimi (2 sn)
 - `main-wide` — proje detay sayfası genişliği 720px
+
+### 11. Adım 8.3 — Gerekli dosya listesi + açıklama ✅
+
+- `result.required_files` — monospace dosya listesi
+- Boş liste → "Dosya önerisi üretilemedi"
+- `result.explanation` — Türkçe açıklama paragrafı
 
 ---
 
@@ -246,7 +253,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 |---|---|---|
 | 8.1 | Proje detayında prompt giriş formu | ✅ |
 | 8.2 | Sonuç ekranı: detaylandırılmış prompt (kopyala) | ✅ |
-| 8.3 | Gerekli dosya listesi + açıklama | ⏳ |
+| 8.3 | Gerekli dosya listesi + açıklama | ✅ |
 | 8.4 | Token tasarrufu bilgisi | ⏳ |
 
 > Sohbet arayüzü **yapılmayacak**.
