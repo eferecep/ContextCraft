@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.4 ✅, 9.5 ✅, sıradaki: **9.6** |
+| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.5 ✅, 9.6 ✅, sıradaki: **9.7** |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -346,8 +346,8 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 9.3 | Üçüncü model (`PromptLog`) | 3. model | #4 | ✅ | ✅ |
 | 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ✅ | ✅ |
 | 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ✅ | ✅ |
-| 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ⏳ **sıradaki** | onay sonrası |
-| 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ | onay sonrası |
+| 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ✅ | ✅ |
+| 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ **sıradaki** | onay sonrası |
 | 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ | onay sonrası |
 
 **Öncelik sırası:** 9.2 → 9.3 → 9.4 → 9.5 → 9.6 → 9.7 → 9.8
@@ -437,26 +437,29 @@ User 1──N Project 1──N PromptLog
 
 ---
 
-### 9.6 — Birim testleri ⏳ **← SIRADAKİ ADIM**
+### 9.6 — Birim testleri ✅
 
-**Bizim plan:** 9.3 (eski numara) | **Hoca:** her özellik için test, Prompt 9
+**Hoca:** PDF §4.6, Prompt 9 — her özellik için test
 
 ```
 tests/
-├── conftest.py
-├── test_auth.py
-├── test_projects.py
-├── test_file_helpers.py
-└── test_prompt_optimizer.py   # OpenRouter mock
+├── conftest.py              — app, client, user, auth_client fixture'ları
+├── test_auth.py             — kayıt, giriş, çıkış, şifre hash
+├── test_projects.py         — proje CRUD, pagination, 404
+├── test_file_helpers.py     — allowed_file, path traversal
+└── test_prompt_optimizer.py — parse/refine + mock optimize_prompt
 ```
 
-**Bağımlılık:** `pytest`, `pytest-flask` (veya conftest fixture)
+- `pytest.ini` — `pythonpath = .`
+- `requirements.txt` — `pytest>=8.0,<9.0`
+- OpenRouter/LlamaIndex API çağrısı mock'lanır (gerçek API yok)
+- **22 test** — `pytest -v`
 
-**Kapsam dışı:** Gerçek OpenRouter/LlamaIndex API çağrısı
+**Commit:** `test: auth, proje ve prompt_optimizer birim testleri`
 
 ---
 
-### 9.7 — Production + dağıtım ⏳
+### 9.7 — Production + dağıtım ⏳ **← SIRADAKİ ADIM**
 
 **Bizim plan:** 9.4 (kısmi) | **Hoca:** #10
 
@@ -574,7 +577,7 @@ ContextCraft/
 ├── docs/
 │   ├── ai-gunlugu.md              🟡 sürekli güncelle
 │   └── rapor.md                   ⏳ 9.8
-├── tests/                         ⏳ 9.6
+├── tests/                         ✅ 9.6 (22 test)
 ├── uploads/                       gitignore
 ├── storage/                       gitignore
 ├── config.py
@@ -692,8 +695,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1–9.5 tamamlandı (UI + PromptLog + hata sayfaları + pagination).
-- Sırada: 9.6 birim testleri (pytest) — onay bekliyor.
+- Faz 9.1–9.6 tamamlandı (UI + PromptLog + hata + pagination + pytest).
+- Sırada: 9.7 production + dağıtım — onay bekliyor.
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500

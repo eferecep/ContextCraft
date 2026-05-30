@@ -11,3 +11,4 @@ llama-index-embeddings-openai>=0.2,<0.3
 llama-index-retrievers-bm25>=0.4,<0.5
 rank-bm25>=0.2.2,<0.3
 openai>=1.0,<2.0
+pytest>=8.0,<9.0
