@@ -106,6 +106,13 @@ Güncellenen dosyalar:
 - Boş retrieve sonucu için anlamlı hata mesajı
 - `format_retrieved_chunks()` — DeepSeek formatı: `[dosya | sembol | satır X-Y]`
 
+### 7. Adım 6.3 — DeepSeek API çağrısı ✅
+
+- `SYSTEM_PROMPT` — ContextCraft rolü, JSON format zorunluluğu
+- `_build_user_message()` — kullanıcı isteği + retrieve edilen parçalar
+- `_call_deepseek()` — `temperature=0.3`, `max_tokens=2048`
+- `OpenRouterError` → `PromptOptimizeError` dönüşümü
+
 ---
 
 ## Faz 5 — LlamaIndex İndeksleme ✅
@@ -190,7 +197,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 |---|---|---|
 | 6.1 | `prompt_optimizer.py` — orkestrasyon | ✅ |
 | 6.2 | retrieve → DeepSeek V3.1 | ✅ (retrieve kısmı) |
-| 6.3 | Detaylandırılmış prompt üretme | ⏳ |
+| 6.3 | Detaylandırılmış prompt üretme | ✅ (DeepSeek çağrısı) |
 | 6.4 | Gerekli dosya listesi üretme | ⏳ |
 | 6.5 | Çıktı: `{ optimized_prompt, required_files, explanation }` | ⏳ |
 | 6.6 | Opsiyonel reranking | ✅ Karar kilitlendi |
@@ -289,7 +296,7 @@ ContextCraft/
 │   ├── services/
 │   │   ├── openrouter.py          ✅ DeepSeekClient
 │   │   ├── llamaindex_service.py  ✅ Faz 5
-│   │   └── prompt_optimizer.py    ✅ Faz 6.1–6.2 (validasyon + retrieve)
+│   │   └── prompt_optimizer.py    ✅ Faz 6.1–6.3 (validasyon + retrieve + DeepSeek)
 │   ├── templates/core/
 │   │   ├── project_form.html      ✅
 │   │   ├── project_list.html      ✅
