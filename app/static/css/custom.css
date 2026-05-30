@@ -1,0 +1,302 @@
+/* ContextCraft — Bootstrap 5 üzerine özel stiller (Faz 9.1) */
+
+:root {
+    --cc-primary: #1a1a2e;
+    --cc-primary-hover: #16213e;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.cc-navbar {
+    background-color: var(--cc-primary) !important;
+}
+
+.cc-navbar .navbar-brand,
+.cc-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.cc-navbar .nav-link:hover,
+.cc-navbar .navbar-brand:hover {
+    color: #fff !important;
+}
+
+.cc-navbar .navbar-text {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.875rem;
+}
+
+main.container-narrow {
+    max-width: 480px;
+}
+
+main.container-wide {
+    max-width: 720px;
+}
+
+/* Faz 8 bileşenleri — 9.2'de Bootstrap sınıflarına taşınacak */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-group input[type="file"] {
+    font-size: 0.875rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: var(--cc-primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: var(--cc-primary-hover);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #555;
+}
+
+.btn-secondary:hover {
+    background: #444;
+}
+
+.btn-danger {
+    background: #c0392b;
+}
+
+.btn-danger:hover {
+    background: #a93226;
+}
+
+.btn-copy {
+    margin-top: 0;
+    background: #2e7d32;
+}
+
+.btn-copy:hover {
+    background: #1b5e20;
+}
+
+.error {
+    color: #c0392b;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.hint {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.35rem;
+}
+
+.link {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.link a {
+    color: var(--cc-primary);
+}
+
+.project-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.project-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.project-list a {
+    color: var(--cc-primary);
+    text-decoration: none;
+}
+
+.project-list a:hover {
+    text-decoration: underline;
+}
+
+.badge-indexed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-indexing {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-failed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.detail-list {
+    margin: 1rem 0 1.5rem;
+}
+
+.detail-list dt {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    margin-top: 0.75rem;
+}
+
+.detail-list dd {
+    margin-top: 0.25rem;
+}
+
+.section-title {
+    font-size: 1rem;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.subsection-title {
+    font-size: 0.95rem;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.file-list {
+    list-style: none;
+    font-size: 0.875rem;
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0;
+}
+
+.file-list li {
+    padding: 0.25rem 0;
+    font-family: ui-monospace, monospace;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.result-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.result-output {
+    width: 100%;
+    min-height: 200px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: #f9f9f9;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 0.75rem;
+}
+
+.copy-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.copy-feedback {
+    font-size: 0.875rem;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.result-explanation {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.result-stats {
+    font-size: 0.875rem;
+    color: #0c5460;
+    background: #d1ecf1;
+    padding: 0.65rem 0.85rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 575.98px) {
+    .card {
+        padding: 1.25rem;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .actions .btn,
+    .actions form {
+        width: 100%;
+    }
+
+    .actions form .btn {
+        width: 100%;
+    }
+}

@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ Bekliyor |
+| Faz 9: UI & teslim | ⏳ Adım 9.1 tamamlandı |
 
 **Kullanıcı şu an ne yapabilir?**
 - Kayıt / giriş ✅
@@ -147,7 +147,14 @@ Güncellenen dosyalar:
 ### 12. Adım 8.4 — Token tasarrufu bilgisi ✅
 
 - `optimize_prompt()` çıktısına `retrieved_count` ve `total_files` eklendi
-- UI: *"10 kod parçası incelendi · 8 dosyadan 2 tanesi yeterli"*
+### 13. Adım 9.1 — Bootstrap 5 altyapısı ✅
+
+- Bootstrap 5.3 CDN (`base.html`)
+- `app/static/css/custom.css` — ContextCraft renkleri + Faz 8 bileşen stilleri
+- Responsive navbar (`navbar-expand-lg`, mobil hamburger menü)
+- Flash mesajları → Bootstrap `alert` (kapatılabilir)
+- Inline CSS kaldırıldı
+- Hoca PDF madde #9: Bootstrap kullanımı başlatıldı
 
 ---
 
@@ -269,7 +276,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 | # | Adım | Durum |
 |---|---|---|
-| 9.1 | Bootstrap veya Tailwind | ⏳ |
+| 9.1 | Bootstrap veya Tailwind | ✅ (Bootstrap 5 CDN + base) |
 | 9.2 | Responsive dashboard | ⏳ |
 | 9.3 | Birim testleri | ⏳ |
 | 9.4 | Production config + sunum dokümantasyonu | ⏳ |
