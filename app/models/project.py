@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.extensions import db
 
 if TYPE_CHECKING:
+    from app.models.prompt_log import PromptLog
     from app.models.user import User
 
 
@@ -25,6 +26,11 @@ class Project(db.Model):
     )
 
     owner: Mapped["User"] = relationship(back_populates="projects")
+    prompt_logs: Mapped[list["PromptLog"]] = relationship(
+        back_populates="project",
+        cascade="all, delete-orphan",
+        order_by="PromptLog.created_at.desc()",
+    )
 
     def __repr__(self) -> str:
         return f"<Project name={self.name!r} owner_id={self.owner_id}>"

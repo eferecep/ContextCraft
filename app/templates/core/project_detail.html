@@ -109,6 +109,29 @@
             </div>
         </div>
     {% endif %}
+
+    {% if prompt_logs %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">Prompt Geçmişi</div>
+            <div class="list-group list-group-flush">
+                {% for log in prompt_logs %}
+                    <div class="list-group-item">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between gap-1 mb-1">
+                            <strong class="small">{{ log.user_prompt[:80] }}{% if log.user_prompt|length > 80 %}…{% endif %}</strong>
+                            <span class="text-muted small text-nowrap">
+                                {{ log.created_at.strftime("%d.%m.%Y %H:%M") }}
+                            </span>
+                        </div>
+                        {% if log.required_files %}
+                            <p class="text-muted small mb-0 cc-file-list">
+                                {{ log.required_files|join(", ") }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 {% elif project.status in ("pending", "failed") and files %}
     <div class="alert alert-warning">
         Prompt oluşturmak için önce projeyi indeksleyin.

@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1 ✅, 9.2 ✅, sıradaki: **9.3** |
+| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.2 ✅, 9.3 ✅, sıradaki: **9.4** |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -320,7 +320,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 1 | Application factory + blueprint | ✅ | — |
 | 2 | Jinja2, ≥4 sayfa, template inheritance | ✅ (6+ sayfa) | 9.2 (Bootstrap tamamlama) |
 | 3 | Flask-WTF, ≥2 form, CSRF | ✅ | — |
-| 4 | SQLAlchemy **≥3 model** + ilişki | ⚠️ User + Project (2) | **9.3** |
+| 4 | SQLAlchemy **≥3 model** + ilişki | ✅ User + Project + PromptLog | — |
 | 5 | Flask-Migrate migration | ✅ | 9.3 (PromptLog migration) |
 | 6 | Flask-Login, hash'li şifre | ✅ | — |
 | 7 | **404 / 500** özel sayfalar | ❌ | **9.4** |
@@ -343,8 +343,8 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 |---|---|---|---|---|---|
 | 9.1 | Bootstrap 5 altyapısı | Bootstrap base | #9 kısmi | ✅ | ✅ |
 | 9.2 | Responsive dashboard | Responsive UI | #9 tam + UI/UX 5p | ✅ | ✅ |
-| 9.3 | Üçüncü model (`PromptLog`) | 3. model | #4 | ⏳ **sıradaki** | onay sonrası |
-| 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ⏳ | onay sonrası |
+| 9.3 | Üçüncü model (`PromptLog`) | 3. model | #4 | ✅ | ✅ |
+| 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ⏳ **sıradaki** | onay sonrası |
 | 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ⏳ | onay sonrası |
 | 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ⏳ | onay sonrası |
 | 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ | onay sonrası |
@@ -390,26 +390,27 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 ---
 
-### 9.3 — Üçüncü model: `PromptLog` ⏳ **← SIRADAKİ ADIM**
+### 9.3 — Üçüncü model: `PromptLog` ✅
 
-**Hoca:** #4 — en az 3 model + ilişki
+**Hoca:** PDF #4 — 3 model + ilişki
 
-**Önerilen şema:**
-
+**Şema:**
 ```
-PromptLog
-  id, project_id (FK), user_prompt, optimized_prompt
-  required_files (JSON/text), explanation, created_at
-
-Project 1──N PromptLog
-User 1──N Project (mevcut)
+User 1──N Project 1──N PromptLog
 ```
 
-**Dosyalar:** `app/models/prompt_log.py`, migration, `optimize_prompt()` sonucunu DB'ye kaydet (opsiyonel: geçmiş listesi UI)
+**Dosyalar:**
+- `app/models/prompt_log.py` — user_prompt, optimized_prompt, required_files (JSON), explanation
+- `app/models/project.py` — `prompt_logs` ilişkisi (cascade delete)
+- `migrations/versions/6e26690632ba_...py`
+- `app/core/routes.py` — `_save_prompt_log()`, optimize sonrası DB kaydı
+- `project_detail.html` — Prompt Geçmişi listesi (son 10)
+
+**Commit:** `feat(models): PromptLog modeli ve migration`
 
 ---
 
-### 9.4 — 404 / 500 hata sayfaları ⏳
+### 9.4 — 404 / 500 hata sayfaları ⏳ **← SIRADAKİ ADIM**
 
 **Hoca:** #7
 
@@ -551,9 +552,9 @@ ContextCraft/
 │   │   └── routes.py              ✅ proje CRUD + index + optimize
 │   ├── main/                      ✅
 │   ├── models/
-│   │   ├── user.py                ✅ pbkdf2:sha256 hash
-│   │   └── project.py             ✅
-│   │   └── prompt_log.py          ⏳ Faz 9.3
+│   │   ├── user.py                ✅
+│   │   ├── project.py             ✅
+│   │   └── prompt_log.py          ✅ Faz 9.3
 │   ├── services/
 │   │   ├── openrouter.py          ✅ DeepSeekClient
 │   │   ├── llamaindex_service.py  ✅ Faz 5 + dosya çeşitliliği
@@ -688,8 +689,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1 (Bootstrap base) + 9.2 (responsive dashboard) tamamlandı.
-- Sırada: 9.3 PromptLog modeli — onay bekliyor.
+- Faz 9.1–9.3 tamamlandı (Bootstrap UI + PromptLog modeli).
+- Sırada: 9.4 404/500 hata sayfaları — onay bekliyor.
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500

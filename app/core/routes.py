@@ -2,7 +2,7 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from app.extensions import db
-from app.models import Project
+from app.models import Project, PromptLog
 from app.services.llamaindex_service import IndexBuildError, build_project_index
 from app.services.prompt_optimizer import PromptOptimizeError, optimize_prompt
 from app.utils import delete_project_files, delete_storage_dir, list_project_files, save_uploaded_file
@@ -22,13 +22,32 @@ def _render_project_detail(project, prompt_form=None, result=None):
     files = list_project_files(project.source_path or "")
     if prompt_form is None and project.status == "indexed":
         prompt_form = PromptForm()
+    prompt_logs = (
+        PromptLog.query.filter_by(project_id=project.id)
+        .order_by(PromptLog.created_at.desc())
+        .limit(10)
+        .all()
+    )
     return render_template(
         "core/project_detail.html",
         project=project,
         files=files,
         prompt_form=prompt_form,
         result=result,
+        prompt_logs=prompt_logs,
     )
+
+
+def _save_prompt_log(project: Project, user_prompt: str, result: dict) -> PromptLog:
+    log = PromptLog(
+        project_id=project.id,
+        user_prompt=user_prompt.strip(),
+        optimized_prompt=result.get("optimized_prompt", ""),
+        explanation=result.get("explanation") or None,
+    )
+    log.required_files = result.get("required_files") or []
+    db.session.add(log)
+    return log
 
 
 @core_bp.route("/projects/new", methods=["GET", "POST"])
@@ -107,12 +126,16 @@ def project_optimize(project_id):
 
     try:
         result = optimize_prompt(project, form.prompt.data)
+        _save_prompt_log(project, form.prompt.data, result)
+        db.session.commit()
         flash("Prompt başarıyla oluşturuldu.", "success")
         return _render_project_detail(project, prompt_form=form, result=result)
     except PromptOptimizeError as exc:
+        db.session.rollback()
         flash(str(exc), "danger")
         return _render_project_detail(project, prompt_form=form)
     except Exception as exc:
+        db.session.rollback()
         flash(f"Prompt oluşturma hatası: {exc}", "danger")
         return _render_project_detail(project, prompt_form=form)
 
