@@ -1,8 +1,19 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from config import config
 
 from .extensions import csrf, db, login_manager, migrate
+
+
+def _register_error_handlers(app: Flask) -> None:
+    @app.errorhandler(404)
+    def not_found(error):
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        db.session.rollback()
+        return render_template("errors/500.html"), 500
 
 
 def create_app(config_name="default"):
@@ -31,5 +42,7 @@ def create_app(config_name="default"):
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(core_bp)
+
+    _register_error_handlers(app)
 
     return app

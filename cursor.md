@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.2 ✅, 9.3 ✅, sıradaki: **9.4** |
+| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.3 ✅, 9.4 ✅, sıradaki: **9.5** |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -323,7 +323,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 4 | SQLAlchemy **≥3 model** + ilişki | ✅ User + Project + PromptLog | — |
 | 5 | Flask-Migrate migration | ✅ | 9.3 (PromptLog migration) |
 | 6 | Flask-Login, hash'li şifre | ✅ | — |
-| 7 | **404 / 500** özel sayfalar | ❌ | **9.4** |
+| 7 | **404 / 500** özel sayfalar | ✅ | — |
 | 8 | Liste sayfalarında **pagination** | ❌ | **9.5** |
 | 9 | **Bootstrap** + mobil uyum | ✅ 9.1 + 9.2 | — |
 | 10 | Deploy veya Docker | ❌ | **9.7** |
@@ -344,8 +344,8 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 9.1 | Bootstrap 5 altyapısı | Bootstrap base | #9 kısmi | ✅ | ✅ |
 | 9.2 | Responsive dashboard | Responsive UI | #9 tam + UI/UX 5p | ✅ | ✅ |
 | 9.3 | Üçüncü model (`PromptLog`) | 3. model | #4 | ✅ | ✅ |
-| 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ⏳ **sıradaki** | onay sonrası |
-| 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ⏳ | onay sonrası |
+| 9.4 | 404 / 500 hata sayfaları | Hata yönetimi | #7 | ✅ | ✅ |
+| 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ⏳ **sıradaki** | onay sonrası |
 | 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ⏳ | onay sonrası |
 | 9.7 | Production + dağıtım | Deploy/Docker | #10, dağıtım 5p | ⏳ | onay sonrası |
 | 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ | onay sonrası |
@@ -410,17 +410,19 @@ User 1──N Project 1──N PromptLog
 
 ---
 
-### 9.4 — 404 / 500 hata sayfaları ⏳ **← SIRADAKİ ADIM**
+### 9.4 — 404 / 500 hata sayfaları ✅
 
-**Hoca:** #7
+**Hoca:** PDF #7
 
 **Dosyalar:**
-- `app/templates/errors/404.html`, `500.html`
-- `app/__init__.py` → `@app.errorhandler(404)`, `@app.errorhandler(500)`
+- `app/templates/errors/404.html`, `500.html` — Bootstrap kart, anasayfa/proje linkleri
+- `app/__init__.py` — `_register_error_handlers()` → 404 + 500 (500'de `db.session.rollback()`)
+
+**Commit:** `feat(errors): 404 ve 500 özel hata sayfaları`
 
 ---
 
-### 9.5 — Pagination ⏳
+### 9.5 — Pagination ⏳ **← SIRADAKİ ADIM**
 
 **Hoca:** #8 — liste sayfalarında pagination (PDF Prompt 6: sayfa başı 10)
 
@@ -563,7 +565,7 @@ ContextCraft/
 │   │   ├── auth/                  ✅ 9.2 Bootstrap
 │   │   ├── core/                  ✅ 9.2 Bootstrap
 │   │   ├── main/                  ✅ 9.2 Bootstrap
-│   │   └── errors/                ⏳ 9.4 (404, 500)
+│   │   └── errors/                ✅ 9.4 (404, 500)
 │   ├── static/css/custom.css      ✅ 9.2
 │   └── utils/
 │       ├── file_helpers.py        ✅
@@ -689,8 +691,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1–9.3 tamamlandı (Bootstrap UI + PromptLog modeli).
-- Sırada: 9.4 404/500 hata sayfaları — onay bekliyor.
+- Faz 9.1–9.4 tamamlandı (Bootstrap UI + PromptLog + hata sayfaları).
+- Sırada: 9.5 proje listesi pagination — onay bekliyor.
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500
