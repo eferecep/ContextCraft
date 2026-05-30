@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block main_class %}main-wide{% endblock %}
+
 {% block title %}{{ project.name }} — ContextCraft{% endblock %}
 
 {% block content %}
@@ -50,6 +52,26 @@
             </div>
             {{ prompt_form.submit(class="btn") }}
         </form>
+
+        {% if result %}
+            <div class="result-section">
+                <h2 class="section-title">Detaylandırılmış Prompt</h2>
+                <p class="hint">Bu metni Claude veya ChatGPT'ye yapıştırın.</p>
+                <textarea id="optimized-prompt-output"
+                          class="result-output"
+                          readonly
+                          rows="12">{{ result.optimized_prompt }}</textarea>
+                <div class="copy-row">
+                    <button type="button"
+                            class="btn btn-copy"
+                            id="copy-prompt-btn"
+                            data-target="optimized-prompt-output">
+                        Kopyala
+                    </button>
+                    <span class="copy-feedback" id="copy-feedback" hidden>Kopyalandı!</span>
+                </div>
+            </div>
+        {% endif %}
     {% elif project.status in ("pending", "failed") and files %}
         <p class="hint">Prompt oluşturmak için önce projeyi indeksleyin.</p>
     {% endif %}
@@ -75,4 +97,37 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if result %}
+<script>
+(function () {
+    var copyBtn = document.getElementById("copy-prompt-btn");
+    if (!copyBtn) return;
+
+    copyBtn.addEventListener("click", function () {
+        var textarea = document.getElementById(copyBtn.getAttribute("data-target"));
+        var feedback = document.getElementById("copy-feedback");
+        if (!textarea) return;
+
+        function showFeedback() {
+            if (feedback) {
+                feedback.hidden = false;
+                setTimeout(function () { feedback.hidden = true; }, 2000);
+            }
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textarea.value).then(showFeedback);
+            return;
+        }
+
+        textarea.select();
+        document.execCommand("copy");
+        showFeedback();
+    });
+})();
+</script>
+{% endif %}
 {% endblock %}

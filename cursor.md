@@ -44,7 +44,7 @@ Sistem çıktısı:
 | Faz 5: LlamaIndex indeksleme | ✅ Tamamlandı (test edildi) |
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Backend tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
-| Faz 8: Prompt arayüzü | ⏳ Adım 8.1 tamamlandı |
+| Faz 8: Prompt arayüzü | ⏳ Adım 8.1–8.2 tamamlandı |
 | Faz 9: UI & teslim | ⏳ Bekliyor |
 
 **Kullanıcı şu an ne yapabilir?**
@@ -52,8 +52,9 @@ Sistem çıktısı:
 - Proje oluşturma, dosya yükleme ✅
 - Proje indeksleme ✅ (`status = indexed`)
 - `optimize_prompt()` backend ✅ (Flask shell / route ile)
-- Prompt yazma (form) ✅ — sonuç ekranı Adım 8.2'de
-- Prompt sonucu görüntüleme ❌ (Adım 8.2)
+- Prompt yazma (form) ✅
+- Detaylandırılmış prompt + kopyala ✅ (Adım 8.2)
+- Gerekli dosya listesi + açıklama ❌ (Adım 8.3)
 
 ---
 
@@ -129,6 +130,13 @@ Güncellenen dosyalar:
 - `project_detail.html` — indekslenmiş projelerde prompt formu
 - `pending` / `failed` → "Önce indeksleyin" mesajı
 - Sonuç ekranı Adım 8.2'de eklenecek (`result` template'e aktarılıyor)
+
+### 10. Adım 8.2 — Detaylandırılmış prompt + kopyala ✅
+
+- Sonuç bölümü: readonly textarea (`result.optimized_prompt`)
+- "Kopyala" butonu — `navigator.clipboard` + `execCommand` fallback
+- "Kopyalandı!" geri bildirimi (2 sn)
+- `main-wide` — proje detay sayfası genişliği 720px
 
 ---
 
@@ -238,7 +246,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | # | Adım | Durum |
 |---|---|---|
 | 8.1 | Proje detayında prompt giriş formu | ✅ |
-| 8.2 | Sonuç ekranı: detaylandırılmış prompt (kopyala) | ⏳ |
+| 8.2 | Sonuç ekranı: detaylandırılmış prompt (kopyala) | ✅ |
 | 8.3 | Gerekli dosya listesi + açıklama | ⏳ |
 | 8.4 | Token tasarrufu bilgisi | ⏳ |
 

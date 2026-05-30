@@ -12,6 +12,7 @@
         nav a:hover { color: #fff; }
         nav .brand { font-weight: bold; font-size: 1.1rem; color: #fff; margin-right: auto; }
         main { max-width: 480px; margin: 2rem auto; padding: 0 1rem; }
+        main.main-wide { max-width: 720px; }
         .card { background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
         h1 { font-size: 1.5rem; margin-bottom: 1.5rem; }
         .form-group { margin-bottom: 1rem; }
@@ -53,6 +54,15 @@
         .btn-danger:hover { background: #a93226; }
         .project-list a { color: #1a1a2e; text-decoration: none; }
         .project-list a:hover { text-decoration: underline; }
+        .result-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
+        .result-output {
+            width: 100%; min-height: 200px; font-family: ui-monospace, monospace;
+            font-size: .875rem; line-height: 1.5; background: #f9f9f9;
+        }
+        .copy-row { display: flex; gap: .75rem; align-items: center; margin-top: .5rem; }
+        .btn-copy { margin-top: 0; background: #2e7d32; }
+        .btn-copy:hover { background: #1b5e20; }
+        .copy-feedback { font-size: .875rem; color: #2e7d32; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -68,7 +78,7 @@
         {% endif %}
     </nav>
 
-    <main>
+    <main class="{% block main_class %}{% endblock %}">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -79,5 +89,6 @@
 
         {% block content %}{% endblock %}
     </main>
+    {% block scripts %}{% endblock %}
 </body>
 </html>
