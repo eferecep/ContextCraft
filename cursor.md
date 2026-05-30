@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–8 tamamlandı — Faz 9 (UI & teslim) başlıyor**
+**Faz 1–9 tamamlandı — teslim paketi hazır (demo video hariç)**
 
 | Bölüm | Durum |
 |---|---|
@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ⏳ **Aktif** — 9.1–9.6 ✅, 9.7 ✅, sıradaki: **9.8** |
+| Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -295,7 +295,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 ---
 
-## Faz 9 — Arayüz & Teslim ⏳ (Hibrit Plan — AKTİF)
+## Faz 9 — Arayüz & Teslim ✅ (Hibrit Plan — Tamamlandı)
 
 > **Kaynak:** `cursor.md` orijinal plan + [`BLG106_FinalProje.pdf`](../BLG106_FinalProje.pdf) zorunlu bileşenler + teslim maddeleri.
 >
@@ -330,11 +330,11 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 | Teslim (PDF §7) | Durum | Faz 9 adımı |
 |---|---|---|
-| GitHub repo (≥15 commit) | 🟡 devam ediyor | her adımda commit |
-| README.md | 🟡 kısa | **9.8** |
-| docs/ai-gunlugu.md (≥7 oturum) | 🟡 devam ediyor | süreç boyunca |
-| docs/rapor.md (800–1200 kelime) | ❌ | **9.8** |
-| Demo video (3–5 dk) | ❌ | sen kaydedeceksin |
+| GitHub repo (≥15 commit) | ✅ | her adımda commit |
+| README.md | ✅ | 9.8 |
+| docs/ai-gunlugu.md (≥7 oturum) | ✅ | süreç boyunca |
+| docs/rapor.md (800–1200 kelime) | ✅ | 9.8 |
+| Demo video (3–5 dk) | ⏳ | sen kaydedeceksin — README'ye link |
 | Canlı URL / docker-compose | ✅ `docker compose up` | — |
 
 ### Adım tablosu (hibrit)
@@ -348,13 +348,13 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | 9.5 | Proje listesi pagination | Pagination | #8, Prompt 6 | ✅ | ✅ |
 | 9.6 | Birim testleri (`pytest`) | Test suite | §4.6, Prompt 9 | ✅ | ✅ |
 | 9.7 | Production + dağıtım | Docker A | #10, dağıtım 5p | ✅ | ✅ |
-| 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ⏳ **sıradaki** | onay sonrası |
+| 9.8 | Teslim paketi | README + rapor | §7, demo+rapor 10p | ✅ | ✅ |
 
 **Öncelik sırası:** 9.2 → 9.3 → 9.4 → 9.5 → 9.6 → 9.7 → 9.8
 
 **Onay bekleyen kararlar:**
 - Deploy: **Docker (A)** ✅ — `docker compose up --build`
-- 9.8: `docs/rapor.md` + demo video (sen kaydedeceksin)
+- Demo video: sen kaydedeceksin → README'deki placeholder'a link ekle
 
 ---
 
@@ -485,16 +485,18 @@ docker compose up --build
 
 ---
 
-### 9.8 — Teslim paketi ⏳ **← SIRADAKİ ADIM**
+### 9.8 — Teslim paketi ✅
 
 **Bizim plan:** 9.4 (kısmi) | **Hoca:** §7 + Demo/Rapor rubrik (10p) + AI günlüğü (25p)
 
-| Teslim | Dosya |
-|---|---|
-| README | Kurulum, `.env`, akış, test, deploy |
-| Rapor | `docs/rapor.md` — 800–1200 kelime (PDF §7 maddeleri) |
-| AI günlüğü | `docs/ai-gunlugu.md` — ≥7 oturum, ≥5 ekran görüntüsü |
-| Demo | 3–5 dk ekran kaydı, link README'de |
+| Teslim | Dosya | Durum |
+|---|---|---|
+| README | Kurulum, `.env`, akış, test, deploy, teslim checklist | ✅ |
+| Rapor | `docs/rapor.md` — 800–1200 kelime (PDF §7 maddeleri) | ✅ |
+| AI günlüğü | `docs/ai-gunlugu.md` — ≥7 oturum, ≥5 ekran görüntüsü | ✅ |
+| Demo | 3–5 dk ekran kaydı, link README'de | ⏳ kullanıcı kaydı |
+
+**Commit:** `docs: README, rapor ve teslim paketi`
 
 ---
 
@@ -531,7 +533,7 @@ flowchart TD
         C4 --> C5[Kullanıcı Claude'a gider]
     end
 
-    subgraph faz9 ["Faz 9 ⏳ — UI & TESLİM"]
+    subgraph faz9 ["Faz 9 ✅ — UI & TESLİM"]
         D1[9.2 Responsive UI] --> D2[9.3 PromptLog]
         D2 --> D3[9.4–9.5 Hata + pagination]
         D3 --> D4[9.6 pytest]
@@ -585,7 +587,7 @@ ContextCraft/
 │       └── index_helpers.py       ✅ Faz 5
 ├── docs/
 │   ├── ai-gunlugu.md              🟡 sürekli güncelle
-│   └── rapor.md                   ⏳ 9.8
+│   └── rapor.md                   ✅ 9.8
 ├── tests/                         ✅ 9.6 (22 test)
 ├── uploads/                       gitignore
 ├── storage/                       gitignore
@@ -708,8 +710,8 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
-- Faz 9.1–9.7 tamamlandı (Docker dağıtım dahil).
-- Sırada: 9.8 teslim paketi (rapor + demo) — onay bekliyor.
+- Faz 9.1–9.8 tamamlandı (Docker + teslim docs dahil).
+- Kalan: demo video kaydı → README'ye link ekle, GitHub push, GUZEM zip (01/06/2026).
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500

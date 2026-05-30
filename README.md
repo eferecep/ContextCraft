@@ -82,3 +82,29 @@ docker compose down -v
 | `GUNICORN_WORKERS` | Opsiyonel, varsayılan `2` |
 
 > API anahtarları `.env` dosyasında kalır; `.gitignore` ve `.dockerignore` ile repoya gitmez.
+
+## Teslim checklist (BLG106 §7)
+
+| Teslim | Durum | Konum |
+|--------|--------|--------|
+| GitHub repo (public) | ✅ | Bu depo |
+| README.md | ✅ | Bu dosya |
+| AI günlüğü (≥7 oturum) | ✅ | [docs/ai-gunlugu.md](docs/ai-gunlugu.md) |
+| Kısa rapor (800–1200 kelime) | ✅ | [docs/rapor.md](docs/rapor.md) |
+| Demo video (3–5 dk) | ⏳ | Aşağıya link eklenecek |
+| Docker | ✅ | `docker compose up --build` |
+| Birim testleri | ✅ | `pytest -v` (22 test) |
+
+### Demo video
+
+Kayıt tamamlandığında linki buraya ekleyin:
+
+```
+Demo: [YouTube veya Google Drive linki]
+```
+
+Önerilen akış (3–5 dk): kayıt → proje yükle → indeksle → prompt oluştur → sonuç ekranı.
+
+## Lisans ve akademik dürüstlük
+
+Bu proje BLG106 dönem projesi kapsamında geliştirilmiştir. AI ajanları geliştirme sürecinde kullanılmış; tüm kod ve kararlar [docs/ai-gunlugu.md](docs/ai-gunlugu.md) ile belgelenmiştir.
