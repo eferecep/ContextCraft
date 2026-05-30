@@ -129,7 +129,6 @@ Güncellenen dosyalar:
 - `POST /projects/<id>/optimize` — `optimize_prompt()` çağrısı
 - `project_detail.html` — indekslenmiş projelerde prompt formu
 - `pending` / `failed` → "Önce indeksleyin" mesajı
-- Sonuç ekranı Adım 8.2'de eklenecek (`result` template'e aktarılıyor)
 
 ### 10. Adım 8.2 — Detaylandırılmış prompt + kopyala ✅
 
