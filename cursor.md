@@ -98,7 +98,13 @@ Güncellenen dosyalar:
 - `PromptOptimizeError` exception sınıfı
 - `optimize_prompt(project, user_prompt)` imzası
 - Ön kontroller: boş prompt, `status != indexed`, `OPENROUTER_API_KEY` yok
-- DeepSeek çağrısı henüz yok — Adım 6.2'de eklenecek
+
+### 6. Adım 6.2 — retrieve entegrasyonu ✅
+
+- `retrieve(project, prompt)` çağrısı eklendi
+- `_retrieve_context()` — IndexBuildError → PromptOptimizeError dönüşümü
+- Boş retrieve sonucu için anlamlı hata mesajı
+- `format_retrieved_chunks()` — DeepSeek formatı: `[dosya | sembol | satır X-Y]`
 
 ---
 
@@ -183,7 +189,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | # | Adım | Durum |
 |---|---|---|
 | 6.1 | `prompt_optimizer.py` — orkestrasyon | ✅ |
-| 6.2 | retrieve → DeepSeek V3.1 | ⏳ |
+| 6.2 | retrieve → DeepSeek V3.1 | ✅ (retrieve kısmı) |
 | 6.3 | Detaylandırılmış prompt üretme | ⏳ |
 | 6.4 | Gerekli dosya listesi üretme | ⏳ |
 | 6.5 | Çıktı: `{ optimized_prompt, required_files, explanation }` | ⏳ |
@@ -283,7 +289,7 @@ ContextCraft/
 │   ├── services/
 │   │   ├── openrouter.py          ✅ DeepSeekClient
 │   │   ├── llamaindex_service.py  ✅ Faz 5
-│   │   └── prompt_optimizer.py    ✅ Faz 6.1 (iskelet + validasyon)
+│   │   └── prompt_optimizer.py    ✅ Faz 6.1–6.2 (validasyon + retrieve)
 │   ├── templates/core/
 │   │   ├── project_form.html      ✅
 │   │   ├── project_list.html      ✅
