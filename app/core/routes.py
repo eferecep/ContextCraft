@@ -100,12 +100,21 @@ def project_new():
 @login_required
 def project_list():
     page = request.args.get("page", 1, type=int)
+    search_query = request.args.get("q", "").strip()
+
+    query = Project.query.filter_by(owner_id=current_user.id)
+    if search_query:
+        query = query.filter(Project.name.ilike(f"%{search_query}%"))
+
     pagination = (
-        Project.query.filter_by(owner_id=current_user.id)
-        .order_by(Project.created_at.desc())
+        query.order_by(Project.created_at.desc())
         .paginate(page=page, per_page=PROJECTS_PER_PAGE, error_out=False)
     )
-    return render_template("core/project_list.html", pagination=pagination)
+    return render_template(
+        "core/project_list.html",
+        pagination=pagination,
+        search_query=search_query,
+    )
 
 
 @core_bp.route("/projects/<int:project_id>")

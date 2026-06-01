@@ -22,6 +22,25 @@
     </a>
 </div>
 
+<form method="GET"
+      action="{{ url_for('core.project_list') }}"
+      class="mb-4"
+      role="search">
+    <div class="input-group">
+        <input type="search"
+               name="q"
+               class="form-control"
+               value="{{ search_query }}"
+               placeholder="{{ _('Proje adı ara…') }}"
+               aria-label="{{ _('Proje adı ara') }}">
+        <button type="submit" class="btn btn-outline-primary">{{ _('Ara') }}</button>
+        {% if search_query %}
+            <a href="{{ url_for('core.project_list') }}"
+               class="btn btn-outline-secondary">{{ _('Temizle') }}</a>
+        {% endif %}
+    </div>
+</form>
+
 {% if pagination.items %}
     <div class="row g-3">
         {% for project in pagination.items %}
@@ -66,7 +85,7 @@
                 <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
                     {% if pagination.has_prev %}
                         <a class="page-link"
-                           href="{{ url_for('core.project_list', page=pagination.prev_num) }}">
+                           href="{{ url_for('core.project_list', page=pagination.prev_num, q=search_query) if search_query else url_for('core.project_list', page=pagination.prev_num) }}">
                             {{ _('Önceki') }}
                         </a>
                     {% else %}
@@ -78,7 +97,7 @@
                     {% if page_num %}
                         <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
                             <a class="page-link"
-                               href="{{ url_for('core.project_list', page=page_num) }}">
+                               href="{{ url_for('core.project_list', page=page_num, q=search_query) if search_query else url_for('core.project_list', page=page_num) }}">
                                 {{ page_num }}
                             </a>
                         </li>
@@ -92,7 +111,7 @@
                 <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
                     {% if pagination.has_next %}
                         <a class="page-link"
-                           href="{{ url_for('core.project_list', page=pagination.next_num) }}">
+                           href="{{ url_for('core.project_list', page=pagination.next_num, q=search_query) if search_query else url_for('core.project_list', page=pagination.next_num) }}">
                             {{ _('Sonraki') }}
                         </a>
                     {% else %}
@@ -105,10 +124,19 @@
 {% else %}
     <div class="card border-0 shadow-sm">
         <div class="card-body text-center py-5">
-            <p class="text-muted mb-3">{{ _('Henüz projeniz yok.') }}</p>
-            <a href="{{ url_for('core.project_new') }}" class="btn btn-primary">
-                {{ _('İlk Projenizi Oluşturun') }}
-            </a>
+            {% if search_query %}
+                <p class="text-muted mb-3">
+                    {{ _('"%(query)s" için proje bulunamadı.', query=search_query) }}
+                </p>
+                <a href="{{ url_for('core.project_list') }}" class="btn btn-outline-primary">
+                    {{ _('Tüm projeleri göster') }}
+                </a>
+            {% else %}
+                <p class="text-muted mb-3">{{ _('Henüz projeniz yok.') }}</p>
+                <a href="{{ url_for('core.project_new') }}" class="btn btn-primary">
+                    {{ _('İlk Projenizi Oluşturun') }}
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endif %}

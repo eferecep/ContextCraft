@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–11 tamamlandı — bonus profil + avatar + i18n dahil (demo video hariç)**
+**Faz 1–12 tamamlandı — bonus profil + avatar + i18n + arama dahil (demo video hariç)**
 
 | Bölüm | Durum |
 |---|---|
@@ -48,6 +48,7 @@ Sistem çıktısı:
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
 | **Faz 11: İki dilli arayüz (bonus +3)** | ✅ Tamamlandı |
+| **Faz 12: Tam metin arama (bonus +3)** | ✅ Tamamlandı |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -727,6 +728,27 @@ python scripts/build_translations.py
 - `docs/rapor.md` — §9 İki dilli arayüz bonus bölümü
 
 **Commit:** `docs: README ve rapor i18n bonus güncellemesi`
+
+---
+
+## Faz 12 — Tam Metin Arama (Bonus +3 puan) ✅
+
+> **PDF §2.3:** Tam metin arama — ElasticSearch veya basit SQL LIKE (+3 puan)
+
+| # | Adım | Durum | Commit |
+|---|---|---|---|
+| 12.1 | Proje adında LIKE arama + UI | ✅ | `feat(search): proje adında LIKE arama` |
+| 12.2 | Test + docs | ✅ | (aynı commit) |
+
+**Dosyalar:**
+- `app/core/routes.py` — `GET /core/projects?q=` → `Project.name.ilike`
+- `app/templates/core/project_list.html` — arama formu, temizle, boş sonuç
+- `tests/test_projects.py` — 2 arama testi
+- `README.md`, `docs/rapor.md` §10
+
+**Toplam:** 39 test — `pytest -v`
+
+**Commit:** `feat(search): proje adında LIKE arama`
 
 ---
 

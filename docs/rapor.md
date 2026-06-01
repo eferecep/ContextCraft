@@ -108,4 +108,14 @@ BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **Flask-Babel 
 
 **Teknik özet:** `Flask-Babel` altyapısı (`app/i18n.py`, `get_locale()`), Python tarafında `gettext` / `lazy_gettext`, şablonlarda `{{ _('...') }}`. Çeviri dosyaları `translations/tr/` ve `translations/en/` altında; Babel 2.18 jinja2 extractor eksikliği `scripts/build_translations.py` ile giderildi. Dokuz birim testi (`tests/test_i18n.py`) ile locale değiştirme ve çeviri doğrulandı.
 
+---
+
+## 10. Bonus Özellik — Tam Metin Arama (+3 puan)
+
+BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **tam metin arama (ElasticSearch veya basit SQL LIKE)** uygulandı.
+
+**Ne yapar:** Giriş yapmış kullanıcı proje listesinde (`/core/projects`) arama kutusuna metin yazar; yalnızca **proje adında** eşleşen kayıtlar listelenir. Sayfalama korunur; sonuç yoksa bilgilendirici mesaj gösterilir.
+
+**Teknik özet:** `Project.name.ilike("%q%")` ile SQLAlchemy sorgusu; `GET ?q=` parametresi. Yalnızca oturumdaki kullanıcının projeleri filtrelenir. İki birim testi (`tests/test_projects.py`) ile eşleşme ve boş sonuç doğrulandı.
+
 ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu README'ye eklenecektir.

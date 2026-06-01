@@ -51,6 +51,35 @@ def test_project_detail_404_for_other_user(auth_client, app):
     assert b"404" in response.data or b"bulunamad" in response.data.lower()
 
 
+def test_search_projects_by_name(auth_client, app, user):
+    """Proje adında LIKE araması eşleşen kayıtları döndürmeli."""
+    with app.app_context():
+        db.session.add_all(
+            [
+                Project(name="Login App", owner_id=user, status="pending"),
+                Project(name="Blog Sitesi", owner_id=user, status="pending"),
+            ]
+        )
+        db.session.commit()
+
+    response = auth_client.get("/core/projects?q=Login")
+    assert response.status_code == 200
+    assert b"Login App" in response.data
+    assert b"Blog Sitesi" not in response.data
+
+
+def test_search_projects_no_match(auth_client, app, user):
+    """Eşleşmeyen aramada boş sonuç mesajı gösterilmeli."""
+    with app.app_context():
+        db.session.add(Project(name="Demo", owner_id=user, status="pending"))
+        db.session.commit()
+
+    response = auth_client.get("/core/projects?q=xyz-yok")
+    assert response.status_code == 200
+    assert b"bulunamad" in response.data.lower() or b"not found" in response.data.lower()
+    assert b"Demo" not in response.data
+
+
 def test_project_pagination(auth_client, app, user):
     """Proje listesi sayfa başına 10 kayıt göstermeli."""
     with app.app_context():

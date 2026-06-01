@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-01 16:06+0300\n"
+"POT-Creation-Date: 2026-06-01 16:24+0300\n"
 "PO-Revision-Date: 2026-06-01 16:06+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -209,38 +209,38 @@ msgstr "Project '%(name)s' was created successfully."
 msgid "Dosyalar kaydedilirken bir hata oluştu."
 msgstr "An error occurred while saving files."
 
-#: app/core/routes.py:124
+#: app/core/routes.py:133
 msgid "Prompt oluşturmak için önce projeyi indeksleyin."
 msgstr "Index the project before generating a prompt."
 
-#: app/core/routes.py:135
+#: app/core/routes.py:144
 msgid "Prompt başarıyla oluşturuldu."
 msgstr "Prompt generated successfully."
 
-#: app/core/routes.py:143
+#: app/core/routes.py:152
 #, python-format
 msgid "Prompt oluşturma hatası: %(error)s"
 msgstr "Prompt generation error: %(error)s"
 
-#: app/core/routes.py:153
+#: app/core/routes.py:162
 msgid "İndekslenecek dosya bulunamadı."
 msgstr "No files found to index."
 
-#: app/core/routes.py:157
+#: app/core/routes.py:166
 msgid "İndeksleme zaten devam ediyor."
 msgstr "Indexing is already in progress."
 
-#: app/core/routes.py:168
+#: app/core/routes.py:177
 #, python-format
 msgid "'%(name)s' indekslendi (%(count)s parça)."
 msgstr "'%(name)s' indexed (%(count)s chunks)."
 
-#: app/core/routes.py:180
+#: app/core/routes.py:189
 #, python-format
 msgid "İndeksleme hatası: %(error)s"
 msgstr "Indexing error: %(error)s"
 
-#: app/core/routes.py:198
+#: app/core/routes.py:207
 #, python-format
 msgid "'%(name)s' projesi silindi."
 msgstr "Project '%(name)s' was deleted."
@@ -271,6 +271,10 @@ msgstr "%(username)s avatar"
 #: app/templates
 msgid "Anasayfa"
 msgstr "Home"
+
+#: app/templates
+msgid "Ara"
+msgstr "Search"
 
 #: app/templates
 msgid "Aradığınız sayfa mevcut değil, taşınmış veya silinmiş olabilir."
@@ -430,6 +434,16 @@ msgid "Proje Yükle"
 msgstr "Upload Project"
 
 #: app/templates
+#, fuzzy
+msgid "Proje adı ara"
+msgstr "Search project name"
+
+#: app/templates
+#, fuzzy
+msgid "Proje adı ara…"
+msgstr "Search project name…"
+
+#: app/templates
 msgid "Proje listesi"
 msgstr "Project list"
 
@@ -493,9 +507,18 @@ msgid ""
 msgstr "An unexpected server error occurred. Please try again later."
 
 #: app/templates
+msgid "Temizle"
+msgstr "Clear"
+
+#: app/templates
 #, python-format
 msgid "Toplam %(total)s proje"
 msgstr "Total %(total)s projects"
+
+#: app/templates
+#, fuzzy
+msgid "Tüm projeleri göster"
+msgstr "Show all projects"
 
 #: app/templates
 msgid ""

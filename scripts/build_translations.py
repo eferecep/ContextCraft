@@ -143,6 +143,12 @@ EN_TRANSLATIONS = {
     "Sayfa Bulunamadı": "Page Not Found",
     "Sayfa bulunamadı": "Page not found",
     "Aradığınız sayfa mevcut değil, taşınmış veya silinmiş olabilir.": "The page you are looking for does not exist, may have moved, or was deleted.",
+    "Proje adı ara…": "Search project name…",
+    "Proje adı ara": "Search project name",
+    "Ara": "Search",
+    "Temizle": "Clear",
+    '"%(query)s" için proje bulunamadı.': 'No projects found for "%(query)s".',
+    "Tüm projeleri göster": "Show all projects",
 }
 
 
