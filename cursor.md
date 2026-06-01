@@ -523,7 +523,7 @@ docker compose up --build
 | 10.1 | Model + migration (`avatar_path`, `bio`) | ✅ | `feat(models): User avatar_path ve bio alanları` |
 | 10.2 | Avatar yardımcıları + config | ✅ | `feat(auth): avatar yükleme yardımcıları ve config` |
 | 10.3 | ProfileForm + rotalar | ✅ | `feat(auth): profil sayfası ve avatar yükleme rotaları` |
-| 10.4 | Profil şablonu + navbar avatar | ⏳ | — |
+| 10.4 | Profil şablonu + navbar avatar | ✅ | `feat(ui): profil sayfası ve navbar avatar` |
 | 10.5 | Birim testleri | ⏳ | — |
 | 10.6 | README, rapor, ai-gunlugu | ⏳ | — |
 
@@ -579,6 +579,19 @@ users
 | `/auth/avatars/<user_id>` | GET | Avatar dosyasını sun |
 
 **Commit:** `feat(auth): profil sayfası ve avatar yükleme rotaları`
+
+### 10.4 — Profil şablonu + navbar avatar ✅
+
+**Dosyalar:**
+- `app/templates/base.html` — navbar'da avatar + Profil linki
+- `app/templates/auth/profile.html` — geniş layout, modal ile avatar silme, sidebar bio özeti
+- `app/static/css/custom.css` — `.cc-avatar-sm`, `.cc-avatar-lg`, placeholder stilleri
+
+**UI:**
+- Navbar: 32px yuvarlak avatar veya initials badge + "Profil" linki
+- Profil sayfası: `container-home`, sidebar istatistikleri, Bootstrap modal onayı
+
+**Commit:** `feat(ui): profil sayfası ve navbar avatar`
 
 ---
 
