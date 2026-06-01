@@ -31,7 +31,7 @@ class Config:
     # Flask-Babel (Faz 11 — iki dilli arayüz)
     BABEL_DEFAULT_LOCALE = "tr"
     BABEL_SUPPORTED_LOCALES = ["tr", "en"]
-    BABEL_TRANSLATION_DIRECTORIES = "translations"
+    BABEL_TRANSLATION_DIRECTORIES = str(BASE_DIR / "translations")
     LANGUAGES = {"tr": "Türkçe", "en": "English"}
 
     # Dosya yükleme (Faz 4)

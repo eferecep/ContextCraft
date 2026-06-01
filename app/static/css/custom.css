@@ -30,6 +30,11 @@ body {
     font-size: 0.875rem;
 }
 
+.cc-navbar .dropdown-menu .dropdown-item.active {
+    background-color: var(--cc-primary);
+    color: #fff;
+}
+
 /* Avatar (Faz 10 — bonus profil) */
 .cc-avatar {
     object-fit: cover;

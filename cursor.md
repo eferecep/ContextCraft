@@ -47,7 +47,7 @@ Sistem çıktısı:
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
-| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1–11.4 ✅ → 11.5–11.7 bekliyor |
+| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1–11.5 ✅ → 11.6–11.7 bekliyor |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -644,7 +644,7 @@ users
 | 11.2 | Python metinleri (flash, form) | ✅ | `feat(i18n): flash ve form mesajlarını gettext ile sar` |
 | 11.3 | Jinja şablon metinleri | ✅ | `feat(i18n): Jinja şablon metinlerini çevirilebilir yap` |
 | 11.4 | tr/en çeviri dosyaları + compile | ✅ | `feat(i18n): Türkçe ve İngilizce çeviri dosyaları` |
-| 11.5 | Navbar dil seçici + route | ⏳ | — |
+| 11.5 | Navbar dil seçici + route | ✅ | `feat(i18n): navbar dil seçici ve set-language route` |
 | 11.6 | Birim testleri | ⏳ | — |
 | 11.7 | README, rapor | ⏳ | — |
 
@@ -699,6 +699,18 @@ python scripts/build_translations.py
 ```
 
 **Commit:** `feat(i18n): Türkçe ve İngilizce çeviri dosyaları`
+
+### 11.5 — Dil seçici ✅
+
+**Dosyalar:**
+- `app/main/routes.py` — `GET /set-language/<lang>` (`session['locale']`, güvenli referrer redirect)
+- `app/templates/base.html` — navbar Bootstrap dropdown (Türkçe / English)
+- `app/static/css/custom.css` — aktif dil vurgusu
+- `config.py` — `BABEL_TRANSLATION_DIRECTORIES` proje köküne sabitlendi (Flask app paketi altında aranıyordu)
+
+**Akış:** Kullanıcı dropdown'dan dil seçer → oturuma yazılır → aynı sayfaya döner → Flask-Babel yeni locale ile render eder.
+
+**Commit:** `feat(i18n): navbar dil seçici ve set-language route`
 
 ---
 
