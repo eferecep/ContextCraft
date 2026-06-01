@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Projelerim — ContextCraft{% endblock %}
+{% block title %}{{ _('Projelerim') }} — ContextCraft{% endblock %}
 
 {% block main_class %}container-home{% endblock %}
 
 {% block content %}
 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
     <div>
-        <h1 class="h3 mb-0">Projelerim</h1>
+        <h1 class="h3 mb-0">{{ _('Projelerim') }}</h1>
         {% if pagination.total > 0 %}
             <p class="text-muted small mb-0 mt-1">
-                Toplam {{ pagination.total }} proje
+                {{ _('Toplam %(total)s proje', total=pagination.total) }}
                 {% if pagination.pages > 1 %}
-                    · Sayfa {{ pagination.page }} / {{ pagination.pages }}
+                    · {{ _('Sayfa %(page)s / %(pages)s', page=pagination.page, pages=pagination.pages) }}
                 {% endif %}
             </p>
         {% endif %}
     </div>
     <a href="{{ url_for('core.project_new') }}" class="btn btn-primary">
-        + Yeni Proje
+        + {{ _('Yeni Proje') }}
     </a>
 </div>
 
@@ -43,7 +43,7 @@
                                 {{ project.description[:80] }}{% if project.description|length > 80 %}…{% endif %}
                             </p>
                         {% else %}
-                            <p class="card-text text-muted small mb-3">Açıklama yok</p>
+                            <p class="card-text text-muted small mb-3">{{ _('Açıklama yok') }}</p>
                         {% endif %}
                         <p class="card-text text-muted small mb-0">
                             {{ project.created_at.strftime("%d.%m.%Y") }}
@@ -52,7 +52,7 @@
                     <div class="card-footer bg-transparent border-top-0 pt-0">
                         <a href="{{ url_for('core.project_detail', project_id=project.id) }}"
                            class="btn btn-sm btn-outline-primary w-100">
-                            Detaya Git
+                            {{ _('Detaya Git') }}
                         </a>
                     </div>
                 </div>
@@ -61,16 +61,16 @@
     </div>
 
     {% if pagination.pages > 1 %}
-        <nav class="mt-4" aria-label="Proje sayfaları">
+        <nav class="mt-4" aria-label="{{ _('Proje sayfaları') }}">
             <ul class="pagination justify-content-center flex-wrap mb-0">
                 <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
                     {% if pagination.has_prev %}
                         <a class="page-link"
                            href="{{ url_for('core.project_list', page=pagination.prev_num) }}">
-                            Önceki
+                            {{ _('Önceki') }}
                         </a>
                     {% else %}
-                        <span class="page-link">Önceki</span>
+                        <span class="page-link">{{ _('Önceki') }}</span>
                     {% endif %}
                 </li>
 
@@ -93,10 +93,10 @@
                     {% if pagination.has_next %}
                         <a class="page-link"
                            href="{{ url_for('core.project_list', page=pagination.next_num) }}">
-                            Sonraki
+                            {{ _('Sonraki') }}
                         </a>
                     {% else %}
-                        <span class="page-link">Sonraki</span>
+                        <span class="page-link">{{ _('Sonraki') }}</span>
                     {% endif %}
                 </li>
             </ul>
@@ -105,9 +105,9 @@
 {% else %}
     <div class="card border-0 shadow-sm">
         <div class="card-body text-center py-5">
-            <p class="text-muted mb-3">Henüz projeniz yok.</p>
+            <p class="text-muted mb-3">{{ _('Henüz projeniz yok.') }}</p>
             <a href="{{ url_for('core.project_new') }}" class="btn btn-primary">
-                İlk Projenizi Oluşturun
+                {{ _('İlk Projenizi Oluşturun') }}
             </a>
         </div>
     </div>

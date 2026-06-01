@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Yeni Proje — ContextCraft{% endblock %}
+{% block title %}{{ _('Yeni Proje') }} — ContextCraft{% endblock %}
 
 {% block main_class %}container-wide{% endblock %}
 
 {% block content %}
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
-        <h1 class="h4 mb-4">Yeni Proje Oluştur</h1>
+        <h1 class="h4 mb-4">{{ _('Yeni Proje Oluştur') }}</h1>
         <form method="POST" enctype="multipart/form-data" novalidate>
             {{ form.hidden_tag() }}
 
@@ -31,7 +31,7 @@
                 {{ form.files.label(class="form-label") }}
                 {{ form.files(class="form-control" + (" is-invalid" if form.files.errors else ""), multiple=true) }}
                 <div class="form-text">
-                    Birden fazla dosya seçebilirsiniz (.py, .html, .js, .css, .zip vb.)
+                    {{ _('Birden fazla dosya seçebilirsiniz (.py, .html, .js, .css, .zip vb.)') }}
                 </div>
                 {% for error in form.files.errors %}
                     <div class="invalid-feedback d-block">{{ error }}</div>
@@ -41,7 +41,7 @@
             <div class="d-flex flex-column flex-sm-row gap-2">
                 {{ form.submit(class="btn btn-primary") }}
                 <a href="{{ url_for('core.project_list') }}" class="btn btn-outline-secondary">
-                    İptal
+                    {{ _('İptal') }}
                 </a>
             </div>
         </form>

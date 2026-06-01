@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Giriş Yap — ContextCraft{% endblock %}
+{% block title %}{{ _('Giriş Yap') }} — ContextCraft{% endblock %}
 
 {% block content %}
 <div class="card cc-auth-card">
     <div class="card-body p-4">
-        <h1 class="card-title mb-4">Giriş Yap</h1>
+        <h1 class="card-title mb-4">{{ _('Giriş Yap') }}</h1>
         <form method="POST" novalidate>
             {{ form.hidden_tag() }}
 
@@ -34,8 +34,8 @@
         </form>
 
         <p class="text-center text-muted small mt-4 mb-0">
-            Hesabınız yok mu?
-            <a href="{{ url_for('auth.register') }}" class="text-decoration-none">Kayıt olun</a>
+            {{ _('Hesabınız yok mu?') }}
+            <a href="{{ url_for('auth.register') }}" class="text-decoration-none">{{ _('Kayıt olun') }}</a>
         </p>
     </div>
 </div>

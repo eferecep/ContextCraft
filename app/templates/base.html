@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="{{ current_locale }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +21,7 @@
                     data-bs-target="#mainNavbar"
                     aria-controls="mainNavbar"
                     aria-expanded="false"
-                    aria-label="Menüyü aç/kapat">
+                    aria-label="{{ _('Menüyü aç/kapat') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -29,14 +29,14 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('core.project_list') }}">Projelerim</a>
+                            <a class="nav-link" href="{{ url_for('core.project_list') }}">{{ _('Projelerim') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2 py-lg-1 cc-profile-nav"
                                href="{{ url_for('auth.profile') }}">
                                 {% if current_user.has_avatar %}
                                     <img src="{{ url_for('auth.serve_avatar', user_id=current_user.id) }}"
-                                         alt="{{ current_user.username }} avatar"
+                                         alt="{{ _('%(username)s avatar', username=current_user.username) }}"
                                          class="cc-avatar cc-avatar-sm">
                                 {% else %}
                                     <span class="cc-avatar cc-avatar-sm cc-avatar-placeholder"
@@ -44,18 +44,18 @@
                                         {{ current_user.username[:1]|upper }}
                                     </span>
                                 {% endif %}
-                                <span>Profil</span>
+                                <span>{{ _('Profil') }}</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Çıkış</a>
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">{{ _('Çıkış') }}</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.login') }}">Giriş</a>
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">{{ _('Giriş') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.register') }}">Kayıt Ol</a>
+                            <a class="nav-link" href="{{ url_for('auth.register') }}">{{ _('Kayıt Ol') }}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -81,7 +81,7 @@
                         <button type="button"
                                 class="btn-close"
                                 data-bs-dismiss="alert"
-                                aria-label="Kapat"></button>
+                                aria-label="{{ _('Kapat') }}"></button>
                     </div>
                 {% endfor %}
             {% endif %}

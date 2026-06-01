@@ -642,7 +642,7 @@ users
 |---|---|---|---|
 | 11.1 | Flask-Babel altyapısı + locale seçici | ✅ | `feat(i18n): Flask-Babel altyapısı ve locale seçici` |
 | 11.2 | Python metinleri (flash, form) | ✅ | `feat(i18n): flash ve form mesajlarını gettext ile sar` |
-| 11.3 | Jinja şablon metinleri | ⏳ | — |
+| 11.3 | Jinja şablon metinleri | ✅ | `feat(i18n): Jinja şablon metinlerini çevirilebilir yap` |
 | 11.4 | tr/en çeviri dosyaları + compile | ⏳ | — |
 | 11.5 | Navbar dil seçici + route | ⏳ | — |
 | 11.6 | Birim testleri | ⏳ | — |
@@ -671,6 +671,16 @@ users
 - `app/utils/avatar_helpers.py`, `app/utils/file_helpers.py` — kullanıcıya dönük `ValueError` metinleri
 
 **Commit:** `feat(i18n): flash ve form mesajlarını gettext ile sar`
+
+### 11.3 — Jinja şablon metinleri ✅
+
+**Dosyalar (10 şablon):**
+- `base.html` — `lang="{{ current_locale }}"`, navbar, aria-label
+- `main/index.html`, `auth/*.html`, `core/*.html`, `errors/*.html`
+
+**Kalıp:** `{{ _('metin') }}`, parametreli: `{{ _('Toplam %(total)s proje', total=n) }}`
+
+**Commit:** `feat(i18n): Jinja şablon metinlerini çevirilebilir yap`
 
 ---
 

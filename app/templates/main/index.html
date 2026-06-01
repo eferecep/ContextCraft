@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Anasayfa — ContextCraft{% endblock %}
+{% block title %}{{ _('Anasayfa') }} — ContextCraft{% endblock %}
 
 {% block main_class %}container-home{% endblock %}
 
@@ -9,20 +9,19 @@
     <div class="card-body p-4 p-md-5 text-center text-md-start">
         <h1 class="display-6 fw-semibold mb-3">ContextCraft</h1>
         <p class="lead mb-4">
-            Yazılım projelerinizi yükleyin, LlamaIndex ile bağlamı optimize edin
-            ve token israfını önleyin.
+            {{ _('Yazılım projelerinizi yükleyin, LlamaIndex ile bağlamı optimize edin ve token israfını önleyin.') }}
         </p>
         {% if current_user.is_authenticated %}
             <p class="mb-3">
-                Merhaba, <strong>{{ current_user.username }}</strong>!
+                {{ _('Merhaba, %(username)s!', username=current_user.username) }}
             </p>
             <a href="{{ url_for('core.project_list') }}" class="btn btn-light btn-lg">
-                Projelerime Git
+                {{ _('Projelerime Git') }}
             </a>
         {% else %}
             <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-start">
-                <a href="{{ url_for('auth.login') }}" class="btn btn-light btn-lg">Giriş Yap</a>
-                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">Kayıt Ol</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-light btn-lg">{{ _('Giriş Yap') }}</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">{{ _('Kayıt Ol') }}</a>
             </div>
         {% endif %}
     </div>
@@ -33,10 +32,9 @@
         <div class="card cc-step-card">
             <div class="card-body p-4">
                 <span class="cc-step-num">1</span>
-                <h2 class="h5 card-title">Proje Yükle</h2>
+                <h2 class="h5 card-title">{{ _('Proje Yükle') }}</h2>
                 <p class="card-text text-muted small mb-0">
-                    Python, HTML, JS veya ZIP dosyalarınızı yükleyin.
-                    ContextCraft projenizi analiz etmeye hazır hale getirir.
+                    {{ _('Python, HTML, JS veya ZIP dosyalarınızı yükleyin. ContextCraft projenizi analiz etmeye hazır hale getirir.') }}
                 </p>
             </div>
         </div>
@@ -45,10 +43,9 @@
         <div class="card cc-step-card">
             <div class="card-body p-4">
                 <span class="cc-step-num">2</span>
-                <h2 class="h5 card-title">İndeksle</h2>
+                <h2 class="h5 card-title">{{ _('İndeksle') }}</h2>
                 <p class="card-text text-muted small mb-0">
-                    LlamaIndex hibrit arama ile kod parçalarını indeksler.
-                    Vektör + BM25 ile en alakalı dosyalar bulunur.
+                    {{ _('LlamaIndex hibrit arama ile kod parçalarını indeksler. Vektör + BM25 ile en alakalı dosyalar bulunur.') }}
                 </p>
             </div>
         </div>
@@ -57,10 +54,9 @@
         <div class="card cc-step-card">
             <div class="card-body p-4">
                 <span class="cc-step-num">3</span>
-                <h2 class="h5 card-title">Prompt Oluştur</h2>
+                <h2 class="h5 card-title">{{ _('Prompt Oluştur') }}</h2>
                 <p class="card-text text-muted small mb-0">
-                    Kısa isteğinizi yazın; sistem detaylandırılmış prompt
-                    ve yalnızca gerekli dosyaları üretir. Claude'a yapıştırın.
+                    {{ _('Kısa isteğinizi yazın; sistem detaylandırılmış prompt ve yalnızca gerekli dosyaları üretir. Claude\'a yapıştırın.') }}
                 </p>
             </div>
         </div>

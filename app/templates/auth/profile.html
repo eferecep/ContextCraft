@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Profilim — ContextCraft{% endblock %}
+{% block title %}{{ _('Profilim') }} — ContextCraft{% endblock %}
 
 {% block main_class %}container-home{% endblock %}
 
 {% block content %}
 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
     <div>
-        <h1 class="h3 mb-0">Profilim</h1>
-        <p class="text-muted small mb-0 mt-1">Hesap bilgilerinizi ve avatarınızı yönetin</p>
+        <h1 class="h3 mb-0">{{ _('Profilim') }}</h1>
+        <p class="text-muted small mb-0 mt-1">{{ _('Hesap bilgilerinizi ve avatarınızı yönetin') }}</p>
     </div>
     <a href="{{ url_for('core.project_list') }}" class="btn btn-outline-secondary btn-sm">
-        ← Projelerim
+        ← {{ _('Projelerim') }}
     </a>
 </div>
 
@@ -21,7 +21,7 @@
             <div class="card-body p-4 text-center">
                 {% if avatar_url %}
                     <img src="{{ avatar_url }}"
-                         alt="{{ current_user.username }} avatar"
+                         alt="{{ _('%(username)s avatar', username=current_user.username) }}"
                          class="cc-avatar cc-avatar-lg">
                 {% else %}
                     <span class="cc-avatar cc-avatar-lg cc-avatar-placeholder-dark d-inline-flex">
@@ -34,10 +34,10 @@
 
                 <div class="text-start border-top pt-3">
                     <p class="cc-profile-stat mb-1">
-                        <strong>Üyelik:</strong> {{ current_user.created_at.strftime("%d.%m.%Y") }}
+                        <strong>{{ _('Üyelik:') }}</strong> {{ current_user.created_at.strftime("%d.%m.%Y") }}
                     </p>
                     <p class="cc-profile-stat mb-0">
-                        <strong>Proje sayısı:</strong> {{ project_count }}
+                        <strong>{{ _('Proje sayısı:') }}</strong> {{ project_count }}
                     </p>
                     {% if current_user.bio %}
                         <p class="cc-profile-stat mt-3 mb-0">{{ current_user.bio }}</p>
@@ -50,13 +50,13 @@
     <div class="col-lg-8">
         <div class="card cc-auth-card mb-4">
             <div class="card-body p-4">
-                <h2 class="h5 mb-3">Hakkımda</h2>
+                <h2 class="h5 mb-3">{{ _('Hakkımda') }}</h2>
                 <form method="POST" novalidate>
                     {{ profile_form.hidden_tag() }}
 
                     <div class="mb-3">
                         {{ profile_form.bio.label(class="form-label") }}
-                        {{ profile_form.bio(class="form-control" + (" is-invalid" if profile_form.bio.errors else ""), rows="4", placeholder="Kendinizi kısaca tanıtın…") }}
+                        {{ profile_form.bio(class="form-control" + (" is-invalid" if profile_form.bio.errors else ""), rows="4", placeholder=_('Kendinizi kısaca tanıtın…')) }}
                         {% for error in profile_form.bio.errors %}
                             <div class="invalid-feedback d-block">{{ error }}</div>
                         {% endfor %}
@@ -69,8 +69,8 @@
 
         <div class="card cc-auth-card">
             <div class="card-body p-4">
-                <h2 class="h5 mb-1">Avatar</h2>
-                <p class="text-muted small mb-3">Profil fotoğrafınız navbar'da görünür.</p>
+                <h2 class="h5 mb-1">{{ _('Avatar') }}</h2>
+                <p class="text-muted small mb-3">{{ _('Profil fotoğrafınız navbar\'da görünür.') }}</p>
 
                 <form method="POST"
                       action="{{ url_for('auth.profile_avatar') }}"
@@ -81,7 +81,7 @@
                     <div class="mb-3">
                         {{ avatar_form.avatar.label(class="form-label") }}
                         {{ avatar_form.avatar(class="form-control" + (" is-invalid" if avatar_form.avatar.errors else ""), accept="image/png,image/jpeg,image/gif,image/webp") }}
-                        <div class="form-text">png, jpg, jpeg, gif veya webp — en fazla 2 MB</div>
+                        <div class="form-text">{{ _('png, jpg, jpeg, gif veya webp — en fazla 2 MB') }}</div>
                         {% for error in avatar_form.avatar.errors %}
                             <div class="invalid-feedback d-block">{{ error }}</div>
                         {% endfor %}
@@ -94,7 +94,7 @@
                                     class="btn btn-outline-danger"
                                     data-bs-toggle="modal"
                                     data-bs-target="#removeAvatarModal">
-                                Avatarı Kaldır
+                                {{ _('Avatarı Kaldır') }}
                             </button>
                         {% endif %}
                     </div>
@@ -109,17 +109,17 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title h5" id="removeAvatarModalLabel">Avatarı Kaldır</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                <h2 class="modal-title h5" id="removeAvatarModalLabel">{{ _('Avatarı Kaldır') }}</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Kapat') }}"></button>
             </div>
             <div class="modal-body">
-                Profil fotoğrafınız kaldırılacak. Devam etmek istiyor musunuz?
+                {{ _('Profil fotoğrafınız kaldırılacak. Devam etmek istiyor musunuz?') }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('İptal') }}</button>
                 <form method="POST" action="{{ url_for('auth.profile_avatar_delete') }}" class="d-inline">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn btn-danger">Kaldır</button>
+                    <button type="submit" class="btn btn-danger">{{ _('Kaldır') }}</button>
                 </form>
             </div>
         </div>
