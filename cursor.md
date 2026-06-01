@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–12 tamamlandı — bonus profil + avatar + i18n + arama dahil (demo video hariç)**
+**Faz 1–12 tamamlandı — teslim paketi dahil (demo video ✅)**
 
 | Bölüm | Durum |
 |---|---|
@@ -45,7 +45,7 @@ Sistem çıktısı:
 | Faz 6: Prompt optimizasyon (DeepSeek V3.1) | ✅ Tamamlandı |
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
-| Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
+| Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ✅) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
 | **Faz 11: İki dilli arayüz (bonus +3)** | ✅ Tamamlandı |
 | **Faz 12: Tam metin arama (bonus +3)** | ✅ Tamamlandı |
@@ -338,7 +338,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 | README.md | ✅ | 9.8 |
 | docs/ai-gunlugu.md (≥7 oturum) | ✅ | süreç boyunca |
 | docs/rapor.md (800–1200 kelime) | ✅ | 9.8 |
-| Demo video (3–5 dk) | ⏳ | sen kaydedeceksin — README'ye link |
+| Demo video (3–5 dk) | ✅ | [Google Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing) |
 | Canlı URL / docker-compose | ✅ `docker compose up` | — |
 
 ### Adım tablosu (hibrit)
@@ -358,7 +358,7 @@ DeepSeek V3.1 → detaylı prompt + dosya listesi
 
 **Onay bekleyen kararlar:**
 - Deploy: **Docker (A)** ✅ — `docker compose up --build`
-- Demo video: sen kaydedeceksin → README'deki placeholder'a link ekle
+- Demo video: ✅ [Google Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing) — README'de link
 
 ---
 
@@ -499,7 +499,7 @@ docker compose up --build
 | README | Kurulum, `.env`, akış, test, deploy, teslim checklist | ✅ |
 | Rapor | `docs/rapor.md` — 800–1200 kelime (PDF §7 maddeleri) | ✅ |
 | AI günlüğü | `docs/ai-gunlugu.md` — ≥7 oturum, ≥5 ekran görüntüsü | ✅ |
-| Demo | 3–5 dk ekran kaydı, link README'de | ⏳ kullanıcı kaydı |
+| Demo | 3–5 dk ekran kaydı, link README'de | ✅ [Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing) |
 
 **Commit:** `docs: README, rapor ve teslim paketi`
 
@@ -959,7 +959,7 @@ cursor.md dosyasını oku (hibrit Faz 9 planı + BLG106_FinalProje.pdf).
 Durum:
 - Faz 1–8 tamamlandı (prompt optimizasyonu + min. dosya seçimi dahil).
 - Faz 9.1–9.8 tamamlandı (Docker + teslim docs dahil).
-- Kalan: demo video kaydı → README'ye link ekle, GitHub push, GUZEM zip (01/06/2026).
+- Kalan: GUZEM zip (01/06/2026).
 
 Hibrit plan:
 - 9.2 UI Bootstrap | 9.3 PromptLog (3. model) | 9.4 404/500

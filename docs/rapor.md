@@ -118,4 +118,4 @@ BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **tam metin ar
 
 **Teknik özet:** `Project.name.ilike("%q%")` ile SQLAlchemy sorgusu; `GET ?q=` parametresi. Yalnızca oturumdaki kullanıcının projeleri filtrelenir. İki birim testi (`tests/test_projects.py`) ile eşleşme ve boş sonuç doğrulandı.
 
-ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu README'ye eklenecektir.
+ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu [Google Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing) üzerinde; link README'de de yer alır.
