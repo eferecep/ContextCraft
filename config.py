@@ -28,6 +28,12 @@ class Config:
     )
     WTF_CSRF_ENABLED = True
 
+    # Flask-Babel (Faz 11 — iki dilli arayüz)
+    BABEL_DEFAULT_LOCALE = "tr"
+    BABEL_SUPPORTED_LOCALES = ["tr", "en"]
+    BABEL_TRANSLATION_DIRECTORIES = "translations"
+    LANGUAGES = {"tr": "Türkçe", "en": "English"}
+
     # Dosya yükleme (Faz 4)
     UPLOAD_FOLDER = str(BASE_DIR / "uploads")
     ALLOWED_EXTENSIONS = {

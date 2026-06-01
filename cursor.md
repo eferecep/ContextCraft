@@ -47,6 +47,7 @@ Sistem çıktısı:
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
+| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1 ✅ → 11.2–11.7 bekliyor |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -626,6 +627,41 @@ users
 **Not:** `docs/ai-gunlugu.md` bu faz için güncellenmedi (kullanıcı tercihi).
 
 **Commit:** `docs: profil+avatar bonus özelliği belgelendi`
+
+---
+
+## Faz 11 — İki Dilli Arayüz (Flask-Babel, Bonus +3 puan) 🟡
+
+> **PDF §2.3:** Flask-Babel ile Türkçe / İngilizce (+3 puan, isteğe bağlı)
+>
+> **İş akışı:** Her adım → onay → kod → test → `cursor.md` → commit → push
+
+### Adım tablosu
+
+| # | Adım | Durum | Commit |
+|---|---|---|---|
+| 11.1 | Flask-Babel altyapısı + locale seçici | ✅ | `feat(i18n): Flask-Babel altyapısı ve locale seçici` |
+| 11.2 | Python metinleri (flash, form) | ⏳ | — |
+| 11.3 | Jinja şablon metinleri | ⏳ | — |
+| 11.4 | tr/en çeviri dosyaları + compile | ⏳ | — |
+| 11.5 | Navbar dil seçici + route | ⏳ | — |
+| 11.6 | Birim testleri | ⏳ | — |
+| 11.7 | README, rapor | ⏳ | — |
+
+### 11.1 — Flask-Babel altyapısı ✅
+
+**Dosyalar:**
+- `requirements.txt` — `flask-babel>=4.0,<5.0`
+- `app/extensions.py` — `babel = Babel()`
+- `app/i18n.py` — `get_locale()` (session → Accept-Language → `tr`)
+- `app/__init__.py` — `babel.init_app`, `LANGUAGES` context processor
+- `config.py` — `BABEL_DEFAULT_LOCALE`, `BABEL_SUPPORTED_LOCALES`, `LANGUAGES`
+- `babel.cfg` — pybabel extract ayarı
+- `translations/` — çeviri klasörü (11.4'te doldurulacak)
+
+**Locale önceliği:** `session['locale']` → `Accept-Language` → `tr`
+
+**Commit:** `feat(i18n): Flask-Babel altyapısı ve locale seçici`
 
 ---
 

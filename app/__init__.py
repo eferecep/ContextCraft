@@ -2,7 +2,8 @@ from flask import Flask, render_template
 
 from config import config
 
-from .extensions import csrf, db, login_manager, migrate
+from .extensions import babel, csrf, db, login_manager, migrate
+from .i18n import get_locale
 
 
 def _register_error_handlers(app: Flask) -> None:
@@ -24,6 +25,14 @@ def create_app(config_name="default"):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+    babel.init_app(app, locale_selector=get_locale)
+
+    @app.context_processor
+    def inject_i18n():
+        return {
+            "LANGUAGES": app.config.get("LANGUAGES", {}),
+            "current_locale": get_locale(),
+        }
 
     from . import models  # noqa: F401
     from .models import User
