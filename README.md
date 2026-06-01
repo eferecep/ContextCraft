@@ -19,6 +19,7 @@ ContextCraft, yazılımcıların kendi projelerini web arayüzüne yükleyip **L
 - 404 / 500 özel hata sayfaları
 - Proje listesinde sayfalama (sayfa başı 10 kayıt)
 - Docker + PostgreSQL ile production dağıtım
+- **Bonus:** Kullanıcı profili sayfası ve avatar yükleme (bio düzenleme, navbar'da avatar)
 
 ## Teknolojiler
 
@@ -29,7 +30,7 @@ ContextCraft, yazılımcıların kendi projelerini web arayüzüne yükleyip **L
 | İndeksleme | LlamaIndex 0.11, hibrit retrieve |
 | AI | OpenRouter API (embedding + DeepSeek V3.1) |
 | Arayüz | Jinja2, Bootstrap 5 |
-| Test | pytest (22 test) |
+| Test | pytest (28 test) |
 | Deploy | Docker, Gunicorn, PostgreSQL 16 |
 
 ## Hızlı başlangıç (yerel)
@@ -61,10 +62,11 @@ LLAMAINDEX_API_KEY=sk-or-v1-...   # boş bırakılırsa OPENROUTER kullanılır
 ## Kullanım akışı
 
 1. Kayıt ol / giriş yap
-2. Yeni proje oluştur, kaynak dosyalarını yükle
-3. **İndeksle** butonuna bas (LlamaIndex)
-4. Kısa prompt yaz → **Prompt Oluştur**
-5. Detaylandırılmış metni kopyala, gerekli dosyaları Claude/ChatGPT'ye taşı
+2. *(Opsiyonel)* **Profil** sayfasından bio ve avatar yükle
+3. Yeni proje oluştur, kaynak dosyalarını yükle
+4. **İndeksle** butonuna bas (LlamaIndex)
+5. Kısa prompt yaz → **Prompt Oluştur**
+6. Detaylandırılmış metni kopyala, gerekli dosyaları Claude/ChatGPT'ye taşı
 
 ## Test
 
@@ -95,7 +97,7 @@ Veritabanını da silmek: `docker compose down -v`
 ```
 ContextCraft/
 ├── app/
-│   ├── auth/          # Kayıt, giriş, çıkış
+│   ├── auth/          # Kayıt, giriş, çıkış, profil, avatar
 │   ├── core/          # Proje CRUD, indeksleme, prompt
 │   ├── main/          # Anasayfa
 │   ├── models/        # User, Project, PromptLog
@@ -126,7 +128,19 @@ Kayıt tamamlandığında link buraya eklenecek:
 Demo: [YouTube veya Google Drive linki]
 ```
 
-Önerilen akış (3–5 dk): kayıt → proje yükle → indeksle → prompt oluştur → sonuç ekranı.
+Önerilen akış (3–5 dk): kayıt → *(profil/avatar)* → proje yükle → indeksle → prompt oluştur → sonuç ekranı.
+
+## Bonus özellikler (BLG106 §2.3)
+
+| Özellik | Durum | Puan |
+|---------|--------|------|
+| Kullanıcı profili + avatar yükleme | ✅ | +4 |
+| E-posta ile şifre sıfırlama | — | +5 |
+| REST API (`/api/v1/...`) | — | +5 |
+| Tam metin arama | — | +3 |
+| İki dilli arayüz (Flask-Babel) | — | +3 |
+
+Profil bonusu: `/auth/profile` — bio düzenleme, png/jpg/gif/webp avatar (max 2 MB), navbar'da görüntüleme.
 
 ## Akademik dürüstlük
 

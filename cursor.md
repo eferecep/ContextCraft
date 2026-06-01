@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–9 tamamlandı — Faz 10 bonus (profil + avatar) devam ediyor**
+**Faz 1–10 tamamlandı — bonus profil + avatar dahil (demo video hariç)**
 
 | Bölüm | Durum |
 |---|---|
@@ -46,7 +46,7 @@ Sistem çıktısı:
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
-| **Faz 10: Profil + avatar (bonus +4)** | 🟡 10.1 ✅ → 10.2–10.6 bekliyor |
+| **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -72,6 +72,7 @@ Her adım:
 - Detaylandırılmış prompt + kopyala ✅
 - Gerekli dosya listesi (yalnızca alakalı dosyalar) ✅
 - Token tasarrufu bilgisi ✅
+- Profil sayfası + avatar yükleme ✅ (Faz 10 bonus)
 
 ---
 
@@ -511,7 +512,7 @@ docker compose up --build
 
 ---
 
-## Faz 10 — Kullanıcı Profili + Avatar (Bonus +4 puan) 🟡
+## Faz 10 — Kullanıcı Profili + Avatar (Bonus +4 puan) ✅
 
 > **PDF §2.3:** Kullanıcı profili sayfası ve avatar yükleme (+4 puan, isteğe bağlı)
 >
@@ -526,7 +527,7 @@ docker compose up --build
 | 10.3 | ProfileForm + rotalar | ✅ | `feat(auth): profil sayfası ve avatar yükleme rotaları` |
 | 10.4 | Profil şablonu + navbar avatar | ✅ | `feat(ui): profil sayfası ve navbar avatar` |
 | 10.5 | Birim testleri | ✅ | `test: profil ve avatar yükleme testleri` |
-| 10.6 | README, rapor, ai-gunlugu | ⏳ | — |
+| 10.6 | README, rapor | ✅ | `docs: profil+avatar bonus özelliği belgelendi` |
 
 ### 10.1 — Model + migration ✅
 
@@ -614,6 +615,17 @@ users
 **Toplam:** 28 test (`pytest -v`)
 
 **Commit:** `test: profil ve avatar yükleme testleri`
+
+### 10.6 — Dokümantasyon ✅
+
+**Dosyalar:**
+- `README.md` — bonus özellik tablosu, profil/avatar, 28 test
+- `docs/rapor.md` — §8 Bonus Özellik bölümü
+- `cursor.md` — Faz 10 tamamlandı
+
+**Not:** `docs/ai-gunlugu.md` bu faz için güncellenmedi (kullanıcı tercihi).
+
+**Commit:** `docs: profil+avatar bonus özelliği belgelendi`
 
 ---
 

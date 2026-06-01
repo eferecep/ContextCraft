@@ -30,11 +30,11 @@ Kayıt/Giriş → Proje oluştur + dosya yükle → İndeksle (LlamaIndex)
 | Katman      | Dosya / klasör                       | Görev                            |
 | ----------- | ------------------------------------ | -------------------------------- |
 | Web         | `app/core/routes.py`                 | Proje CRUD, indeksleme, optimize |
-| Auth        | `app/auth/`                          | Flask-Login, hash'li şifre       |
+| Auth        | `app/auth/`                          | Flask-Login, hash'li şifre, profil, avatar |
 | İndeks      | `app/services/llamaindex_service.py` | Hibrit retrieve (vektör + BM25)  |
 | Prompt      | `app/services/prompt_optimizer.py`   | DeepSeek orkestrasyonu           |
 | API         | `app/services/openrouter.py`         | OpenRouter istemcisi             |
-| Kalıcı veri | `uploads/`, `storage/`               | Dosyalar ve indeks               |
+| Kalıcı veri | `uploads/`, `storage/`               | Dosyalar, avatar ve indeks       |
 
 
 Tüm AI istekleri **OpenRouter API** üzerinden gider; yerel model indirilmez. Production ortamında `docker compose up` ile Gunicorn + PostgreSQL çalıştırılır.
@@ -87,5 +87,15 @@ Projeyi sürdürürsem şu geliştirmeleri önceliklendirirdim:
 2. **Prompt geçmişi UI** — `PromptLog` veritabanına kaydediliyor; detay sayfasında geçmiş var, tam ekran görüntüleme eklenebilir.
 3. **Canlı deploy** — Docker altyapısı hazır; buluta (Railway/Render) taşınabilir.
 4. **ZIP içeriği otomatik açma** — Kısmen var; daha büyük monorepo projelerinde alt klasör desteği genişletilebilir.
+
+---
+
+## 8. Bonus Özellik — Kullanıcı Profili ve Avatar (+4 puan)
+
+BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **kullanıcı profili sayfası ve avatar yükleme** uygulandı.
+
+**Ne yapar:** Giriş yapmış kullanıcı `/auth/profile` sayfasından kısa bir bio metni girebilir; png, jpg, jpeg, gif veya webp formatında (en fazla 2 MB) profil fotoğrafı yükleyebilir. Avatar navbar'da küçük yuvarlak görsel olarak görünür; fotoğraf yoksa kullanıcı adının ilk harfi placeholder olarak kullanılır.
+
+**Teknik özet:** `User` modeline `avatar_path` ve `bio` alanları eklendi. Dosyalar `uploads/avatars/{user_id}/` altında saklanır; Flask route ile servis edilir. `ProfileForm` ve `AvatarForm` (Flask-WTF, CSRF korumalı) kullanıldı. Altı birim testi (`tests/test_profile.py`) ile doğrulandı; toplam test sayısı 28'e çıktı.
 
 ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu README'ye eklenecektir.
