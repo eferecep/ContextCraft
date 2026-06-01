@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–10 tamamlandı — bonus profil + avatar dahil (demo video hariç)**
+**Faz 1–11 tamamlandı — bonus profil + avatar + i18n dahil (demo video hariç)**
 
 | Bölüm | Durum |
 |---|---|
@@ -630,7 +630,7 @@ users
 
 ---
 
-## Faz 11 — İki Dilli Arayüz (Flask-Babel, Bonus +3 puan) 🟡
+## Faz 11 — İki Dilli Arayüz (Flask-Babel, Bonus +3 puan) ✅
 
 > **PDF §2.3:** Flask-Babel ile Türkçe / İngilizce (+3 puan, isteğe bağlı)
 >
