@@ -30,9 +30,33 @@ body {
     font-size: 0.875rem;
 }
 
-.cc-navbar .dropdown-menu .dropdown-item.active {
-    background-color: var(--cc-primary);
-    color: #fff;
+.cc-lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+}
+
+.cc-lang-switch .cc-lang-link {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    opacity: 0.75;
+}
+
+.cc-lang-switch .cc-lang-link:hover {
+    opacity: 1;
+}
+
+.cc-lang-switch .cc-lang-link.active {
+    opacity: 1;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+
+.cc-lang-switch .cc-lang-divider {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.875rem;
+    user-select: none;
 }
 
 /* Avatar (Faz 10 — bonus profil) */

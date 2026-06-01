@@ -27,26 +27,16 @@
 
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                           href="#"
-                           role="button"
-                           data-bs-toggle="dropdown"
-                           aria-expanded="false"
-                           id="languageDropdown">
-                            {{ LANGUAGES.get(current_locale, current_locale) }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="languageDropdown">
-                            {% for code, label in LANGUAGES.items() %}
-                                <li>
-                                    <a class="dropdown-item{% if code == current_locale %} active{% endif %}"
-                                       href="{{ url_for('main.set_language', lang=code) }}">
-                                        {{ label }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                    <li class="nav-item cc-lang-switch">
+                        {% for code, label in LANGUAGES.items() %}
+                            {% if not loop.first %}
+                                <span class="cc-lang-divider" aria-hidden="true">|</span>
+                            {% endif %}
+                            <a class="nav-link cc-lang-link{% if code == current_locale %} active{% endif %}"
+                               href="{{ url_for('main.set_language', lang=code, next=request.full_path) }}">
+                                {{ label }}
+                            </a>
+                        {% endfor %}
                     </li>
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">

@@ -15,6 +15,11 @@ def set_language(lang):
     supported = current_app.config.get("BABEL_SUPPORTED_LOCALES", ["tr", "en"])
     if lang in supported:
         session["locale"] = lang
+        session.modified = True
+
+    next_url = request.args.get("next")
+    if next_url and next_url.startswith("/") and not next_url.startswith("//"):
+        return redirect(next_url)
 
     referrer = request.referrer
     if referrer:
