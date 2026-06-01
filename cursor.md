@@ -522,7 +522,7 @@ docker compose up --build
 |---|---|---|---|
 | 10.1 | Model + migration (`avatar_path`, `bio`) | ✅ | `feat(models): User avatar_path ve bio alanları` |
 | 10.2 | Avatar yardımcıları + config | ✅ | `feat(auth): avatar yükleme yardımcıları ve config` |
-| 10.3 | ProfileForm + rotalar | ⏳ | — |
+| 10.3 | ProfileForm + rotalar | ✅ | `feat(auth): profil sayfası ve avatar yükleme rotaları` |
 | 10.4 | Profil şablonu + navbar avatar | ⏳ | — |
 | 10.5 | Birim testleri | ⏳ | — |
 | 10.6 | README, rapor, ai-gunlugu | ⏳ | — |
@@ -561,6 +561,24 @@ users
 | `get_avatar_absolute_path(avatar_path)` | Servis route için güvenli mutlak yol |
 
 **Commit:** `feat(auth): avatar yükleme yardımcıları ve config`
+
+### 10.3 — ProfileForm + rotalar ✅
+
+**Dosyalar:**
+- `app/auth/forms.py` — `ProfileForm` (bio), `AvatarForm` (FileField + boyut kontrolü)
+- `app/auth/routes.py` — profil, avatar yükle/sil, avatar servis route'ları
+- `app/templates/auth/profile.html` — temel profil sayfası (10.4'te navbar/CSS iyileştirilecek)
+
+**Rotalar:**
+
+| URL | Method | Açıklama |
+|---|---|---|
+| `/auth/profile` | GET/POST | Profil görüntüle / bio güncelle |
+| `/auth/profile/avatar` | POST | Avatar yükle |
+| `/auth/profile/avatar/delete` | POST | Avatar kaldır |
+| `/auth/avatars/<user_id>` | GET | Avatar dosyasını sun |
+
+**Commit:** `feat(auth): profil sayfası ve avatar yükleme rotaları`
 
 ---
 
@@ -708,6 +726,10 @@ Tarayıcı: http://127.0.0.1:5000
 | `/auth/register` | GET/POST | Kayıt ol |
 | `/auth/login` | GET/POST | Giriş yap |
 | `/auth/logout` | GET | Çıkış yap |
+| `/auth/profile` | GET/POST | Profilim (Faz 10) |
+| `/auth/profile/avatar` | POST | Avatar yükle (Faz 10) |
+| `/auth/profile/avatar/delete` | POST | Avatar kaldır (Faz 10) |
+| `/auth/avatars/<user_id>` | GET | Avatar görseli (Faz 10) |
 | `/core/projects` | GET | Proje listesi |
 | `/core/projects/new` | GET/POST | Yeni proje |
 | `/core/projects/<id>` | GET | Proje detay |

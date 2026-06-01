@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
+from flask_wtf.file import FileAllowed, FileField, FileRequired
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional, ValidationError
 
 from app.models import User
 
@@ -47,3 +48,41 @@ class LoginForm(FlaskForm):
     )
     remember_me = BooleanField("Beni hatırla")
     submit = SubmitField("Giriş Yap")
+
+
+class ProfileForm(FlaskForm):
+    bio = TextAreaField(
+        "Hakkımda",
+        validators=[
+            Optional(),
+            Length(max=256, message="Bio en fazla 256 karakter olabilir."),
+        ],
+    )
+    submit = SubmitField("Profili Kaydet")
+
+
+class AvatarForm(FlaskForm):
+    avatar = FileField(
+        "Avatar",
+        validators=[
+            FileRequired(message="Avatar dosyası seçmelisiniz."),
+            FileAllowed(
+                ["png", "jpg", "jpeg", "gif", "webp"],
+                message="Geçersiz format. İzin verilen: png, jpg, jpeg, gif, webp.",
+            ),
+        ],
+    )
+    submit = SubmitField("Avatar Yükle")
+
+    def validate_avatar(self, field):
+        if not field.data or not field.data.filename:
+            return
+
+        from flask import current_app
+
+        max_bytes = current_app.config.get("AVATAR_MAX_BYTES", 2 * 1024 * 1024)
+        field.data.stream.seek(0, 2)
+        size = field.data.stream.tell()
+        field.data.stream.seek(0)
+        if size > max_bytes:
+            raise ValidationError("Avatar dosyası en fazla 2 MB olabilir.")
