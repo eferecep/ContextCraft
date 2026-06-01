@@ -22,7 +22,9 @@ Görünüm: Manager / Composer Modu
 
 Ajan bana `app/__init__.py` içinde factory pattern kullanan ve rotaları blueprintlere bölen bir klasör ağacı sundu.
 
-Oturum 1 Planı
+![Plan Artifact — proje iskeleti (1/2)](img/plan1.png)
+
+![Plan Artifact — klasör yapısı (2/2)](img/plan2.png)
 
 ### Plan'da Sorguladıklarım ve Onayladıklarım
 
@@ -66,7 +68,7 @@ Görünüm: Manager / Composer Modu
 
 Ajan, karmaşık bir görevi 6 ayrı adıma bölen çok iyi bir plan sundu ve herhangi bir kod yazmadan önce planını paylaştı. Ancak Adım 4.1 için sunduğu detaylarda, projenin sadece `.zip` dosyası kabul etmesini ve 16 MB ile sınırlanmasını önerdi.   
 
-*[Buraya Ajanın Adım 4.1 planını sunduğu ekran görüntüsünü ekle: docs/img/oturum-N-faz4-plan.png]*   
+![Faz 4 plan revizyonu — çoklu dosya yükleme](img/plan2.png)
 
 ### Plan'da Sorguladıklarım ve Onayladıklarım
 
@@ -110,7 +112,7 @@ Görünüm: Manager / Composer Modu
 
 Ajan hatasını kabul etti ve sistem akışını netleştiren 3 aşamalı yeni bir plan sundu. Faz 4'te dosya yükleme, Faz 5'te LlamaIndex ile indeksleme ve Faz 6'da DeepSeek ile retrieve (getirme) işlemlerinin yapılacağını haritalandırdı. Ayrıca `.env` ve `.env.example` dosyalarını oluşturarak API yönetimi planını sundu.
 
-*[Buraya Ajanın Faz 4-5-6 mimarisini açıkladığı tablonun veya açıklamanın ekran görüntüsünü ekle: docs/img/oturum-3-mimari-akis.png]*
+![Faz 4–5–6 mimari akış planı](img/plan1.png)
 
 ### Plan'da Sorguladıklarım
 
@@ -153,7 +155,7 @@ Görünüm: Manager / Composer Modu
 
 Ajan doğrudan kod yazmaya geçmek yerine, indeksleme performansını artıracak 6 ana eksen sundu: 1) Doğru dosyaları indeksleme (gürültü filtresi), 2) Akıllı parçalama (CodeSplitter vb.), 3) Zengin metadata ekleme, 4) Hibrit arama (Vektör + BM25), 5) Dosya bazlı özet indeksi, 6) Reranking. Bu stratejilerin etki ve zorluk derecelerini tablo halinde sunarak hangilerini Faz 5'e dahil etmek istediğimi sordu.
 
-*[Buraya Ajanın sunduğu 6 maddelik iyileştirme tablosunun ekran görüntüsünü ekle: docs/img/oturum-4-llamaindex-plan.png]*
+![LlamaIndex iyileştirme seçenekleri planı](img/plan1.png)
 
 ### Plan'da Sorguladıklarım
 
@@ -175,7 +177,7 @@ Ajanın doğrudan kod yazmaya başlamak yerine benimle opsiyonları tartışmas�
 ### Sonraki Oturum İçin Notlar
 
 Ajana; Gürültü filtresi, dosya tipine özel chunking, zengin metadata ve Hibrit retrieval adımlarını Faz 5 planına sabitlediğimi belirteceğim. Bu onay doğrultusunda Adım 5.1'in kodlama sürecini başlatacağım.  
-  
+
 ## Oturum 5 - 29 Mayıs 2026 13:00-14:00
 
 ### Hedef
@@ -198,7 +200,7 @@ Görünüm: Editor View
 
 Ajan, yeni özellikler eklemek yerine doğrudan test aşamasına geçmeyi önererek mimari bir olgunluk gösterdi. Faz 6'daki retrieval akışının tamamen Faz 5'teki indekslemeye bağlı olduğunu belirtti. Sistemi test etmem için; `.env` dosyasındaki API key kontrolü, örnek dosya yükleme ve `storage/` klasörünün durumunu incelememi içeren kısa bir kontrol listesi sundu.
 
-*[Buraya hata ayıklama ve test sürecini gösteren terminal veya tarayıcı ekran görüntüsünü ekle: docs/img/oturum-5-test-hatalari.png]*
+![Hata mesajı — Werkzeug scrypt / hashlib](img/hata.png)
 
 ### Plan'da Sorguladıklarım
 
@@ -206,19 +208,15 @@ Ajanın test önerisini hemen onayladım. Projeyi bir kara kutu gibi büyütmek 
 
 ### Üretilen Kodda Düzelttiklerim
 
-* `models/user.py` içinde şifre hashleme algoritması platform bağımsız hale getirildi.
-
-* LlamaIndex API çağrılarında model isimlendirme formatı düzeltildi ve hata mesajlarının gizlenmeyip arayüze/konsola net bir şekilde yansıması sağlandı.
+- `models/user.py` içinde şifre hashleme algoritması platform bağımsız hale getirildi.
+- LlamaIndex API çağrılarında model isimlendirme formatı düzeltildi ve hata mesajlarının gizlenmeyip arayüze/konsola net bir şekilde yansıması sağlandı.
 
 ### Karşılaştığım Hatalar ve Çözümler
 
-* **Hata 1:** Kayıt olurken Werkzeug 3'ün varsayılan `scrypt` hashlemesi, macOS / Python 3.9 (LibreSSL) ortamında desteklenmediği için uygulama patladı.
-
-* **Çözüm 1:** Şifreleme algoritmasını `models/user.py` içinde `pbkdf2:sha256` olarak sabitledim. Bu sayede tüm işletim sistemlerinde hatasız çalışmasını sağladım.
-
-* **Hata 2:** LlamaIndex, OpenRouter üzerinden çağırdığım `openai/text-embedding-3-small` formatını tanımadı ve indeksleme süreci çöktü.
-
-* **Çözüm 2:** Ajanın kodu revize ederek `.env` içinden gelen model adındaki uyumsuzlukları (prefix'i) otomatik dönüştürmesini sağladım.
+- **Hata 1:** Kayıt olurken Werkzeug 3'ün varsayılan `scrypt` hashlemesi, macOS / Python 3.9 (LibreSSL) ortamında desteklenmediği için uygulama patladı.
+- **Çözüm 1:** Şifreleme algoritmasını `models/user.py` içinde `pbkdf2:sha256` olarak sabitledim. Bu sayede tüm işletim sistemlerinde hatasız çalışmasını sağladım.
+- **Hata 2:** LlamaIndex, OpenRouter üzerinden çağırdığım `openai/text-embedding-3-small` formatını tanımadı ve indeksleme süreci çöktü.
+- **Çözüm 2:** Ajanın kodu revize ederek `.env` içinden gelen model adındaki uyumsuzlukları (prefix'i) otomatik dönüştürmesini sağladım.
 
 ### Bu Oturumdan Öğrendiğim
 
@@ -243,13 +241,13 @@ Görünüm: Manager / Composer Modu
 ### Verdiğim Promptlar
 
 1. "neden faz 7 yapmadan faz 8 planladın ?" *(önceki oturumdan devam; Faz 7'nin zaten tamamlandığı açıklandı.)*
-
 2. **Faz 8 tamamlandıktan sonra:** "detaylı plan hazırla." *(Faz 9 için ilk plan sunuldu.)*
-
 3. **Kritik sorgu:**
+
 > "hocanin dökümantasyonu ve flaskin dışına çıkıyor musun 9.1de?"
 
-4. **PDF yolu paylaşımı:**
+1. **PDF yolu paylaşımı:**
+
 > "hocanın dokümantasyonu repoda yok ama klasörde var /Users/efekarabudak/Desktop/yazılım-kod/cursor/edizHocaProje.nosync/BLG106_FinalProje.pdf"
 
 ### Ajanın Önerdiği Plan ve Cevap Özeti
@@ -268,16 +266,19 @@ Ayrıca PDF'teki **Prompt 5**'te kayıt/giriş şablonlarının *"Bootstrap 5 il
 
 Ajan, `cursor.md`'deki sadeleştirilmiş Faz 9 planını hocanın **10 zorunlu bileşen** checklist'i ile karşılaştırdı:
 
-| # | Hoca zorunluluğu | ContextCraft durumu (oturum anı) |
-|---|---|---|
-| 1–3, 5–6 | Factory, şablon, form, migrate, auth | ✅ |
-| 4 | ≥3 SQLAlchemy modeli | ⚠️ yalnızca User + Project |
-| 7 | 404 / 500 özel sayfalar | ❌ |
-| 8 | Liste sayfalarında pagination | ❌ |
-| 9 | Bootstrap veya Tailwind | ❌ (vanilla CSS) |
-| 10 | Deploy veya Docker | ❌ |
+
+| #        | Hoca zorunluluğu                     | ContextCraft durumu (oturum anı) |
+| -------- | ------------------------------------ | -------------------------------- |
+| 1–3, 5–6 | Factory, şablon, form, migrate, auth | ✅                                |
+| 4        | ≥3 SQLAlchemy modeli                 | ⚠️ yalnızca User + Project       |
+| 7        | 404 / 500 özel sayfalar              | ❌                                |
+| 8        | Liste sayfalarında pagination        | ❌                                |
+| 9        | Bootstrap veya Tailwind              | ❌ (vanilla CSS)                  |
+| 10       | Deploy veya Docker                   | ❌                                |
+
 
 Önerilen yeni alt adımlar:
+
 - **9.1** Bootstrap 5 CDN + `base.html`
 - **9.2** Tüm şablonlar responsive
 - **9.3** 404 / 500 hata sayfaları
@@ -287,7 +288,7 @@ Ajan, `cursor.md`'deki sadeleştirilmiş Faz 9 planını hocanın **10 zorunlu b
 - **9.7** Docker veya Render/Railway deploy
 - **9.8** README, `docs/rapor.md`, teslim dokümantasyonu
 
-*[Buraya PDF checklist karşılaştırma tablosunun ekran görüntüsünü ekle: docs/img/oturum-6-faz9-pdf-checklist.png]*
+![PDF zorunlu bileşenler — Faz 9 plan revizyonu](img/plan2.png)
 
 ### Plan'da Sorguladıklarım ve Onayladıklarım
 
@@ -332,17 +333,16 @@ Görünüm: Manager / Composer Modu
 ### Verdiğim Promptlar
 
 1. **Prompt optimizasyonu testi sonrası** — Ajanın ürettiği çıktıyı paylaştım: 9 dosyalı liste + Google Ads OAuth / IP ban / Telegram odaklı İngilizce detaylandırılmış prompt. *(Bağlam: kısa istek "login ekranı" olsa bile yüklenen proje dosyalarına göre sonuç üretildiği açıklandı.)*
-
 2. "sırada 9.2 mi var"
-
 3. "bizim planımızdaki 9. fazdan bahsediyorum"
-
 4. **Hibrit plan isteği:**
+
 > "bizim faz 9 planını hocanın docsundaki zorunluluklarla birlikte hibrit halde tekrar planla"
 
 ### Ajanın Önerdiği Plan ve Cevap Özeti
 
 **Faz 9 sırası (`cursor.md` planı):**
+
 - 9.1 Bootstrap ✅ tamamlandı
 - 9.2 Responsive dashboard ⏳ sırada
 - 9.3 Birim testleri
@@ -350,33 +350,37 @@ Görünüm: Manager / Composer Modu
 
 **Hibrit plan — iki kaynağın birleşimi:**
 
-| Adım | Bizim plan | Hoca PDF |
-|------|------------|----------|
-| 9.1 | Bootstrap | #9 kısmi ✅ |
-| 9.2 | Responsive dashboard | #9 tam + UI/UX rubrik |
-| 9.3 | — | #4 üçüncü model (`PromptLog` önerisi) |
-| 9.4 | — | #7 404/500 hata sayfaları |
-| 9.5 | — | #8 proje listesi pagination |
-| 9.6 | Birim testleri | pytest, Prompt 9 |
-| 9.7 | Production config | #10 Docker veya Render/Railway |
-| 9.8 | Sunum dokümantasyonu | §7 README, `rapor.md`, günlük, demo video |
+
+| Adım | Bizim plan           | Hoca PDF                                  |
+| ---- | -------------------- | ----------------------------------------- |
+| 9.1  | Bootstrap            | #9 kısmi ✅                                |
+| 9.2  | Responsive dashboard | #9 tam + UI/UX rubrik                     |
+| 9.3  | —                    | #4 üçüncü model (`PromptLog` önerisi)     |
+| 9.4  | —                    | #7 404/500 hata sayfaları                 |
+| 9.5  | —                    | #8 proje listesi pagination               |
+| 9.6  | Birim testleri       | pytest, Prompt 9                          |
+| 9.7  | Production config    | #10 Docker veya Render/Railway            |
+| 9.8  | Sunum dokümantasyonu | §7 README, `rapor.md`, günlük, demo video |
+
 
 **Gap analizi (oturum anı):**
 
-| Hoca # | Zorunluluk | Durum |
-|--------|------------|--------|
-| 1–3, 5–6 | Factory, şablon, form, migrate, auth | ✅ |
-| 4 | ≥3 model + ilişki | ⚠️ User + Project |
-| 7 | 404 / 500 | ❌ |
-| 8 | Pagination | ❌ |
-| 9 | Bootstrap + mobil | 🟡 9.1 ✅, şablonlar bekliyor |
-| 10 | Deploy / Docker | ❌ |
+
+| Hoca #   | Zorunluluk                           | Durum                        |
+| -------- | ------------------------------------ | ---------------------------- |
+| 1–3, 5–6 | Factory, şablon, form, migrate, auth | ✅                            |
+| 4        | ≥3 model + ilişki                    | ⚠️ User + Project            |
+| 7        | 404 / 500                            | ❌                            |
+| 8        | Pagination                           | ❌                            |
+| 9        | Bootstrap + mobil                    | 🟡 9.1 ✅, şablonlar bekliyor |
+| 10       | Deploy / Docker                      | ❌                            |
+
 
 **Öncelik sırası:** 9.2 → 9.3 (3. model, rubrik riski) → 9.4/9.5 (hızlı zorunlular) → 9.6 test → 9.7 deploy → 9.8 teslim paketi.
 
 **Onay bekleyen kararlar:** `PromptLog` modeli, Docker vs Render, hangi adımdan başlanacağı.
 
-*[Buraya hibrit Faz 9 plan tablosunun ekran görüntüsünü ekle: docs/img/oturum-7-faz9-hibrit-plan.png]*
+![Hibrit Faz 9 plan — cursor.md + PDF checklist](img/plan1.png)
 
 ### Plan'da Sorguladıklarım ve Onayladıklarım
 
@@ -394,19 +398,40 @@ Görünüm: Manager / Composer Modu
 
 - **Hata 1:** Prompt oluştururken `QueryFusionRetriever` OpenAI API key arıyordu.
 - **Çözüm 1:** `MockLLM()` — retrieve sırasında LLM çağrılmıyor, yalnızca init gereksinimi giderildi.
-
 - **Hata 2:** `401 User not found` — OpenRouter embedding anahtarı geçersiz.
 - **Çözüm 2:** `.env`'de geçerli `sk-or-v1-...` anahtarı; `LLAMAINDEX_API_KEY` ve `OPENROUTER_API_KEY` aynı OpenRouter key olabilir.
-
 - **Kavram:** "Login ekranı" isteği vs proje içeriği (OAuth script'leri) uyumsuzluğu — ContextCraft'ın bağlam tabanlı çalıştığı, Flask login değil script projesi indekslendiği için sonucun farklı çıktığı anlaşıldı.
 
 ### Bu Oturumdan Öğrendiğim
 
 Tek bir plan dosyası (`cursor.md`) ile hoca PDF'inin örtüşmediğini; teslim ve rubrik için PDF'teki **10 zorunlu bileşen** listesinin ayrıca takip edilmesi gerektiğini gördüm. Hibrit plan, "bizim 4 adım" ile "hoca checklist" arasında köprü kuruyor: örneğin bizim 9.2 yalnızca UI değil, hoca #9'u tamamlıyor; bizim 9.3 testler ayrı kalırken 3. model, pagination ve 404 araya ek adım olarak geliyor. Prompt optimizasyonunun çalışması projenin ana işlevinin tamamlandığını gösterdi; kalan iş büyük ölçüde teslim kalitesi ve eksik rubrik maddeleri.
 
-### Sonraki Oturum İçin Notlar
+---
 
-- Hibrit planda **9.2** (tüm şablonlar Bootstrap + responsive) için onay verip kodlamaya başlayacağım.
-- `PromptLog` üçüncü model ve Docker/Render deploy tercihini netleştireceğim.
-- `cursor.md`'yi hibrit 9.1–9.8 tablosuyla güncellemeyi ajan önerecek; onay sonrası yapılacak.
-- `docs/rapor.md`, demo video ve günlük ekran görüntüsü yerleri Faz 9.8'de tamamlanacak.
+## Ekran Görüntüleri — PDF §6.4 Kanıtlar
+
+Hoca dökümanının istediği **5 kanıt türü** ve dosyalar:
+
+| Kanıt türü | Görsel |
+|------------|--------|
+| Plan Artifact | `plan1.png`, `plan2.png` (Oturum 1) |
+| Walkthrough | Aşağıda |
+| Hata mesajı | `hata.png` (Oturum 5) |
+| Başarılı build | Aşağıda |
+| Çalışan uygulama | Aşağıda |
+
+### Walkthrough — model dosyaları oluşturuldu
+
+![Walkthrough — User ve Project modelleri, özet tablo](img/Walkthrough.png)
+
+### Başarılı build — pytest (22 passed)
+
+![pytest -v — 22 passed](img/pytest_basarili.png)
+
+### Çalışan uygulama — kayıt, proje, prompt sonucu
+
+![Anasayfa / proje listesi](img/calisan_uygulama1.png)
+
+![Proje detay — indeksleme](img/calisan_uygulama2.png)
+
+![Prompt optimizasyon sonuç ekranı](img/calisan_uygulama3.png)
