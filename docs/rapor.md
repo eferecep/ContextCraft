@@ -1,8 +1,8 @@
 # ContextCraft — Proje Raporu
 
 **Ders:** BLG106 İnternet Programcılığı  
-**Öğrenci:** [Ad Soyad]  
-**Tarih:** Mayıs 2026
+**Öğrenci:** Efe Recep KARABUDAK  
+**Tarih:** 1 Haziran 2026
 
 ---
 
@@ -26,14 +26,16 @@ Kayıt/Giriş → Proje oluştur + dosya yükle → İndeksle (LlamaIndex)
 
 **Klasör yapısı (özet):**
 
-| Katman | Dosya / klasör | Görev |
-|--------|----------------|-------|
-| Web | `app/core/routes.py` | Proje CRUD, indeksleme, optimize |
-| Auth | `app/auth/` | Flask-Login, hash'li şifre |
-| İndeks | `app/services/llamaindex_service.py` | Hibrit retrieve (vektör + BM25) |
-| Prompt | `app/services/prompt_optimizer.py` | DeepSeek orkestrasyonu |
-| API | `app/services/openrouter.py` | OpenRouter istemcisi |
-| Kalıcı veri | `uploads/`, `storage/` | Dosyalar ve indeks |
+
+| Katman      | Dosya / klasör                       | Görev                            |
+| ----------- | ------------------------------------ | -------------------------------- |
+| Web         | `app/core/routes.py`                 | Proje CRUD, indeksleme, optimize |
+| Auth        | `app/auth/`                          | Flask-Login, hash'li şifre       |
+| İndeks      | `app/services/llamaindex_service.py` | Hibrit retrieve (vektör + BM25)  |
+| Prompt      | `app/services/prompt_optimizer.py`   | DeepSeek orkestrasyonu           |
+| API         | `app/services/openrouter.py`         | OpenRouter istemcisi             |
+| Kalıcı veri | `uploads/`, `storage/`               | Dosyalar ve indeks               |
+
 
 Tüm AI istekleri **OpenRouter API** üzerinden gider; yerel model indirilmez. Production ortamında `docker compose up` ile Gunicorn + PostgreSQL çalıştırılır.
 
@@ -86,4 +88,4 @@ Projeyi sürdürürsem şu geliştirmeleri önceliklendirirdim:
 3. **Canlı deploy** — Docker altyapısı hazır; buluta (Railway/Render) taşınabilir.
 4. **ZIP içeriği otomatik açma** — Kısmen var; daha büyük monorepo projelerinde alt klasör desteği genişletilebilir.
 
-ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. Proje teslim tarihine kadar demo videosu ve GitHub public paylaşımı tamamlanacaktır.
+ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu README'ye eklenecektir.
