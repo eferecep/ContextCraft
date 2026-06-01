@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from flask_login import UserMixin
 from sqlalchemy import String
@@ -19,6 +19,8 @@ class User(UserMixin, db.Model):
     username: Mapped[str] = mapped_column(String(32), unique=True, index=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(256))
+    avatar_path: Mapped[Optional[str]] = mapped_column(String(256))
+    bio: Mapped[Optional[str]] = mapped_column(String(256))
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
     projects: Mapped[list["Project"]] = relationship(
@@ -32,6 +34,10 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
+
+    @property
+    def has_avatar(self) -> bool:
+        return bool(self.avatar_path)
 
     def __repr__(self) -> str:
         return f"<User username={self.username!r}>"

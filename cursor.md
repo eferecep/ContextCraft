@@ -35,7 +35,7 @@ Sistem çıktısı:
 
 ## Şu An Hangi Aşamadayız?
 
-**Faz 1–9 tamamlandı — teslim paketi hazır (demo video hariç)**
+**Faz 1–9 tamamlandı — Faz 10 bonus (profil + avatar) devam ediyor**
 
 | Bölüm | Durum |
 |---|---|
@@ -46,6 +46,7 @@ Sistem çıktısı:
 | Faz 7: `openrouter.py` altyapısı | ✅ Tamamlandı |
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
+| **Faz 10: Profil + avatar (bonus +4)** | 🟡 10.1 ✅ → 10.2–10.6 bekliyor |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -509,6 +510,40 @@ docker compose up --build
 
 ---
 
+## Faz 10 — Kullanıcı Profili + Avatar (Bonus +4 puan) 🟡
+
+> **PDF §2.3:** Kullanıcı profili sayfası ve avatar yükleme (+4 puan, isteğe bağlı)
+>
+> **İş akışı:** Her adım → onay → kod → test → `cursor.md` → commit → push
+
+### Adım tablosu
+
+| # | Adım | Durum | Commit |
+|---|---|---|---|
+| 10.1 | Model + migration (`avatar_path`, `bio`) | ✅ | `feat(models): User avatar_path ve bio alanları` |
+| 10.2 | Avatar yardımcıları + config | ⏳ | — |
+| 10.3 | ProfileForm + rotalar | ⏳ | — |
+| 10.4 | Profil şablonu + navbar avatar | ⏳ | — |
+| 10.5 | Birim testleri | ⏳ | — |
+| 10.6 | README, rapor, ai-gunlugu | ⏳ | — |
+
+### 10.1 — Model + migration ✅
+
+**Dosyalar:**
+- `app/models/user.py` — `avatar_path`, `bio`, `has_avatar` property
+- `migrations/versions/67a148d9a968_user_profil_ve_avatar_alanlari.py`
+
+**Şema değişikliği:**
+```
+users
+  + avatar_path  VARCHAR(256) NULL   — uploads/avatars/{id}/ altındaki dosya yolu
+  + bio          VARCHAR(256) NULL   — kısa profil metni
+```
+
+**Commit:** `feat(models): User avatar_path ve bio alanları`
+
+---
+
 ## Sistem Mimarisi
 
 ```mermaid
@@ -569,7 +604,7 @@ ContextCraft/
 │   │   └── routes.py              ✅ proje CRUD + index + optimize
 │   ├── main/                      ✅
 │   ├── models/
-│   │   ├── user.py                ✅
+│   │   ├── user.py                ✅ + avatar_path, bio (Faz 10.1)
 │   │   ├── project.py             ✅
 │   │   └── prompt_log.py          ✅ Faz 9.3
 │   ├── services/
