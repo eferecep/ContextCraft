@@ -47,7 +47,7 @@ Sistem çıktısı:
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
-| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1 ✅ → 11.2–11.7 bekliyor |
+| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1–11.4 ✅ → 11.5–11.7 bekliyor |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -643,7 +643,7 @@ users
 | 11.1 | Flask-Babel altyapısı + locale seçici | ✅ | `feat(i18n): Flask-Babel altyapısı ve locale seçici` |
 | 11.2 | Python metinleri (flash, form) | ✅ | `feat(i18n): flash ve form mesajlarını gettext ile sar` |
 | 11.3 | Jinja şablon metinleri | ✅ | `feat(i18n): Jinja şablon metinlerini çevirilebilir yap` |
-| 11.4 | tr/en çeviri dosyaları + compile | ⏳ | — |
+| 11.4 | tr/en çeviri dosyaları + compile | ✅ | `feat(i18n): Türkçe ve İngilizce çeviri dosyaları` |
 | 11.5 | Navbar dil seçici + route | ⏳ | — |
 | 11.6 | Birim testleri | ⏳ | — |
 | 11.7 | README, rapor | ⏳ | — |
@@ -681,6 +681,24 @@ users
 **Kalıp:** `{{ _('metin') }}`, parametreli: `{{ _('Toplam %(total)s proje', total=n) }}`
 
 **Commit:** `feat(i18n): Jinja şablon metinlerini çevirilebilir yap`
+
+### 11.4 — Çeviri dosyaları ✅
+
+**Sorun:** Babel 2.18 yerleşik `jinja2` extractor'ını kaldırdı (`Unknown extraction method 'jinja2'`).
+
+**Çözüm:**
+- `babel_py.cfg` — yalnızca Python extract
+- `scripts/build_translations.py` — Python `.pot` + regex ile Jinja string birleştirme, EN çevirileri, `pybabel update/compile`
+- `translations/tr/LC_MESSAGES/messages.{po,mo}` — Türkçe (varsayılan, msgid = kaynak)
+- `translations/en/LC_MESSAGES/messages.{po,mo}` — İngilizce (~120 string)
+- `messages.pot` — birleşik şablon
+
+**Yeniden üretmek için:**
+```bash
+python scripts/build_translations.py
+```
+
+**Commit:** `feat(i18n): Türkçe ve İngilizce çeviri dosyaları`
 
 ---
 

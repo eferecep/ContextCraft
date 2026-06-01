@@ -1,0 +1,527 @@
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-06-01 16:06+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/auth/forms.py:12
+msgid "Kullanıcı Adı"
+msgstr ""
+
+#: app/auth/forms.py:13
+msgid "Kullanıcı adı zorunludur."
+msgstr ""
+
+#: app/auth/forms.py:16 app/auth/forms.py:49
+msgid "E-posta"
+msgstr ""
+
+#: app/auth/forms.py:18 app/auth/forms.py:51
+msgid "E-posta zorunludur."
+msgstr ""
+
+#: app/auth/forms.py:19 app/auth/forms.py:52
+msgid "Geçerli bir e-posta girin."
+msgstr ""
+
+#: app/auth/forms.py:23 app/auth/forms.py:56
+msgid "Şifre"
+msgstr ""
+
+#: app/auth/forms.py:25 app/auth/forms.py:57
+msgid "Şifre zorunludur."
+msgstr ""
+
+#: app/auth/forms.py:26
+msgid "Şifre en az 6 karakter olmalıdır."
+msgstr ""
+
+#: app/auth/forms.py:30
+msgid "Şifre Tekrar"
+msgstr ""
+
+#: app/auth/forms.py:32
+msgid "Şifre tekrarı zorunludur."
+msgstr ""
+
+#: app/auth/forms.py:33
+msgid "Şifreler eşleşmiyor."
+msgstr ""
+
+#: app/auth/forms.py:36
+msgid "Kayıt Ol"
+msgstr ""
+
+#: app/auth/forms.py:40
+msgid "Bu e-posta adresi zaten kayıtlı."
+msgstr ""
+
+#: app/auth/forms.py:44
+msgid "Bu kullanıcı adı zaten alınmış."
+msgstr ""
+
+#: app/auth/forms.py:59
+msgid "Beni hatırla"
+msgstr ""
+
+#: app/auth/forms.py:60
+msgid "Giriş Yap"
+msgstr ""
+
+#: app/auth/forms.py:65
+msgid "Hakkımda"
+msgstr ""
+
+#: app/auth/forms.py:68
+msgid "Bio en fazla 256 karakter olabilir."
+msgstr ""
+
+#: app/auth/forms.py:71
+msgid "Profili Kaydet"
+msgstr ""
+
+#: app/auth/forms.py:76
+msgid "Avatar"
+msgstr ""
+
+#: app/auth/forms.py:78
+msgid "Avatar dosyası seçmelisiniz."
+msgstr ""
+
+#: app/auth/forms.py:81
+msgid "Geçersiz format. İzin verilen: png, jpg, jpeg, gif, webp."
+msgstr ""
+
+#: app/auth/forms.py:85
+msgid "Avatar Yükle"
+msgstr ""
+
+#: app/auth/forms.py:98 app/utils/avatar_helpers.py:65
+msgid "Avatar dosyası en fazla 2 MB olabilir."
+msgstr ""
+
+#: app/auth/routes.py:47
+msgid "Kayıt başarılı! Giriş yapabilirsiniz."
+msgstr ""
+
+#: app/auth/routes.py:62
+msgid "E-posta veya şifre hatalı."
+msgstr ""
+
+#: app/auth/routes.py:66
+#, python-format
+msgid "Hoş geldiniz, %(username)s!"
+msgstr ""
+
+#: app/auth/routes.py:80
+msgid "Başarıyla çıkış yaptınız."
+msgstr ""
+
+#: app/auth/routes.py:94
+msgid "Profiliniz güncellendi."
+msgstr ""
+
+#: app/auth/routes.py:114
+msgid "Avatar yüklendi."
+msgstr ""
+
+#: app/auth/routes.py:131
+msgid "Avatar kaldırıldı."
+msgstr ""
+
+#: app/core/forms.py:12
+msgid "Proje Adı"
+msgstr ""
+
+#: app/core/forms.py:14
+msgid "Proje adı zorunludur."
+msgstr ""
+
+#: app/core/forms.py:15
+msgid "Proje adı en fazla 128 karakter olabilir."
+msgstr ""
+
+#: app/core/forms.py:19
+msgid "Açıklama"
+msgstr ""
+
+#: app/core/forms.py:22
+msgid "Açıklama en fazla 512 karakter olabilir."
+msgstr ""
+
+#: app/core/forms.py:25
+msgid "Proje Dosyaları"
+msgstr ""
+
+#: app/core/forms.py:26
+msgid "Proje Oluştur"
+msgstr ""
+
+#: app/core/forms.py:30
+msgid "En az bir dosya yüklemelisiniz."
+msgstr ""
+
+#: app/core/forms.py:34
+msgid "Boş dosya yüklenemez."
+msgstr ""
+
+#: app/core/forms.py:38 app/utils/file_helpers.py:89
+#, python-format
+msgid "İzin verilmeyen dosya türü: %(filename)s"
+msgstr ""
+
+#: app/core/forms.py:44
+msgid "Prompt"
+msgstr ""
+
+#: app/core/forms.py:46
+msgid "Prompt metni zorunludur."
+msgstr ""
+
+#: app/core/forms.py:50
+msgid "Prompt 3 ile 2000 karakter arasında olmalıdır."
+msgstr ""
+
+#: app/core/forms.py:54
+msgid "Prompt Oluştur"
+msgstr ""
+
+#: app/core/routes.py:81
+#, python-format
+msgid "'%(name)s' projesi başarıyla oluşturuldu."
+msgstr ""
+
+#: app/core/routes.py:94
+msgid "Dosyalar kaydedilirken bir hata oluştu."
+msgstr ""
+
+#: app/core/routes.py:124
+msgid "Prompt oluşturmak için önce projeyi indeksleyin."
+msgstr ""
+
+#: app/core/routes.py:135
+msgid "Prompt başarıyla oluşturuldu."
+msgstr ""
+
+#: app/core/routes.py:143
+#, python-format
+msgid "Prompt oluşturma hatası: %(error)s"
+msgstr ""
+
+#: app/core/routes.py:153
+msgid "İndekslenecek dosya bulunamadı."
+msgstr ""
+
+#: app/core/routes.py:157
+msgid "İndeksleme zaten devam ediyor."
+msgstr ""
+
+#: app/core/routes.py:168
+#, python-format
+msgid "'%(name)s' indekslendi (%(count)s parça)."
+msgstr ""
+
+#: app/core/routes.py:180
+#, python-format
+msgid "İndeksleme hatası: %(error)s"
+msgstr ""
+
+#: app/core/routes.py:198
+#, python-format
+msgid "'%(name)s' projesi silindi."
+msgstr ""
+
+#: app/utils/avatar_helpers.py:57
+msgid "Geçersiz avatar formatı. İzin verilen: png, jpg, jpeg, gif, webp."
+msgstr ""
+
+#: app/utils/file_helpers.py:96
+#, python-format
+msgid "Geçersiz dosya yolu: %(path)s"
+msgstr ""
+
+
+#: app/templates
+msgid "%(retrieved)s kod parçası incelendi · %(total)s dosyadan %(required)s tanesi yeterli"
+msgstr ""
+
+#: app/templates
+msgid "%(username)s avatar"
+msgstr ""
+
+#: app/templates
+msgid "Anasayfa"
+msgstr ""
+
+#: app/templates
+msgid "Aradığınız sayfa mevcut değil, taşınmış veya silinmiş olabilir."
+msgstr ""
+
+#: app/templates
+msgid "Avatarı Kaldır"
+msgstr ""
+
+#: app/templates
+msgid "Açıklama yok"
+msgstr ""
+
+#: app/templates
+msgid "Açıklama üretilemedi."
+msgstr ""
+
+#: app/templates
+msgid "Bir şeyler ters gitti"
+msgstr ""
+
+#: app/templates
+msgid "Birden fazla dosya seçebilirsiniz (.py, .html, .js, .css, .zip vb.)"
+msgstr ""
+
+#: app/templates
+msgid "Bu metni Claude veya ChatGPT'ye yapıştırın."
+msgstr ""
+
+#: app/templates
+msgid "Bu projede henüz dosya bulunmuyor."
+msgstr ""
+
+#: app/templates
+msgid "Bu projeyi silmek istediğinize emin misiniz?"
+msgstr ""
+
+#: app/templates
+msgid "Detaya Git"
+msgstr ""
+
+#: app/templates
+msgid "Detaylandırılmış Prompt"
+msgstr ""
+
+#: app/templates
+msgid "Dosya sayısı"
+msgstr ""
+
+#: app/templates
+msgid "Dosya önerisi üretilemedi."
+msgstr ""
+
+#: app/templates
+msgid "Gerekli Dosyalar"
+msgstr ""
+
+#: app/templates
+msgid "Giriş"
+msgstr ""
+
+#: app/templates
+msgid "Giriş yapın"
+msgstr ""
+
+#: app/templates
+msgid "Henüz projeniz yok."
+msgstr ""
+
+#: app/templates
+msgid "Hesabınız yok mu?"
+msgstr ""
+
+#: app/templates
+msgid "Hesap bilgilerinizi ve avatarınızı yönetin"
+msgstr ""
+
+#: app/templates
+msgid "Kaldır"
+msgstr ""
+
+#: app/templates
+msgid "Kapat"
+msgstr ""
+
+#: app/templates
+msgid "Kayıt olun"
+msgstr ""
+
+#: app/templates
+msgid "Kendinizi kısaca tanıtın…"
+msgstr ""
+
+#: app/templates
+msgid "Kopyala"
+msgstr ""
+
+#: app/templates
+msgid "Kopyalandı!"
+msgstr ""
+
+#: app/templates
+msgid "Kısa bir istek yazın; sistem bunu detaylandırılmış prompt ve gerekli dosya listesine çevirir."
+msgstr ""
+
+#: app/templates
+msgid "Kısa isteğinizi yazın; sistem detaylandırılmış prompt ve yalnızca gerekli dosyaları üretir. Claude'a yapıştırın."
+msgstr ""
+
+#: app/templates
+msgid "LlamaIndex hibrit arama ile kod parçalarını indeksler. Vektör + BM25 ile en alakalı dosyalar bulunur."
+msgstr ""
+
+#: app/templates
+msgid "Menüyü aç/kapat"
+msgstr ""
+
+#: app/templates
+msgid "Merhaba, %(username)s!"
+msgstr ""
+
+#: app/templates
+msgid "Oluşturulma"
+msgstr ""
+
+#: app/templates
+msgid "Profil"
+msgstr ""
+
+#: app/templates
+msgid "Profil fotoğrafınız kaldırılacak. Devam etmek istiyor musunuz?"
+msgstr ""
+
+#: app/templates
+msgid "Profil fotoğrafınız navbar'da görünür."
+msgstr ""
+
+#: app/templates
+msgid "Profilim"
+msgstr ""
+
+#: app/templates
+msgid "Proje Yükle"
+msgstr ""
+
+#: app/templates
+msgid "Proje listesi"
+msgstr ""
+
+#: app/templates
+msgid "Proje sayfaları"
+msgstr ""
+
+#: app/templates
+msgid "Proje sayısı:"
+msgstr ""
+
+#: app/templates
+msgid "Projelerim"
+msgstr ""
+
+#: app/templates
+msgid "Projelerime Git"
+msgstr ""
+
+#: app/templates
+msgid "Projeyi Sil"
+msgstr ""
+
+#: app/templates
+msgid "Prompt Geçmişi"
+msgstr ""
+
+#: app/templates
+msgid "Python, HTML, JS veya ZIP dosyalarınızı yükleyin. ContextCraft projenizi analiz etmeye hazır hale getirir."
+msgstr ""
+
+#: app/templates
+msgid "Sayfa %(page)s / %(pages)s"
+msgstr ""
+
+#: app/templates
+msgid "Sayfa Bulunamadı"
+msgstr ""
+
+#: app/templates
+msgid "Sayfa bulunamadı"
+msgstr ""
+
+#: app/templates
+msgid "Sonraki"
+msgstr ""
+
+#: app/templates
+msgid "Sunucu Hatası"
+msgstr ""
+
+#: app/templates
+msgid "Sunucuda beklenmeyen bir hata oluştu. Lütfen bir süre sonra tekrar deneyin."
+msgstr ""
+
+#: app/templates
+msgid "Toplam %(total)s proje"
+msgstr ""
+
+#: app/templates
+msgid "Yazılım projelerinizi yükleyin, LlamaIndex ile bağlamı optimize edin ve token israfını önleyin."
+msgstr ""
+
+#: app/templates
+msgid "Yeni Proje"
+msgstr ""
+
+#: app/templates
+msgid "Yeni Proje Oluştur"
+msgstr ""
+
+#: app/templates
+msgid "Yeniden İndeksle"
+msgstr ""
+
+#: app/templates
+msgid "Yüklenen Dosyalar"
+msgstr ""
+
+#: app/templates
+msgid "Zaten hesabınız var mı?"
+msgstr ""
+
+#: app/templates
+msgid "png, jpg, jpeg, gif veya webp — en fazla 2 MB"
+msgstr ""
+
+#: app/templates
+msgid "Çıkış"
+msgstr ""
+
+#: app/templates
+msgid "Önceki"
+msgstr ""
+
+#: app/templates
+msgid "Örn: Login ekranı kodla"
+msgstr ""
+
+#: app/templates
+msgid "Üyelik:"
+msgstr ""
+
+#: app/templates
+msgid "İlk Projenizi Oluşturun"
+msgstr ""
+
+#: app/templates
+msgid "İndeksle"
+msgstr ""
+
+#: app/templates
+msgid "İptal"
+msgstr ""
