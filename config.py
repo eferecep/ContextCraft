@@ -36,6 +36,11 @@ class Config:
     }
     ALLOWED_EXTENSIONLESS = {"dockerfile", "makefile", "readme", "license"}
 
+    # Avatar yükleme (Faz 10 — bonus profil)
+    AVATAR_FOLDER = str(BASE_DIR / "uploads" / "avatars")
+    AVATAR_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+    AVATAR_MAX_BYTES = 2 * 1024 * 1024
+
     # LlamaIndex indeksleme (Faz 5) — OpenRouter anahtarı ile aynı olabilir
     OPENROUTER_API_KEY = _env("OPENROUTER_API_KEY")
     LLAMAINDEX_API_KEY = _env("LLAMAINDEX_API_KEY") or OPENROUTER_API_KEY

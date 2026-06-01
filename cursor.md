@@ -521,7 +521,7 @@ docker compose up --build
 | # | Adım | Durum | Commit |
 |---|---|---|---|
 | 10.1 | Model + migration (`avatar_path`, `bio`) | ✅ | `feat(models): User avatar_path ve bio alanları` |
-| 10.2 | Avatar yardımcıları + config | ⏳ | — |
+| 10.2 | Avatar yardımcıları + config | ✅ | `feat(auth): avatar yükleme yardımcıları ve config` |
 | 10.3 | ProfileForm + rotalar | ⏳ | — |
 | 10.4 | Profil şablonu + navbar avatar | ⏳ | — |
 | 10.5 | Birim testleri | ⏳ | — |
@@ -541,6 +541,26 @@ users
 ```
 
 **Commit:** `feat(models): User avatar_path ve bio alanları`
+
+### 10.2 — Avatar yardımcıları + config ✅
+
+**Dosyalar:**
+- `app/utils/avatar_helpers.py` — kaydet, sil, doğrula, güvenli yol çözümleme
+- `config.py` — `AVATAR_FOLDER`, `AVATAR_EXTENSIONS`, `AVATAR_MAX_BYTES` (2 MB)
+- `app/utils/__init__.py` — export'lar
+- `.env.example` — avatar notu
+
+**Fonksiyonlar:**
+
+| Fonksiyon | Görev |
+|---|---|
+| `get_avatar_dir(user_id)` | `uploads/avatars/{user_id}/` |
+| `allowed_avatar(filename)` | png/jpg/jpeg/gif/webp kontrolü |
+| `save_avatar(file_storage, user_id)` | Eski avatarı sil, kaydet, göreli yol döndür |
+| `delete_avatar_files(user_id)` | Kullanıcı avatar klasörünü temizle |
+| `get_avatar_absolute_path(avatar_path)` | Servis route için güvenli mutlak yol |
+
+**Commit:** `feat(auth): avatar yükleme yardımcıları ve config`
 
 ---
 
@@ -619,6 +639,7 @@ ContextCraft/
 │   ├── static/css/custom.css      ✅ 9.2
 │   └── utils/
 │       ├── file_helpers.py        ✅
+│       ├── avatar_helpers.py      ✅ Faz 10.2
 │       └── index_helpers.py       ✅ Faz 5
 ├── docs/
 │   ├── ai-gunlugu.md              🟡 sürekli güncelle
