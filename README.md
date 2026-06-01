@@ -138,9 +138,11 @@ Demo: [YouTube veya Google Drive linki]
 | E-posta ile şifre sıfırlama | — | +5 |
 | REST API (`/api/v1/...`) | — | +5 |
 | Tam metin arama | — | +3 |
-| İki dilli arayüz (Flask-Babel) | — | +3 |
+| İki dilli arayüz (Flask-Babel) | ✅ | +3 |
 
 Profil bonusu: `/auth/profile` — bio düzenleme, png/jpg/gif/webp avatar (max 2 MB), navbar'da görüntüleme.
+
+İki dilli arayüz: navbar'da **Türkçe | English** linkleri; `Flask-Babel` ile tr/en çeviri dosyaları. Çevirileri yenilemek için: `python scripts/build_translations.py`
 
 ## Akademik dürüstlük
 

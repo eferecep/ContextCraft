@@ -47,7 +47,7 @@ Sistem çıktısı:
 | Faz 8: Prompt arayüzü | ✅ Tamamlandı |
 | Faz 9: UI & teslim | ✅ **Tamamlandı** — 9.1–9.8 ✅ (demo video ⏳ sen kaydedeceksin) |
 | **Faz 10: Profil + avatar (bonus +4)** | ✅ Tamamlandı |
-| **Faz 11: İki dilli arayüz (bonus +3)** | 🟡 11.1–11.5 ✅ → 11.6–11.7 bekliyor |
+| **Faz 11: İki dilli arayüz (bonus +3)** | ✅ Tamamlandı |
 
 **Teslim:** 01/06/2026 13:00 — GitHub (public) + GUZEM zip  
 **Hoca dokümanı:** `BLG106_FinalProje.pdf` (proje kökünde)
@@ -644,9 +644,9 @@ users
 | 11.2 | Python metinleri (flash, form) | ✅ | `feat(i18n): flash ve form mesajlarını gettext ile sar` |
 | 11.3 | Jinja şablon metinleri | ✅ | `feat(i18n): Jinja şablon metinlerini çevirilebilir yap` |
 | 11.4 | tr/en çeviri dosyaları + compile | ✅ | `feat(i18n): Türkçe ve İngilizce çeviri dosyaları` |
-| 11.5 | Navbar dil seçici + route | ✅ | `feat(i18n): navbar dil seçici ve set-language route` |
-| 11.6 | Birim testleri | ⏳ | — |
-| 11.7 | README, rapor | ⏳ | — |
+| 11.5 | Navbar dil seçici + route | ✅ | `feat(i18n): navbar dil seçici` + `fix(i18n): doğrudan link` |
+| 11.6 | Birim testleri | ✅ | `test(i18n): locale değiştirme birim testleri` |
+| 11.7 | README, rapor | ✅ | `docs: README ve rapor i18n bonus güncellemesi` |
 
 ### 11.1 — Flask-Babel altyapısı ✅
 
@@ -703,14 +703,30 @@ python scripts/build_translations.py
 ### 11.5 — Dil seçici ✅
 
 **Dosyalar:**
-- `app/main/routes.py` — `GET /set-language/<lang>` (`session['locale']`, güvenli referrer redirect)
-- `app/templates/base.html` — navbar Bootstrap dropdown (Türkçe / English)
+- `app/main/routes.py` — `GET /set-language/<lang>` (`session['locale']`, `next` + referrer redirect)
+- `app/templates/base.html` — navbar **Türkçe | English** doğrudan linkleri
 - `app/static/css/custom.css` — aktif dil vurgusu
-- `config.py` — `BABEL_TRANSLATION_DIRECTORIES` proje köküne sabitlendi (Flask app paketi altında aranıyordu)
+- `config.py` — `BABEL_TRANSLATION_DIRECTORIES` proje köküne sabitlendi
 
-**Akış:** Kullanıcı dropdown'dan dil seçer → oturuma yazılır → aynı sayfaya döner → Flask-Babel yeni locale ile render eder.
+**Not:** İlk sürüm Bootstrap dropdown kullanıyordu; Türkçe (ilk menü öğesi) tıklanamıyordu → doğrudan linklere geçildi (`fix(i18n): dil seçiciyi dropdown yerine doğrudan link yap`).
 
-**Commit:** `feat(i18n): navbar dil seçici ve set-language route`
+**Commit:** `feat(i18n): navbar dil seçici ve set-language route` → `fix(i18n): dil seçiciyi dropdown yerine doğrudan link yap`
+
+### 11.6 — Birim testleri ✅
+
+**Dosya:** `tests/test_i18n.py` — 9 test (varsayılan TR, EN/TR geçişi, geçersiz dil, oturum kalıcılığı, `next` redirect, navbar linkleri, Accept-Language)
+
+**Toplam:** 37 test — `pytest -v`
+
+**Commit:** `test(i18n): locale değiştirme birim testleri`
+
+### 11.7 — Dokümantasyon ✅
+
+**Dosyalar:**
+- `README.md` — bonus tablosu i18n ✅, çeviri build komutu
+- `docs/rapor.md` — §9 İki dilli arayüz bonus bölümü
+
+**Commit:** `docs: README ve rapor i18n bonus güncellemesi`
 
 ---
 

@@ -96,6 +96,16 @@ BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **kullanıcı 
 
 **Ne yapar:** Giriş yapmış kullanıcı `/auth/profile` sayfasından kısa bir bio metni girebilir; png, jpg, jpeg, gif veya webp formatında (en fazla 2 MB) profil fotoğrafı yükleyebilir. Avatar navbar'da küçük yuvarlak görsel olarak görünür; fotoğraf yoksa kullanıcı adının ilk harfi placeholder olarak kullanılır.
 
-**Teknik özet:** `User` modeline `avatar_path` ve `bio` alanları eklendi. Dosyalar `uploads/avatars/{user_id}/` altında saklanır; Flask route ile servis edilir. `ProfileForm` ve `AvatarForm` (Flask-WTF, CSRF korumalı) kullanıldı. Altı birim testi (`tests/test_profile.py`) ile doğrulandı; toplam test sayısı 28'e çıktı.
+**Teknik özet:** `User` modeline `avatar_path` ve `bio` alanları eklendi. Dosyalar `uploads/avatars/{user_id}/` altında saklanır; Flask route ile servis edilir. `ProfileForm` ve `AvatarForm` (Flask-WTF, CSRF korumalı) kullanıldı. Altı birim testi (`tests/test_profile.py`) ile doğrulandı.
+
+---
+
+## 9. Bonus Özellik — İki Dilli Arayüz (Flask-Babel, +3 puan)
+
+BLG106 final projesi PDF'inde isteğe bağlı bonus maddelerinden **Flask-Babel ile Türkçe / İngilizce arayüz** uygulandı.
+
+**Ne yapar:** Kullanıcı navbar'daki **Türkçe | English** linkleriyle arayüz dilini değiştirir. Form etiketleri, flash mesajları, hata metinleri ve tüm Jinja şablonları seçilen dile göre gösterilir. Varsayılan dil Türkçe'dir; oturumda `locale` saklanır, yoksa `Accept-Language` başlığına bakılır.
+
+**Teknik özet:** `Flask-Babel` altyapısı (`app/i18n.py`, `get_locale()`), Python tarafında `gettext` / `lazy_gettext`, şablonlarda `{{ _('...') }}`. Çeviri dosyaları `translations/tr/` ve `translations/en/` altında; Babel 2.18 jinja2 extractor eksikliği `scripts/build_translations.py` ile giderildi. Dokuz birim testi (`tests/test_i18n.py`) ile locale değiştirme ve çeviri doğrulandı.
 
 ContextCraft, “AI ile kod yazmak” değil “AI ile **doğru bağlamı seçip** dış araçlara taşımak” fikrini somutlaştırıyor. Bu yönüyle dersin vibe coding hedefleriyle örtüşüyor. GitHub deposu public yapıldı; AI günlüğü ekran görüntüleriyle tamamlandı. Demo videosu README'ye eklenecektir.
