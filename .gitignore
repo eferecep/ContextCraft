@@ -45,3 +45,6 @@ htmlcov/
 # LlamaIndex / yüklenen proje dosyaları (ileride)
 uploads/
 storage/
+
+# Hoca PDF — yalnızca yerel referans, repoya eklenmez
+docs/BLG106_FinalProje.pdf

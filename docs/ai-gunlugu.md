@@ -49,7 +49,7 @@ Veritabanı modellerini (User ve Project) SQLAlchemy 2.x stiliyle kurgulamaya ba
 
 ### Hedef
 
-Projenin "Faz 4" aşamasına geçerek, çoklu dosya yükleme altyapısını kurmak ve "ProjectForm" hazırlıklarına başlamak. [cite_start]Süreci tamamen küçük adımlara bölerek ilerletmek[cite: 91].  
+Projenin "Faz 4" aşamasına geçerek, çoklu dosya yükleme altyapısını kurmak ve "ProjectForm" hazırlıklarına başlamak. Süreci tamamen küçük adımlara bölerek ilerletmek.  
 
 ### Kullandığım Mod ve Model
 
@@ -64,31 +64,31 @@ Görünüm: Manager / Composer Modu
 
 ### Ajanın Önerdiği Plan
 
-[cite_start]Ajan, karmaşık bir görevi 6 ayrı adıma bölen çok iyi bir plan sundu ve herhangi bir kod yazmadan önce planını paylaştı[cite: 74]. Ancak Adım 4.1 için sunduğu detaylarda, projenin sadece `.zip` dosyası kabul etmesini ve 16 MB ile sınırlanmasını önerdi.   
+Ajan, karmaşık bir görevi 6 ayrı adıma bölen çok iyi bir plan sundu ve herhangi bir kod yazmadan önce planını paylaştı. Ancak Adım 4.1 için sunduğu detaylarda, projenin sadece `.zip` dosyası kabul etmesini ve 16 MB ile sınırlanmasını önerdi.   
 
-[cite_start]*[Buraya Ajanın Adım 4.1 planını sunduğu ekran görüntüsünü ekle: docs/img/oturum-N-faz4-plan.png]* [cite: 79]  
+*[Buraya Ajanın Adım 4.1 planını sunduğu ekran görüntüsünü ekle: docs/img/oturum-N-faz4-plan.png]*   
 
 ### Plan'da Sorguladıklarım ve Onayladıklarım
 
-[cite_start]Plan modunda ajanın sunduğu varsayılan sınırlandırmaları (sadece zip ve 16 MB sınırı) hemen fark ettim ve onaylamadım[cite: 101, 106]. [cite_start]Projenin dinamiklerine göre normal dosyaların da (py, html, js vb.) tek tek yüklenebilmesi gerektiğini ve dosya boyutu sınırının daha esnek olması gerektiğini belirterek planı revize etmesini emrettim[cite: 127, 128]. [cite_start]Ayrıca ajana, hocanın dokümanındaki geliştirme kurallarına sadık kalması kısıtını tekrar hatırlattım[cite: 128].  
+Plan modunda ajanın sunduğu varsayılan sınırlandırmaları (sadece zip ve 16 MB sınırı) hemen fark ettim ve onaylamadım. Projenin dinamiklerine göre normal dosyaların da (py, html, js vb.) tek tek yüklenebilmesi gerektiğini ve dosya boyutu sınırının daha esnek olması gerektiğini belirterek planı revize etmesini emrettim. Ayrıca ajana, hocanın dokümanındaki geliştirme kurallarına sadık kalması kısıtını tekrar hatırlattım.  
 
 ### Üretilen Kodda Düzelttiklerim
 
 - Ajan verdiğim yönlendirme sonrası kodları üretti. `werkzeug.utils.secure_filename` kullanımını ve path traversal (../) engelleme mantığını inceledim; doğru kurulduğu için manuel bir müdahale yapmadım.  
-- [cite_start]`.env.example` dosyasına opsiyonel olarak `MAX_CONTENT_LENGTH` eklendiğini teyit ettim[cite: 57].
+- `.env.example` dosyasına opsiyonel olarak `MAX_CONTENT_LENGTH` eklendiğini teyit ettim.
 
 ### Karşılaştığım Hatalar ve Çözümler
 
-- [cite_start]**Hata:** Ajan, yükleme altyapısını tasarlarken inisiyatif alıp konsepti sadece `.zip` formatına indirgeyerek varsayılan, kısıtlayıcı bir mimari dayatmaya çalıştı[cite: 103].  
-- [cite_start]**Çözüm:** Ajanın "onay bekleme" aşamasında araya girip, hedeflerime uygun olmayan bu kısıtları net kısıtlamalar ve yönlendirmeler içeren bir prompt ile düzelttirdim[cite: 106, 128].
+- **Hata:** Ajan, yükleme altyapısını tasarlarken inisiyatif alıp konsepti sadece `.zip` formatına indirgeyerek varsayılan, kısıtlayıcı bir mimari dayatmaya çalıştı.  
+- **Çözüm:** Ajanın "onay bekleme" aşamasında araya girip, hedeflerime uygun olmayan bu kısıtları net kısıtlamalar ve yönlendirmeler içeren bir prompt ile düzelttirdim.
 
 ### Bu Oturumdan Öğrendiğim
 
-[cite_start]"Tüm sistemi kur" demek yerine, sadece tek bir fazı bile 6 küçük adıma böldürerek ilerlemenin ne kadar hayati olduğunu gördüm[cite: 93, 94, 96]. [cite_start]Ajanı onay mekanizmasıyla frenlemeseydim, projeye tüm dosyaları .zip yapmayı zorunlu kılan yanlış bir iş mantığı yerleşecekti[cite: 88, 120]. [cite_start]Kötü mimariyi kod yazılmadan planda yakalayıp düzeltmek, sonradan kodu refaktör etmekten çok daha güvenli[cite: 100].  
+"Tüm sistemi kur" demek yerine, sadece tek bir fazı bile 6 küçük adıma böldürerek ilerlemenin ne kadar hayati olduğunu gördüm. Ajanı onay mekanizmasıyla frenlemeseydim, projeye tüm dosyaları .zip yapmayı zorunlu kılan yanlış bir iş mantığı yerleşecekti. Kötü mimariyi kod yazılmadan planda yakalayıp düzeltmek, sonradan kodu refaktör etmekten çok daha güvenli.  
 
 ### Sonraki Oturum İçin Notlar
 
-[cite_start]Adım 4.2'deki `ProjectForm` yapısı (çoklu dosya yükleme - MultipleFileField) Flask-WTF üzerinden inşa edilecek ve test edilecek[cite: 97, 193]. [cite_start]CSRF token korumasının aktif olup olmadığına özellikle dikkat edilecek[cite: 205].  
+Adım 4.2'deki `ProjectForm` yapısı (çoklu dosya yükleme - MultipleFileField) Flask-WTF üzerinden inşa edilecek ve test edilecek. CSRF token korumasının aktif olup olmadığına özellikle dikkat edilecek.  
 
 ## Oturum 3 - 25 Mayıs 2026 19:00-19:45
 
@@ -157,11 +157,11 @@ Ajan doğrudan kod yazmaya geçmek yerine, indeksleme performansını artıracak
 
 ### Plan'da Sorguladıklarım
 
-[cite_start]Ajanın doğrudan kod yazmaya başlamak yerine benimle opsiyonları tartışması ve onay beklemesi, baştan kurduğum katı kuralların işe yaradığını gösterdi[cite: 22, 100]. LlamaIndex'in tüm dosyaları körü körüne indekslemesinin (özellikle `venv/`, `__pycache__/` gibi klasörlerin) token israfına yol açacağı tespitini kesinlikle onayladım. Kapsam ve API maliyeti dengesini kurmak adına; Gürültü filtresi, CodeSplitter, Zengin Metadata ve Hibrit arama (Vektör + BM25) özelliklerinin Faz 5'e dahil edilmesini mantıklı buldum. Ancak maliyetli ve zorlayıcı olabilecek "Reranking" ve "Dosya bazlı özet indeksi" adımlarını şimdilik dışarıda bırakmaya karar verdim.
+Ajanın doğrudan kod yazmaya başlamak yerine benimle opsiyonları tartışması ve onay beklemesi, baştan kurduğum katı kuralların işe yaradığını gösterdi. LlamaIndex'in tüm dosyaları körü körüne indekslemesinin (özellikle `venv/`, `__pycache__/` gibi klasörlerin) token israfına yol açacağı tespitini kesinlikle onayladım. Kapsam ve API maliyeti dengesini kurmak adına; Gürültü filtresi, CodeSplitter, Zengin Metadata ve Hibrit arama (Vektör + BM25) özelliklerinin Faz 5'e dahil edilmesini mantıklı buldum. Ancak maliyetli ve zorlayıcı olabilecek "Reranking" ve "Dosya bazlı özet indeksi" adımlarını şimdilik dışarıda bırakmaya karar verdim.
 
 ### Üretilen Kodda Düzelttiklerim
 
-- Henüz kod üretilmedi. Bu oturum tamamen [cite_start]"önce kavra, sonra üret"[cite: 82] prensibi doğrultusunda LlamaIndex mimarisinin kavramsal tasarımı ve sınırlarının belirlenmesi üzerineydi.
+- Henüz kod üretilmedi. Bu oturum tamamen "önce kavra, sonra üret" prensibi doğrultusunda LlamaIndex mimarisinin kavramsal tasarımı ve sınırlarının belirlenmesi üzerineydi.
 
 ### Karşılaştığım Hatalar ve Çözümler
 
@@ -170,7 +170,7 @@ Ajan doğrudan kod yazmaya geçmek yerine, indeksleme performansını artıracak
 
 ### Bu Oturumdan Öğrendiğim
 
-[cite_start]"Vibe coding"in sadece bir yapay zekaya kod yazdırmak olmadığını; geliştiricinin, ajanın sunduğu mimari seçenekleri teknik ve maliyet açısından tartıp karar veren bir "mimar" rolünde olması gerektiğini tam olarak deneyimledim[cite: 13, 17]. LlamaIndex'in ham metinleri düz bir şekilde parçalamasının kod projelerinde yetersiz kalacağını, `CodeSplitter` gibi dosya tipine duyarlı parçalama (chunking) yöntemlerinin ve "symbol_name" gibi zengin metadataların AI'ın isabet oranını doğrudan etkilediğini öğrendim. 
+"Vibe coding"in sadece bir yapay zekaya kod yazdırmak olmadığını; geliştiricinin, ajanın sunduğu mimari seçenekleri teknik ve maliyet açısından tartıp karar veren bir "mimar" rolünde olması gerektiğini tam olarak deneyimledim. LlamaIndex'in ham metinleri düz bir şekilde parçalamasının kod projelerinde yetersiz kalacağını, `CodeSplitter` gibi dosya tipine duyarlı parçalama (chunking) yöntemlerinin ve "symbol_name" gibi zengin metadataların AI'ın isabet oranını doğrudan etkilediğini öğrendim. 
 
 ### Sonraki Oturum İçin Notlar
 
@@ -180,7 +180,7 @@ Ajana; Gürültü filtresi, dosya tipine özel chunking, zengin metadata ve Hibr
 
 ### Hedef
 
-[cite_start]Ajanın yazdığı kodlara körü körüne güvenmek yerine, uygulamayı çalıştırarak akışı kendi gözümle test etmek[cite: 119]. Faz 5 (LlamaIndex) indeksleme altyapısının sorunsuz çalıştığını doğrulamadan Faz 6'ya (DeepSeek) geçişi engellemek.
+Ajanın yazdığı kodlara körü körüne güvenmek yerine, uygulamayı çalıştırarak akışı kendi gözümle test etmek. Faz 5 (LlamaIndex) indeksleme altyapısının sorunsuz çalıştığını doğrulamadan Faz 6'ya (DeepSeek) geçişi engellemek.
 
 ### Kullandığım Mod ve Model
 
@@ -196,13 +196,13 @@ Görünüm: Editor View
 
 ### Ajanın Önerdiği Plan
 
-[cite_start]Ajan, yeni özellikler eklemek yerine doğrudan test aşamasına geçmeyi önererek mimari bir olgunluk gösterdi[cite: 81]. Faz 6'daki retrieval akışının tamamen Faz 5'teki indekslemeye bağlı olduğunu belirtti. Sistemi test etmem için; `.env` dosyasındaki API key kontrolü, örnek dosya yükleme ve `storage/` klasörünün durumunu incelememi içeren kısa bir kontrol listesi sundu.
+Ajan, yeni özellikler eklemek yerine doğrudan test aşamasına geçmeyi önererek mimari bir olgunluk gösterdi. Faz 6'daki retrieval akışının tamamen Faz 5'teki indekslemeye bağlı olduğunu belirtti. Sistemi test etmem için; `.env` dosyasındaki API key kontrolü, örnek dosya yükleme ve `storage/` klasörünün durumunu incelememi içeren kısa bir kontrol listesi sundu.
 
 *[Buraya hata ayıklama ve test sürecini gösteren terminal veya tarayıcı ekran görüntüsünü ekle: docs/img/oturum-5-test-hatalari.png]*
 
 ### Plan'da Sorguladıklarım
 
-Ajanın test önerisini hemen onayladım. Projeyi bir kara kutu gibi büyütmek yerine, indeksleme aşamasını doğrulamadan arama (retrieve) aşamasına geçmenin riskli olduğunu kabul ettim. [cite_start]Ajanı sadece kod yazan bir araç değil, bir hata ayıklama partneri (Editor View) olarak konumlandırdım[cite: 63, 65].
+Ajanın test önerisini hemen onayladım. Projeyi bir kara kutu gibi büyütmek yerine, indeksleme aşamasını doğrulamadan arama (retrieve) aşamasına geçmenin riskli olduğunu kabul ettim. Ajanı sadece kod yazan bir araç değil, bir hata ayıklama partneri (Editor View) olarak konumlandırdım.
 
 ### Üretilen Kodda Düzelttiklerim
 
@@ -212,7 +212,7 @@ Ajanın test önerisini hemen onayladım. Projeyi bir kara kutu gibi büyütmek 
 
 ### Karşılaştığım Hatalar ve Çözümler
 
-* **Hata 1:** [cite_start]Kayıt olurken Werkzeug 3'ün varsayılan `scrypt` hashlemesi, macOS / Python 3.9 (LibreSSL) ortamında desteklenmediği için uygulama patladı[cite: 116].
+* **Hata 1:** Kayıt olurken Werkzeug 3'ün varsayılan `scrypt` hashlemesi, macOS / Python 3.9 (LibreSSL) ortamında desteklenmediği için uygulama patladı.
 
 * **Çözüm 1:** Şifreleme algoritmasını `models/user.py` içinde `pbkdf2:sha256` olarak sabitledim. Bu sayede tüm işletim sistemlerinde hatasız çalışmasını sağladım.
 
@@ -222,7 +222,7 @@ Ajanın test önerisini hemen onayladım. Projeyi bir kara kutu gibi büyütmek 
 
 ### Bu Oturumdan Öğrendiğim
 
-[cite_start]Ajanın kod için "çalışıyor" demesinin, kodun gerçekten çalıştığı anlamına gelmediğini bizzat deneyimledim[cite: 120]. Kütüphane sürüm çakışmaları (Werkzeug scrypt sorunu) ve 3. parti API format farklılıkları (LlamaIndex isimlendirmesi) ancak kod canlı olarak test edildiğinde ortaya çıkıyor. Bu aşamada hatayı yakalamasaydım, Faz 6'ya geçtiğimde sorunun nerede olduğunu (indekslemede mi, retrieval'da mı, yoksa promptta mı) bulmak saatlerimi alırdı.
+Ajanın kod için "çalışıyor" demesinin, kodun gerçekten çalıştığı anlamına gelmediğini bizzat deneyimledim. Kütüphane sürüm çakışmaları (Werkzeug scrypt sorunu) ve 3. parti API format farklılıkları (LlamaIndex isimlendirmesi) ancak kod canlı olarak test edildiğinde ortaya çıkıyor. Bu aşamada hatayı yakalamasaydım, Faz 6'ya geçtiğimde sorunun nerede olduğunu (indekslemede mi, retrieval'da mı, yoksa promptta mı) bulmak saatlerimi alırdı.
 
 ### Sonraki Oturum İçin Notlar
 
