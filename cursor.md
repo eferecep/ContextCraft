@@ -449,6 +449,7 @@ tests/
 ├── test_projects.py         — proje CRUD, pagination, 404
 ├── test_file_helpers.py     — allowed_file, path traversal
 └── test_prompt_optimizer.py — parse/refine + mock optimize_prompt
+└── test_profile.py          — profil, bio, avatar yükle/sil (Faz 10.5)
 ```
 
 - `pytest.ini` — `pythonpath = .`
@@ -524,7 +525,7 @@ docker compose up --build
 | 10.2 | Avatar yardımcıları + config | ✅ | `feat(auth): avatar yükleme yardımcıları ve config` |
 | 10.3 | ProfileForm + rotalar | ✅ | `feat(auth): profil sayfası ve avatar yükleme rotaları` |
 | 10.4 | Profil şablonu + navbar avatar | ✅ | `feat(ui): profil sayfası ve navbar avatar` |
-| 10.5 | Birim testleri | ⏳ | — |
+| 10.5 | Birim testleri | ✅ | `test: profil ve avatar yükleme testleri` |
 | 10.6 | README, rapor, ai-gunlugu | ⏳ | — |
 
 ### 10.1 — Model + migration ✅
@@ -592,6 +593,27 @@ users
 - Profil sayfası: `container-home`, sidebar istatistikleri, Bootstrap modal onayı
 
 **Commit:** `feat(ui): profil sayfası ve navbar avatar`
+
+### 10.5 — Birim testleri ✅
+
+**Dosyalar:**
+- `tests/test_profile.py` — 6 test (login, profil, bio, avatar yükle/sil, geçersiz dosya)
+- `tests/conftest.py` — test ortamında `AVATAR_FOLDER` override
+
+**Test listesi:**
+
+| Test | Ne doğrular |
+|---|---|
+| `test_profile_requires_login` | Girişsiz erişim redirect |
+| `test_profile_page_loads` | Profil sayfası 200 |
+| `test_update_bio` | Bio DB'ye yazılır |
+| `test_upload_avatar` | PNG yüklenir, serve route 200 |
+| `test_reject_invalid_avatar` | `.py` dosyası reddedilir |
+| `test_delete_avatar` | Avatar kaldırma |
+
+**Toplam:** 28 test (`pytest -v`)
+
+**Commit:** `test: profil ve avatar yükleme testleri`
 
 ---
 
@@ -675,7 +697,7 @@ ContextCraft/
 ├── docs/
 │   ├── ai-gunlugu.md              🟡 sürekli güncelle
 │   └── rapor.md                   ✅ 9.8
-├── tests/                         ✅ 9.6 (22 test)
+├── tests/                         ✅ 9.6 + 10.5 (28 test)
 ├── uploads/                       gitignore
 ├── storage/                       gitignore
 ├── Dockerfile                     ✅ 9.7

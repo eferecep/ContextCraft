@@ -19,6 +19,7 @@ def app(tmp_path):
     application.config.update(
         {
             "UPLOAD_FOLDER": str(upload_dir),
+            "AVATAR_FOLDER": str(upload_dir / "avatars"),
             "STORAGE_FOLDER": str(storage_dir),
             "OPENROUTER_API_KEY": "test-openrouter-key",
             "LLAMAINDEX_API_KEY": "test-llama-key",
