@@ -1,27 +1,70 @@
 # ContextCraft
 
-Büyük yazılım projelerini Claude veya ChatGPT gibi yapay zekalara doğrudan yüklemek hem token limitlerini hızla doldurur hem de modelin kafasını karıştırır. ContextCraft, projelerinizi indeksleyip kısa isteğinizi **detaylandırılmış prompt** ve **yalnızca gerekli dosya listesine** çeviren bir Flask web platformudur.
+**BLG106 İnternet Programcılığı — Dönem Projesi**  
+**Geliştirici:** Efe Recep KARABUDAK  
+**Repo:** https://github.com/eferecep/ContextCraft
+
+ContextCraft, yazılımcıların kendi projelerini web arayüzüne yükleyip **LlamaIndex** ile indeksledikten sonra kısa bir isteği (ör. *"login ekranı yap"*) **detaylandırılmış prompt** ve **yalnızca gerekli dosya listesine** çeviren bir Flask web platformudur.
+
+> Bu uygulama bir sohbet aracı değildir. Kullanıcı burada AI ile konuşmaz; sistem prompt üretir ve hangi dosyaların yeterli olduğunu söyler. Asıl kodlama Claude / ChatGPT gibi dış araçlarda yapılır.
+
+## Özellikler
+
+- Kullanıcı kaydı, giriş ve çıkış (Flask-Login, hash'lenmiş şifre)
+- Proje oluşturma ve çoklu dosya yükleme (py, html, css, js, zip vb.)
+- LlamaIndex ile hibrit indeksleme (vektör + BM25)
+- OpenRouter üzerinden DeepSeek V3.1 ile prompt optimizasyonu
+- Prompt geçmişi (`PromptLog` modeli)
+- Bootstrap 5 responsive arayüz
+- 404 / 500 özel hata sayfaları
+- Proje listesinde sayfalama (sayfa başı 10 kayıt)
+- Docker + PostgreSQL ile production dağıtım
 
 ## Teknolojiler
 
-- Flask 3.x, SQLAlchemy, Flask-Login, Flask-WTF
-- LlamaIndex 0.11 (hibrit retrieve)
-- OpenRouter API (embedding + DeepSeek V3.1)
-- Bootstrap 5
+| Katman | Araç |
+|--------|------|
+| Backend | Flask 3.x, SQLAlchemy 2.x, Flask-Migrate, Flask-WTF |
+| Auth | Flask-Login, Werkzeug (pbkdf2:sha256) |
+| İndeksleme | LlamaIndex 0.11, hibrit retrieve |
+| AI | OpenRouter API (embedding + DeepSeek V3.1) |
+| Arayüz | Jinja2, Bootstrap 5 |
+| Test | pytest (22 test) |
+| Deploy | Docker, Gunicorn, PostgreSQL 16 |
 
-## Yerel geliştirme
+## Hızlı başlangıç (yerel)
 
 ```bash
+git clone https://github.com/eferecep/ContextCraft.git
 cd ContextCraft
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env          # API anahtarlarını doldur
+cp .env.example .env              # API anahtarlarını doldur
+export FLASK_APP=run.py           # veya: flask --app run run
 flask db upgrade
 python run.py
 ```
 
 Tarayıcı: http://127.0.0.1:5000
+
+### `.env` (minimum)
+
+```env
+SECRET_KEY=uzun-ve-guclu-bir-anahtar
+OPENROUTER_API_KEY=sk-or-v1-...
+LLAMAINDEX_API_KEY=sk-or-v1-...   # boş bırakılırsa OPENROUTER kullanılır
+```
+
+> `.env` dosyası `.gitignore` içindedir; repoya **asla** eklenmez.
+
+## Kullanım akışı
+
+1. Kayıt ol / giriş yap
+2. Yeni proje oluştur, kaynak dosyalarını yükle
+3. **İndeksle** butonuna bas (LlamaIndex)
+4. Kısa prompt yaz → **Prompt Oluştur**
+5. Detaylandırılmış metni kopyala, gerekli dosyaları Claude/ChatGPT'ye taşı
 
 ## Test
 
@@ -29,75 +72,55 @@ Tarayıcı: http://127.0.0.1:5000
 pytest -v
 ```
 
-## Docker ile çalıştırma (Production)
-
-Hoca PDF Prompt 11: `Dockerfile` + `docker-compose.yml` + PostgreSQL.
-
-1. `.env` dosyasını oluşturun (`.env.example` şablonu):
+## Docker (production)
 
 ```bash
-cp .env.example .env
-```
-
-En az şunları doldurun:
-
-```env
-SECRET_KEY=uzun-ve-guclu-bir-anahtar
-OPENROUTER_API_KEY=sk-or-...
-LLAMAINDEX_API_KEY=sk-or-...
-```
-
-2. Konteynerleri başlatın:
-
-```bash
+cp .env.example .env              # SECRET_KEY + OPENROUTER_API_KEY
 docker compose up --build
 ```
 
-3. Uygulama: http://localhost:5000
+Uygulama: http://localhost:5000
 
-- **web:** Gunicorn + Flask (`FLASK_ENV=production`, `DEBUG=False`)
-- **db:** PostgreSQL 16 (volume: `postgres_data`)
-- **uploads / storage:** Kalıcı Docker volume'ları
+| Servis | Açıklama |
+|--------|----------|
+| `web` | Gunicorn + Flask (`DEBUG=False`) |
+| `db` | PostgreSQL 16 (`postgres_data` volume) |
+| `uploads` / `storage` | Kalıcı Docker volume'ları |
 
-Durdurmak:
+Durdurmak: `docker compose down`  
+Veritabanını da silmek: `docker compose down -v`
 
-```bash
-docker compose down
+## Proje yapısı
+
+```
+ContextCraft/
+├── app/
+│   ├── auth/          # Kayıt, giriş, çıkış
+│   ├── core/          # Proje CRUD, indeksleme, prompt
+│   ├── main/          # Anasayfa
+│   ├── models/        # User, Project, PromptLog
+│   ├── services/      # LlamaIndex, OpenRouter, prompt_optimizer
+│   └── templates/     # Jinja2 şablonları
+├── docs/
+│   ├── ai-gunlugu.md  # AI geliştirme günlüğü (7 oturum)
+│   └── rapor.md       # Proje raporu
+├── migrations/        # Flask-Migrate
+├── tests/             # pytest birim testleri
+├── Dockerfile
+└── docker-compose.yml
 ```
 
-Veritabanı verisini de silmek için:
+## Teslim dokümanları (BLG106)
 
-```bash
-docker compose down -v
-```
-
-### Ortam değişkenleri (Docker)
-
-| Değişken | Açıklama |
-|---|---|
-| `SECRET_KEY` | Flask oturum gizli anahtarı (zorunlu, production) |
-| `OPENROUTER_API_KEY` | OpenRouter API anahtarı |
-| `LLAMAINDEX_API_KEY` | Embedding API (boşsa OPENROUTER kullanılır) |
-| `DATABASE_URL` | docker-compose içinde PostgreSQL olarak ayarlı |
-| `GUNICORN_WORKERS` | Opsiyonel, varsayılan `2` |
-
-> API anahtarları `.env` dosyasında kalır; `.gitignore` ve `.dockerignore` ile repoya gitmez.
-
-## Teslim checklist (BLG106 §7)
-
-| Teslim | Durum | Konum |
-|--------|--------|--------|
-| GitHub repo (public) | ✅ | Bu depo |
-| README.md | ✅ | Bu dosya |
-| AI günlüğü (≥7 oturum) | ✅ | [docs/ai-gunlugu.md](docs/ai-gunlugu.md) |
-| Kısa rapor (800–1200 kelime) | ✅ | [docs/rapor.md](docs/rapor.md) |
-| Demo video (3–5 dk) | ⏳ | Aşağıya link eklenecek |
-| Docker | ✅ | `docker compose up --build` |
-| Birim testleri | ✅ | `pytest -v` (22 test) |
+| Doküman | Konum |
+|---------|--------|
+| AI günlüğü | [docs/ai-gunlugu.md](docs/ai-gunlugu.md) |
+| Proje raporu | [docs/rapor.md](docs/rapor.md) |
+| Demo video | *(link eklenecek)* |
 
 ### Demo video
 
-Kayıt tamamlandığında linki buraya ekleyin:
+Kayıt tamamlandığında link buraya eklenecek:
 
 ```
 Demo: [YouTube veya Google Drive linki]
@@ -105,6 +128,6 @@ Demo: [YouTube veya Google Drive linki]
 
 Önerilen akış (3–5 dk): kayıt → proje yükle → indeksle → prompt oluştur → sonuç ekranı.
 
-## Lisans ve akademik dürüstlük
+## Akademik dürüstlük
 
-Bu proje BLG106 dönem projesi kapsamında geliştirilmiştir. AI ajanları geliştirme sürecinde kullanılmış; tüm kod ve kararlar [docs/ai-gunlugu.md](docs/ai-gunlugu.md) ile belgelenmiştir.
+Bu proje BLG106 dönem projesi kapsamında geliştirilmiştir. Geliştirme sürecinde **Cursor IDE** (AI ajan destekli) kullanılmıştır. Tüm kararlar, promptlar ve düzeltmeler [docs/ai-gunlugu.md](docs/ai-gunlugu.md) dosyasında belgelenmiştir.
