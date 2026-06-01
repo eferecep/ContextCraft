@@ -641,7 +641,7 @@ users
 | # | Adım | Durum | Commit |
 |---|---|---|---|
 | 11.1 | Flask-Babel altyapısı + locale seçici | ✅ | `feat(i18n): Flask-Babel altyapısı ve locale seçici` |
-| 11.2 | Python metinleri (flash, form) | ⏳ | — |
+| 11.2 | Python metinleri (flash, form) | ✅ | `feat(i18n): flash ve form mesajlarını gettext ile sar` |
 | 11.3 | Jinja şablon metinleri | ⏳ | — |
 | 11.4 | tr/en çeviri dosyaları + compile | ⏳ | — |
 | 11.5 | Navbar dil seçici + route | ⏳ | — |
@@ -662,6 +662,15 @@ users
 **Locale önceliği:** `session['locale']` → `Accept-Language` → `tr`
 
 **Commit:** `feat(i18n): Flask-Babel altyapısı ve locale seçici`
+
+### 11.2 — Python metinleri ✅
+
+**Dosyalar:**
+- `app/auth/forms.py`, `app/core/forms.py` — `lazy_gettext as _l` (label, validator, submit)
+- `app/auth/routes.py`, `app/core/routes.py` — `gettext as _` (flash mesajları)
+- `app/utils/avatar_helpers.py`, `app/utils/file_helpers.py` — kullanıcıya dönük `ValueError` metinleri
+
+**Commit:** `feat(i18n): flash ve form mesajlarını gettext ile sar`
 
 ---
 

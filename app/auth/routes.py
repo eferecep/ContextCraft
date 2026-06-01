@@ -1,4 +1,5 @@
 from flask import abort, flash, redirect, render_template, request, send_file, url_for
+from flask_babel import gettext as _
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app.extensions import db
@@ -43,7 +44,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash("Kayıt başarılı! Giriş yapabilirsiniz.", "success")
+        flash(_("Kayıt başarılı! Giriş yapabilirsiniz."), "success")
         return redirect(url_for("auth.login"))
 
     return render_template("auth/register.html", form=form)
@@ -58,11 +59,11 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash("E-posta veya şifre hatalı.", "danger")
+            flash(_("E-posta veya şifre hatalı."), "danger")
             return redirect(url_for("auth.login"))
 
         login_user(user, remember=form.remember_me.data)
-        flash(f"Hoş geldiniz, {user.username}!", "success")
+        flash(_("Hoş geldiniz, %(username)s!", username=user.username), "success")
 
         next_page = request.args.get("next")
         if not next_page or not next_page.startswith("/"):
@@ -76,7 +77,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("Başarıyla çıkış yaptınız.", "info")
+    flash(_("Başarıyla çıkış yaptınız."), "info")
     return redirect(url_for("main.index"))
 
 
@@ -90,7 +91,7 @@ def profile():
         bio = (profile_form.bio.data or "").strip()
         current_user.bio = bio or None
         db.session.commit()
-        flash("Profiliniz güncellendi.", "success")
+        flash(_("Profiliniz güncellendi."), "success")
         return redirect(url_for("auth.profile"))
 
     if request.method == "GET":
@@ -110,9 +111,9 @@ def profile_avatar():
                 current_user.id,
             )
             db.session.commit()
-            flash("Avatar yüklendi.", "success")
+            flash(_("Avatar yüklendi."), "success")
         except ValueError as exc:
-            flash(str(exc), "danger")
+            flash(str(exc), "danger")  # mesaj avatar_helpers'te _l ile üretilir
     else:
         for errors in avatar_form.errors.values():
             for message in errors:
@@ -127,7 +128,7 @@ def profile_avatar_delete():
     delete_avatar_files(current_user.id)
     current_user.avatar_path = None
     db.session.commit()
-    flash("Avatar kaldırıldı.", "info")
+    flash(_("Avatar kaldırıldı."), "info")
     return redirect(url_for("auth.profile"))
 
 

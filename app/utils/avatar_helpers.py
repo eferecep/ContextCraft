@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional, Set
 
 from flask import current_app
+from flask_babel import lazy_gettext as _l
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
@@ -53,7 +54,7 @@ def save_avatar(file_storage: FileStorage, user_id: int) -> str:
     original_name = file_storage.filename or ""
     if not allowed_avatar(original_name):
         raise ValueError(
-            "Geçersiz avatar formatı. İzin verilen: png, jpg, jpeg, gif, webp."
+            _l("Geçersiz avatar formatı. İzin verilen: png, jpg, jpeg, gif, webp.")
         )
 
     max_bytes = current_app.config.get("AVATAR_MAX_BYTES", 2 * 1024 * 1024)
@@ -61,7 +62,7 @@ def save_avatar(file_storage: FileStorage, user_id: int) -> str:
     size = file_storage.stream.tell()
     file_storage.stream.seek(0)
     if size > max_bytes:
-        raise ValueError("Avatar dosyası en fazla 2 MB olabilir.")
+        raise ValueError(_l("Avatar dosyası en fazla 2 MB olabilir."))
 
     extension = _avatar_extension(original_name)
     delete_avatar_files(user_id)

@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional, Set
 
 from flask import current_app
+from flask_babel import lazy_gettext as _l
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
@@ -85,14 +86,14 @@ def save_uploaded_file(
     """
     original_name = file_storage.filename or ""
     if not allowed_file(original_name):
-        raise ValueError(f"İzin verilmeyen dosya türü: {original_name}")
+        raise ValueError(_l("İzin verilmeyen dosya türü: %(filename)s") % {"filename": original_name})
 
     project_dir = ensure_upload_dir(get_project_upload_dir(user_id, project_id))
 
     if relative_path:
         safe_path = safe_relative_path(relative_path)
         if safe_path is None:
-            raise ValueError(f"Geçersiz dosya yolu: {relative_path}")
+            raise ValueError(_l("Geçersiz dosya yolu: %(path)s") % {"path": relative_path})
         target = project_dir / safe_path
         ensure_upload_dir(target.parent)
     else:

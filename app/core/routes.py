@@ -1,4 +1,5 @@
 from flask import abort, flash, redirect, render_template, request, url_for
+from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
 from app.extensions import db
@@ -77,7 +78,7 @@ def project_new():
 
             project.source_path = source_path
             db.session.commit()
-            flash(f"'{project.name}' projesi başarıyla oluşturuldu.", "success")
+            flash(_("'%(name)s' projesi başarıyla oluşturuldu.", name=project.name), "success")
             return redirect(url_for("core.project_list"))
 
         except ValueError as exc:
@@ -90,7 +91,7 @@ def project_new():
             db.session.rollback()
             if source_path:
                 delete_project_files(source_path)
-            flash("Dosyalar kaydedilirken bir hata oluştu.", "danger")
+            flash(_("Dosyalar kaydedilirken bir hata oluştu."), "danger")
 
     return render_template("core/project_form.html", form=form)
 
@@ -120,7 +121,7 @@ def project_optimize(project_id):
     project = _get_user_project(project_id)
 
     if project.status != "indexed":
-        flash("Prompt oluşturmak için önce projeyi indeksleyin.", "danger")
+        flash(_("Prompt oluşturmak için önce projeyi indeksleyin."), "danger")
         return redirect(url_for("core.project_detail", project_id=project.id))
 
     form = PromptForm()
@@ -131,7 +132,7 @@ def project_optimize(project_id):
         result = optimize_prompt(project, form.prompt.data)
         _save_prompt_log(project, form.prompt.data, result)
         db.session.commit()
-        flash("Prompt başarıyla oluşturuldu.", "success")
+        flash(_("Prompt başarıyla oluşturuldu."), "success")
         return _render_project_detail(project, prompt_form=form, result=result)
     except PromptOptimizeError as exc:
         db.session.rollback()
@@ -139,7 +140,7 @@ def project_optimize(project_id):
         return _render_project_detail(project, prompt_form=form)
     except Exception as exc:
         db.session.rollback()
-        flash(f"Prompt oluşturma hatası: {exc}", "danger")
+        flash(_("Prompt oluşturma hatası: %(error)s", error=exc), "danger")
         return _render_project_detail(project, prompt_form=form)
 
 
@@ -149,11 +150,11 @@ def project_index(project_id):
     project = _get_user_project(project_id)
 
     if not project.source_path:
-        flash("İndekslenecek dosya bulunamadı.", "danger")
+        flash(_("İndekslenecek dosya bulunamadı."), "danger")
         return redirect(url_for("core.project_detail", project_id=project.id))
 
     if project.status == "indexing":
-        flash("İndeksleme zaten devam ediyor.", "info")
+        flash(_("İndeksleme zaten devam ediyor."), "info")
         return redirect(url_for("core.project_detail", project_id=project.id))
 
     project.status = "indexing"
@@ -164,7 +165,7 @@ def project_index(project_id):
         project.status = "indexed"
         db.session.commit()
         flash(
-            f"'{project.name}' indekslendi ({node_count} parça).",
+            _("'%(name)s' indekslendi (%(count)s parça).", name=project.name, count=node_count),
             "success",
         )
     except IndexBuildError as exc:
@@ -176,7 +177,7 @@ def project_index(project_id):
         db.session.rollback()
         project.status = "failed"
         db.session.commit()
-        flash(f"İndeksleme hatası: {exc}", "danger")
+        flash(_("İndeksleme hatası: %(error)s", error=exc), "danger")
 
     return redirect(url_for("core.project_detail", project_id=project.id))
 
@@ -194,5 +195,5 @@ def project_delete(project_id):
 
     db.session.delete(project)
     db.session.commit()
-    flash(f"'{project_name}' projesi silindi.", "info")
+    flash(_("'%(name)s' projesi silindi.", name=project_name), "info")
     return redirect(url_for("core.project_list"))

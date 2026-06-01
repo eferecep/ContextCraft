@@ -1,3 +1,4 @@
+from flask_babel import gettext as _, lazy_gettext as _l
 from flask_wtf import FlaskForm
 from flask_wtf.file import MultipleFileField
 from wtforms import StringField, SubmitField, TextAreaField
@@ -8,46 +9,46 @@ from app.utils import allowed_file
 
 class ProjectForm(FlaskForm):
     name = StringField(
-        "Proje Adı",
+        _l("Proje Adı"),
         validators=[
-            DataRequired(message="Proje adı zorunludur."),
-            Length(max=128, message="Proje adı en fazla 128 karakter olabilir."),
+            DataRequired(message=_l("Proje adı zorunludur.")),
+            Length(max=128, message=_l("Proje adı en fazla 128 karakter olabilir.")),
         ],
     )
     description = TextAreaField(
-        "Açıklama",
+        _l("Açıklama"),
         validators=[
             Optional(),
-            Length(max=512, message="Açıklama en fazla 512 karakter olabilir."),
+            Length(max=512, message=_l("Açıklama en fazla 512 karakter olabilir.")),
         ],
     )
-    files = MultipleFileField("Proje Dosyaları")
-    submit = SubmitField("Proje Oluştur")
+    files = MultipleFileField(_l("Proje Dosyaları"))
+    submit = SubmitField(_l("Proje Oluştur"))
 
     def validate_files(self, field):
         if not field.data:
-            raise ValidationError("En az bir dosya yüklemelisiniz.")
+            raise ValidationError(_l("En az bir dosya yüklemelisiniz."))
 
         for file_storage in field.data:
             if not file_storage or not file_storage.filename:
-                raise ValidationError("Boş dosya yüklenemez.")
+                raise ValidationError(_l("Boş dosya yüklenemez."))
 
             if not allowed_file(file_storage.filename):
                 raise ValidationError(
-                    f"İzin verilmeyen dosya türü: {file_storage.filename}"
+                    _("İzin verilmeyen dosya türü: %(filename)s", filename=file_storage.filename)
                 )
 
 
 class PromptForm(FlaskForm):
     prompt = TextAreaField(
-        "Prompt",
+        _l("Prompt"),
         validators=[
-            DataRequired(message="Prompt metni zorunludur."),
+            DataRequired(message=_l("Prompt metni zorunludur.")),
             Length(
                 min=3,
                 max=2000,
-                message="Prompt 3 ile 2000 karakter arasında olmalıdır.",
+                message=_l("Prompt 3 ile 2000 karakter arasında olmalıdır."),
             ),
         ],
     )
-    submit = SubmitField("Prompt Oluştur")
+    submit = SubmitField(_l("Prompt Oluştur"))

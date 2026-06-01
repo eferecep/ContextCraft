@@ -1,3 +1,4 @@
+from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 from wtforms import BooleanField, PasswordField, StringField, SubmitField, TextAreaField
@@ -8,71 +9,80 @@ from app.models import User
 
 class RegisterForm(FlaskForm):
     username = StringField(
-        "Kullanıcı Adı",
-        validators=[DataRequired(message="Kullanıcı adı zorunludur."), Length(min=3, max=32)],
+        _l("Kullanıcı Adı"),
+        validators=[DataRequired(message=_l("Kullanıcı adı zorunludur.")), Length(min=3, max=32)],
     )
     email = StringField(
-        "E-posta",
-        validators=[DataRequired(message="E-posta zorunludur."), Email(message="Geçerli bir e-posta girin.")],
-    )
-    password = PasswordField(
-        "Şifre",
-        validators=[DataRequired(message="Şifre zorunludur."), Length(min=6, message="Şifre en az 6 karakter olmalıdır.")],
-    )
-    password2 = PasswordField(
-        "Şifre Tekrar",
+        _l("E-posta"),
         validators=[
-            DataRequired(message="Şifre tekrarı zorunludur."),
-            EqualTo("password", message="Şifreler eşleşmiyor."),
+            DataRequired(message=_l("E-posta zorunludur.")),
+            Email(message=_l("Geçerli bir e-posta girin.")),
         ],
     )
-    submit = SubmitField("Kayıt Ol")
+    password = PasswordField(
+        _l("Şifre"),
+        validators=[
+            DataRequired(message=_l("Şifre zorunludur.")),
+            Length(min=6, message=_l("Şifre en az 6 karakter olmalıdır.")),
+        ],
+    )
+    password2 = PasswordField(
+        _l("Şifre Tekrar"),
+        validators=[
+            DataRequired(message=_l("Şifre tekrarı zorunludur.")),
+            EqualTo("password", message=_l("Şifreler eşleşmiyor.")),
+        ],
+    )
+    submit = SubmitField(_l("Kayıt Ol"))
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Bu e-posta adresi zaten kayıtlı.")
+            raise ValidationError(_l("Bu e-posta adresi zaten kayıtlı."))
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
-            raise ValidationError("Bu kullanıcı adı zaten alınmış.")
+            raise ValidationError(_l("Bu kullanıcı adı zaten alınmış."))
 
 
 class LoginForm(FlaskForm):
     email = StringField(
-        "E-posta",
-        validators=[DataRequired(message="E-posta zorunludur."), Email(message="Geçerli bir e-posta girin.")],
+        _l("E-posta"),
+        validators=[
+            DataRequired(message=_l("E-posta zorunludur.")),
+            Email(message=_l("Geçerli bir e-posta girin.")),
+        ],
     )
     password = PasswordField(
-        "Şifre",
-        validators=[DataRequired(message="Şifre zorunludur.")],
+        _l("Şifre"),
+        validators=[DataRequired(message=_l("Şifre zorunludur."))],
     )
-    remember_me = BooleanField("Beni hatırla")
-    submit = SubmitField("Giriş Yap")
+    remember_me = BooleanField(_l("Beni hatırla"))
+    submit = SubmitField(_l("Giriş Yap"))
 
 
 class ProfileForm(FlaskForm):
     bio = TextAreaField(
-        "Hakkımda",
+        _l("Hakkımda"),
         validators=[
             Optional(),
-            Length(max=256, message="Bio en fazla 256 karakter olabilir."),
+            Length(max=256, message=_l("Bio en fazla 256 karakter olabilir.")),
         ],
     )
-    submit = SubmitField("Profili Kaydet")
+    submit = SubmitField(_l("Profili Kaydet"))
 
 
 class AvatarForm(FlaskForm):
     avatar = FileField(
-        "Avatar",
+        _l("Avatar"),
         validators=[
-            FileRequired(message="Avatar dosyası seçmelisiniz."),
+            FileRequired(message=_l("Avatar dosyası seçmelisiniz.")),
             FileAllowed(
                 ["png", "jpg", "jpeg", "gif", "webp"],
-                message="Geçersiz format. İzin verilen: png, jpg, jpeg, gif, webp.",
+                message=_l("Geçersiz format. İzin verilen: png, jpg, jpeg, gif, webp."),
             ),
         ],
     )
-    submit = SubmitField("Avatar Yükle")
+    submit = SubmitField(_l("Avatar Yükle"))
 
     def validate_avatar(self, field):
         if not field.data or not field.data.filename:
@@ -85,4 +95,4 @@ class AvatarForm(FlaskForm):
         size = field.data.stream.tell()
         field.data.stream.seek(0)
         if size > max_bytes:
-            raise ValidationError("Avatar dosyası en fazla 2 MB olabilir.")
+            raise ValidationError(_l("Avatar dosyası en fazla 2 MB olabilir."))
