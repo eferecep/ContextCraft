@@ -118,11 +118,7 @@ ContextCraft/
 |---------|--------|
 | AI günlüğü | [docs/ai-gunlugu.md](docs/ai-gunlugu.md) |
 | Proje raporu | [docs/rapor.md](docs/rapor.md) |
-| Demo video | [Google Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing) |
 
-### Demo video
-
-**Demo (3–5 dk):** [Google Drive](https://drive.google.com/file/d/1gArjevcNEXC0b_p7PW-XWr4B9UseszSF/view?usp=sharing)
 
 Önerilen akış: kayıt → profil/avatar → proje yükle → indeksle → prompt oluştur → sonuç ekranı.
 
